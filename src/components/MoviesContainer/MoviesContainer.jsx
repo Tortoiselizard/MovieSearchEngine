@@ -1,3 +1,5 @@
+import MovieCard from '../MovieCard/MovieCard'
+
 import PropTypes from 'prop-types'
 
 export default function MoviesContainer ({ moviesList }) {
@@ -5,7 +7,7 @@ export default function MoviesContainer ({ moviesList }) {
     <div>
       {
         moviesList.map(movie => (
-          <label key={movie.id}>Soy una película</label>
+          <MovieCard key={movie.id} movie={movie} />
         ))
       }
     </div>
