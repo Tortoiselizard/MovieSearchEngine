@@ -4,18 +4,29 @@ import MoviesContainer from './components/MoviesContainer/MoviesContainer'
 import './App.css'
 import { useEffect, useState } from 'react'
 
-import { getPopularMovies } from './services/moviesApi'
+import { requestPopularMovies, requestMoviesByTitle } from './services/moviesApi'
 
 function App () {
   const [moviesList, setMoviesList] = useState([])
 
   useEffect(() => {
-    getMovies()
+    getPopularMovies()
   }, [])
 
-  async function getMovies () {
+  async function getPopularMovies () {
     try {
-      const { page, results, total_pages, total_results } = await getPopularMovies()
+      const { page, results, total_pages, total_results } = await requestPopularMovies()
+      setMoviesList(results)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  async function getMoviesByTitle (text) {
+    try {
+      const { page, results, total_pages, total_results } = await requestMoviesByTitle({
+        text
+      })
       setMoviesList(results)
     } catch (error) {
       alert(error.message)
@@ -24,7 +35,7 @@ function App () {
 
   return (
     <>
-      <SearchBar />
+      <SearchBar getMoviesByTitle={getMoviesByTitle} />
       <MoviesContainer moviesList={moviesList} />
     </>
   )
