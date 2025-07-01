@@ -7,27 +7,47 @@ import { useEffect, useState } from 'react'
 import { requestPopularMovies, requestMoviesByTitle } from './services/moviesApi'
 
 function App () {
-  const [moviesList, setMoviesList] = useState([])
+  const [moviesList, setMoviesList] = useState({
+    status: 'idle',
+    list: [],
+    error: null
+  })
 
   useEffect(() => {
     getPopularMovies()
   }, [])
 
   async function getPopularMovies () {
+    setMoviesList(prevState => ({
+      ...prevState,
+      status: 'pending'
+    }))
     try {
       const { page, results, total_pages, total_results } = await requestPopularMovies()
-      setMoviesList(results)
+      setMoviesList({
+        list: results,
+        status: 'successful',
+        error: null
+      })
     } catch (error) {
       alert(error.message)
     }
   }
 
   async function getMoviesByTitle (text) {
+    setMoviesList(prevState => ({
+      ...prevState,
+      status: 'pending'
+    }))
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
         text
       })
-      setMoviesList(results)
+      setMoviesList({
+        list: results,
+        status: 'successful',
+        error: null
+      })
     } catch (error) {
       alert(error.message)
     }

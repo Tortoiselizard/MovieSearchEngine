@@ -6,7 +6,7 @@ export default function MovieCard ({ movie }) {
   return (
     <div>
       <p>{movie.title}</p>
-      <img src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`} alt={movie.title} />
+      <img src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`} alt={'image: ' + movie.title} />
       <p>{movie.release_date}</p>
     </div>
   )
