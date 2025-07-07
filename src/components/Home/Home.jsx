@@ -15,6 +15,10 @@ export default function Home () {
     getPopularMovies()
   }, [])
 
+  useEffect(() => {
+    console.log('moviesList:', moviesList)
+  }, [moviesList])
+
   async function getPopularMovies () {
     setMoviesList(prevState => ({
       ...prevState,
@@ -53,8 +57,28 @@ export default function Home () {
 
   return (
     <>
-      <SearchBar getMoviesByTitle={getMoviesByTitle} />
-      <MoviesContainer moviesList={moviesList} />
+      {/* <SearchBar getMoviesByTitle={getMoviesByTitle} /> */}
+      {
+        moviesList.status === 'pending'
+          ? (
+            <p>Cargando...</p>
+            )
+          : moviesList.status === 'fail'
+            ? (
+              <p>Error</p>
+              )
+            : moviesList.status === 'successful'
+              ? (
+                  moviesList.list.length
+                    ? (
+                      <MoviesContainer moviesList={moviesList.list.slice(1)} />
+                      )
+                    : (
+                      <p>No se han encontrado coincidencias</p>
+                      )
+                )
+              : null
+      }
     </>
   )
 }
