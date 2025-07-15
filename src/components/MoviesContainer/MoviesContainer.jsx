@@ -5,11 +5,14 @@ import PropTypes from 'prop-types'
 export default function MoviesContainer ({ moviesList }) {
   return (
     <div>
-      {
-        moviesList.map(movie => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))
-      }
+      <h2>The Most Popular</h2>
+      <div>
+        {
+          moviesList.map(movie => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))
+        }
+      </div>
     </div>
   )
 }
