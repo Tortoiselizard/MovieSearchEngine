@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { Link } from 'react-router'
 import styles from './HeroBanner.module.css'
 
 export default function HeroBanner ({ movie }) {
@@ -9,8 +10,8 @@ export default function HeroBanner ({ movie }) {
       <div className={styles.heroContent}>
         <h1 className={styles.title}>{movie.title}</h1>
         <p className={styles.description}>{movie.overview}</p>
-        <div>
-          <button>More Info</button>
+        <div className={styles.buttons}>
+          <Link to={`/${movie.id}`} role='button'>More Info</Link>
         </div>
       </div>
       <div className={styles.heroImage}>

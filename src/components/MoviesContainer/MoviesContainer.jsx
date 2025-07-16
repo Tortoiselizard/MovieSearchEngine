@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 export default function MoviesContainer ({ moviesList }) {
   return (
     <div>
-      <h2>The Most Popular</h2>
+      <h2>Popular</h2>
       <div>
         {
           moviesList.map(movie => (
