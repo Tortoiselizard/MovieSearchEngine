@@ -1,22 +1,21 @@
 import MovieCard from '../MovieCard/MovieCard'
 
-import PropTypes from 'prop-types'
+import { useMyContext } from '../../context/MyContext'
 
-export default function MoviesContainer ({ moviesList }) {
+export default function MoviesContainer () {
+  const { state: globalState } = useMyContext()
+  const { movies } = globalState
+
   return (
     <div>
       <h2>Popular</h2>
       <div>
         {
-          moviesList.map(movie => (
+          movies.list.map(movie => (
             <MovieCard key={movie.id} movie={movie} />
           ))
         }
       </div>
     </div>
   )
-}
-
-MoviesContainer.propTypes = {
-  moviesList: PropTypes.array.isRequired
 }
