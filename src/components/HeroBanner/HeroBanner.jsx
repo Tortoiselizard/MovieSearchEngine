@@ -1,9 +1,12 @@
-import PropTypes from 'prop-types'
 import { Link } from 'react-router'
+
+import { useMyContext } from '../../context/MyContext.jsx'
 import styles from './HeroBanner.module.css'
 
-export default function HeroBanner ({ movie }) {
+export default function HeroBanner () {
   const { VITE_API_IMAGE_URL } = import.meta.env
+  const { state: globalState } = useMyContext()
+  const movie = globalState.movies.list[0]
 
   return (
     <section className={styles.hero}>
@@ -20,8 +23,4 @@ export default function HeroBanner ({ movie }) {
       <div className={styles.fadeBottom} />
     </section>
   )
-}
-
-HeroBanner.propTypes = {
-  movie: PropTypes.object.isRequired
 }

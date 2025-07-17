@@ -1,4 +1,3 @@
-import SearchBar from '../SearchBar/SearchBar'
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
 
@@ -42,7 +41,6 @@ export default function Home () {
 
   return (
     <>
-      {/* <SearchBar getMoviesByTitle={getMoviesByTitle} /> */}
       {
         movies.status === 'pending'
           ? (
@@ -57,7 +55,7 @@ export default function Home () {
                   movies.list.length
                     ? (
                       <div className={styles.container}>
-                        <HeroBanner movie={movies.list[0]} />
+                        <HeroBanner />
                         <MoviesContainer />
                       </div>
                       )
