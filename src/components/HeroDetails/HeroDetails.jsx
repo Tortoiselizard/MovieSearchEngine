@@ -1,0 +1,47 @@
+import PropTypes from 'prop-types'
+
+import styles from './HeroDetails.module.css'
+
+const { VITE_API_IMAGE_URL } = import.meta.env
+
+export default function MovieCardDetails ({ movie }) {
+  return (
+    <div className={styles.hero}>
+      <div className={styles.heroBackground}>
+        <img src={`${VITE_API_IMAGE_URL}/w1280/${movie.backdrop_path}`} alt={movie.title} />
+      </div>
+      <div className={styles.heroContent}>
+        <div className={styles.heroInfo}>
+          <h1 className={styles.title}>{movie.title}</h1>
+
+          <div className={styles.metadata}>
+            <span className={styles.rating}>{movie.vote_average}</span>
+            <span className={styles.year}>{movie.release_date.split('-')[0]}</span>
+          </div>
+
+          <p className={styles.description}>{movie.overview}</p>
+
+          <div className={styles.genres}>
+            {
+              movie.genres.map(({ name, id }) => (
+                <span key={id} className={styles.genre}>{name}</span>
+              ))
+            }
+          </div>
+        </div>
+
+        <div className={styles.heroPoster}>
+          <img
+            src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`}
+            alt={'image: ' + movie.title}
+            className={styles.posterImage}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+MovieCardDetails.propTypes = {
+  movie: PropTypes.object.isRequired
+}

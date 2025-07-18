@@ -1,4 +1,4 @@
-import MovieCardDetails from '../MovieCardDetails/MovieCardDetails'
+import HeroDetails from '../HeroDetails/HeroDetails'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -51,7 +51,7 @@ export default function MovieDetails () {
               )
             : movie.status === 'successful'
               ? (
-                <MovieCardDetails movie={movie.data} />
+                <HeroDetails movie={movie.data} />
                 )
               : null
       }
