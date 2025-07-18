@@ -54,10 +54,10 @@ export default function SearchBar () {
     getMoviesByTitle(queryRef.current)
   }
 
-  async function getMoviesByTitle (text) {
+  async function getMoviesByTitle (query) {
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
-        text
+        query
       })
       dispatch(updateMovies(results))
     } catch (error) {

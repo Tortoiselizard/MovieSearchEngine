@@ -4,7 +4,7 @@ import HeroBanner from '../HeroBanner/HeroBanner.jsx'
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
+import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
 
@@ -21,18 +21,6 @@ export default function Home () {
     dispatch(loadMovies())
     try {
       const { page, results, total_pages, total_results } = await requestPopularMovies()
-      dispatch(updateMovies(results))
-    } catch (error) {
-      alert(error.message)
-    }
-  }
-
-  async function getMoviesByTitle (text) {
-    dispatch(loadMovies())
-    try {
-      const { page, results, total_pages, total_results } = await requestMoviesByTitle({
-        text
-      })
       dispatch(updateMovies(results))
     } catch (error) {
       alert(error.message)

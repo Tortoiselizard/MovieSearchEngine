@@ -24,7 +24,12 @@ export default async function handler (request, response) {
       throw newError
     }
     const data = await responseApi.json()
-    response.status(200).json(data)
+    const moviesWithImages = data.results.filter(movie => movie.title && movie.backdrop_path && movie.poster_path)
+    const dataFiltered = {
+      ...data,
+      results: moviesWithImages
+    }
+    response.status(200).json(dataFiltered)
   } catch (error) {
     if (error instanceof ApiError) {
       return response.status(error.statusCode).json({
