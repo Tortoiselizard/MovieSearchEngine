@@ -14,7 +14,7 @@ export default function HeroBanner () {
         <h1 className={styles.title}>{movie.title}</h1>
         <p className={styles.description}>{movie.overview}</p>
         <div className={styles.buttons}>
-          <Link to={`/${movie.id}`} role='button'>More Info</Link>
+          <Link className={styles.infoBtn} to={`/${movie.id}`} role='button'>More Info</Link>
         </div>
       </div>
       <div className={styles.heroImage}>

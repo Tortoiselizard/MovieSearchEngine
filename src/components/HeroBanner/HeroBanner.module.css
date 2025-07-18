@@ -65,6 +65,16 @@
   opacity: 0.4;
 }
 
+.infoBtn {
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white
+}
+
+.infoBtn:hover {
+  background-color: rgba(109, 109, 110, 0.4);
+  color: white;
+}
+
 .fadeBottom {
   position: absolute;
   bottom: 0;
