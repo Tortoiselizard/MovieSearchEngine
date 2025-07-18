@@ -31,8 +31,8 @@ export default function SearchBar () {
   // Search movies when you press enter key
   useEffect(() => {
     function handleEnter (event) {
-      if (event.key !== 'Enter') return
-      handleClick()
+      if (event.key !== 'Enter' || !queryRef.current) return
+      getMoviesByTitle(queryRef.current)
     }
 
     const input = document.querySelector('#search-input')
@@ -49,7 +49,12 @@ export default function SearchBar () {
   }
 
   function handleClick () {
-    setIsExpanded(true)
+    if (!isExpanded) {
+      setIsExpanded(true)
+      const input = document.querySelector('#search-input')
+      input.focus()
+      return
+    }
     if (!queryRef.current) return
     getMoviesByTitle(queryRef.current)
   }
