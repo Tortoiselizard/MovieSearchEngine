@@ -25,3 +25,11 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
 }
+
+@media screen and (max-width: 480px) {
+  /* Estilos para pantallas de móviles */
+
+  .content {
+    margin-top: 0px;
+  }
+}

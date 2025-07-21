@@ -83,3 +83,30 @@
   background: linear-gradient(transparent, #242424);
   z-index: 1;
 }
+
+@media screen and (max-width: 480px) {
+  /* Estilos para pantallas de móviles */
+  .hero {
+    height: 60vh;
+    align-items: flex-end;
+    cursor: pointer;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .description {
+    display: none;
+  }
+
+  .buttons {
+    display: none;
+  }
+
+  .heroImage img {
+    opacity: 1;
+  }
+}
