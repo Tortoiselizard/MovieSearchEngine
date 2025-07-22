@@ -70,9 +70,10 @@
 /* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
 @media (hover: none) or (pointer: coarse) {
   .movieInfo {
-    position: relative;
-    opacity: 1;
-    padding: 0.8rem;
+    display: none;
+    /*position: relative;*/
+    /*opacity: 1;*/
+    /*padding: 0.8rem;*/
   }
 
   .title {
@@ -92,6 +93,7 @@
 
   .movieCard {
     flex: 0 0 120px;
+    border-radius: 8px;
   }
 
 }

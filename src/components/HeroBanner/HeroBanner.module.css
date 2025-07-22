@@ -27,7 +27,6 @@
   line-height: 1.4;
   margin-bottom: 2rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  /*max-width: 45%;*/
   color: gray;
   text-align: start;
 }
@@ -35,18 +34,6 @@
 .buttons {
   display: flex; 
   gap: 1rem
-}
-
-.buttons a {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
 }
 
 .heroImage {
@@ -66,13 +53,16 @@
 }
 
 .infoBtn {
-  background-color: rgba(109, 109, 110, 0.7);
-  color: white
-}
-
-.infoBtn:hover {
-  background-color: rgba(109, 109, 110, 0.4);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  background-color: #1a1a1a;
   color: white;
+  transition: all 0.25s;
 }
 
 .fadeBottom {
@@ -87,26 +77,47 @@
 @media screen and (max-width: 480px) {
   /* Estilos para pantallas de móviles */
   .hero {
-    height: 60vh;
+    height: 75vh;
     align-items: flex-end;
-    cursor: pointer;
+    justify-content: center;
   }
 
-  .title {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
-    color: white;
-  }
-
-  .description {
-    display: none;
-  }
-
-  .buttons {
+  .title, .description {
     display: none;
   }
 
   .heroImage img {
     opacity: 1;
+    object-position: bottom center;
+  }
+
+  .buttons {
+    position: relative;
+    top: 8px
+  }
+
+  .infoBtn {
+    padding: 0.4em 1.2em;
+    font-size: 0.75rem;
+    border-radius: 24px;
+    border: 1px solid white;
+  }
+}
+
+/* Estilos para dispositivos que SI soportan hover */
+@media (hover: hover) and (pointer: fine) {
+  .infoBtn:hover {
+    background-color: rgba(109, 109, 110, 0.4);
+    color: white;
+    border: 1px solid white;
+  }
+}
+
+/* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
+@media (hover: none) or (pointer: coarse) {
+  .infoBtn {
+    border-radius: 24px;
+    border: 1px solid white;
+    background-color: #1a1a1a;
   }
 }

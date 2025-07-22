@@ -11,7 +11,7 @@ export default function MoviesContainer () {
   return (
     <div className={styles.content}>
       <div className={styles.row}>
-        <h2 className={styles.title}>Popular</h2>
+        <h2 className={styles.title}>Trending Now</h2>
         <div className={styles.moviesContainer}>
           {
           movies.list.slice(1).map(movie => (
