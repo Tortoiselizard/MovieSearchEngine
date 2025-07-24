@@ -1,0 +1,40 @@
+.content {
+  padding: 0 4%;
+  margin-top: -150px;
+  position: relative;
+  z-index: 2;
+}
+
+.row {
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  padding-left: 4%;
+  text-align: start;
+}
+
+.moviesContainer {
+  display: flex;
+  gap: 8px;
+  padding: 0 4%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+@media screen and (max-width: 480px) {
+  /* Estilos para pantallas de móviles */
+
+  .content {
+    margin-top: 40px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+}
