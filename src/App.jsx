@@ -3,7 +3,7 @@ import Home from './components/Home/Home'
 import Header from './components/Header/Header'
 import './App.css'
 
-function App () {
+export default function App () {
   return (
     <MyProvider>
       <Header />
@@ -11,5 +11,3 @@ function App () {
     </MyProvider>
   )
 }
-
-export default App

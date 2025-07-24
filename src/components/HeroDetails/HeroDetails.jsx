@@ -4,7 +4,7 @@ import styles from './HeroDetails.module.css'
 
 const { VITE_API_IMAGE_URL } = import.meta.env
 
-export default function MovieCardDetails ({ movie }) {
+export default function HeroDetails ({ movie }) {
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
@@ -42,6 +42,7 @@ export default function MovieCardDetails ({ movie }) {
               alt={'image: ' + movie.title}
               className={styles.posterImage}
             />
+            <div className={styles.heroGradientPoster} />
           </div>
         </div>
       </div>
@@ -49,6 +50,6 @@ export default function MovieCardDetails ({ movie }) {
   )
 }
 
-MovieCardDetails.propTypes = {
+HeroDetails.propTypes = {
   movie: PropTypes.object.isRequired
 }

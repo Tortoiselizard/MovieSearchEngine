@@ -88,12 +88,12 @@
 
   .heroImage img {
     opacity: 1;
-    object-position: bottom center;
+    object-position: center center;
   }
 
   .buttons {
     position: relative;
-    top: 8px
+    top: 24px
   }
 
   .infoBtn {
