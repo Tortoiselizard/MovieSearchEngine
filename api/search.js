@@ -5,7 +5,7 @@ const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 export default async function handler (request, response) {
   const { query } = request
   try {
-    const { text } = query
+    const { query: text } = query
     const url = `${VITE_API_URL}/search/movie?query=${text}`
     const options = {
       method: 'GET',
