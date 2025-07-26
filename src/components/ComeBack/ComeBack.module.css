@@ -1,0 +1,15 @@
+.container {
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  color: gray;
+  background-color: white;
+}

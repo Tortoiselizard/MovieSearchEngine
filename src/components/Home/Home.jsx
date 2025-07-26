@@ -14,6 +14,7 @@ export default function Home () {
 
   // Get popular movies
   useEffect(() => {
+    if (movies && movies.status === 'successful' && movies.list.length) return
     getPopularMovies()
   }, [])
 
