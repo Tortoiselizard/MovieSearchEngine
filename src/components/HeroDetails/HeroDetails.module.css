@@ -49,7 +49,7 @@
 .heroInfo {
   flex: 1;
   max-width: 700px;
-  max-height: 90vh;
+  /*max-height: 90vh;*/
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -147,6 +147,12 @@
     padding: 0 1rem;
     gap: 3rem;
     text-align: start;
+  }
+
+  .heroPoster {
+    width: 100vw;
+    min-width: 320px;
+    margin-right: 0px;
   }
 
   .posterImage {

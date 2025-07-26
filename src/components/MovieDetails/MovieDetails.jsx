@@ -1,3 +1,4 @@
+import Header from '../Header/Header'
 import HeroDetails from '../HeroDetails/HeroDetails'
 
 import { useEffect, useState } from 'react'
@@ -51,7 +52,11 @@ export default function MovieDetails () {
               )
             : movie.status === 'successful'
               ? (
-                <HeroDetails movie={movie.data} />
+                <>
+                  <Header />
+                  <HeroDetails movie={movie.data} />
+                </>
+
                 )
               : null
       }

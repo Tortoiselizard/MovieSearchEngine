@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
+import { useMatch } from 'react-router'
 
 import { updateMovies } from '../../context/actions'
 import { requestMoviesByTitle } from '../../services/moviesApi.js'
@@ -10,6 +11,8 @@ import { requestMoviesByTitle } from '../../services/moviesApi.js'
 import styles from './SearchBar.module.css'
 
 export default function SearchBar () {
+  const isHome = useMatch('/')
+  if (!isHome) return
   const [query, setQuery] = useState('')
   const { dispatch } = useMyContext()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -64,7 +67,7 @@ export default function SearchBar () {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
         query
       })
-      dispatch(updateMovies(results))
+      dispatch(updateMovies({ list: results, category: 'search' }))
     } catch (error) {
       alert(error.message)
     }
