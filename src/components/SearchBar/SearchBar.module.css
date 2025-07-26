@@ -84,3 +84,11 @@
 .clearButton:hover .clearIcon {
   color: white;
 }
+
+@media screen and (max-width: 380px) {
+
+  .searchBox.expanded {
+    width: 220px;
+  } 
+
+}
