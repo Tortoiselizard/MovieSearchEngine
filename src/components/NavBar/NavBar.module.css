@@ -30,3 +30,21 @@
   transform: scaleX(1);
 }
 
+/* Estilos para dispositivos que SI soportan hover */
+@media (hover: hover) and (pointer: fine) {
+
+  .navLink:hover::after {
+    transform: scaleX(1);
+  }
+
+}
+
+/* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
+@media (hover: none) or (pointer: coarse) {
+
+}
+
+@media screen and (max-width: 480px) {
+  /* Estilos para pantallas de móviles */
+
+}
