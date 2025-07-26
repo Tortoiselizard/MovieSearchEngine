@@ -22,7 +22,7 @@ export default function Home () {
     dispatch(loadMovies())
     try {
       const { page, results, total_pages, total_results } = await requestPopularMovies()
-      dispatch(updateMovies(results))
+      dispatch(updateMovies({ list: results, category: 'popular' }))
     } catch (error) {
       alert(error.message)
     }

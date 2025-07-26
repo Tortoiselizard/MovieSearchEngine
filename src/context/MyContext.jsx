@@ -9,7 +9,8 @@ const initialState = {
   movies: {
     list: [],
     status: 'idle',
-    error: null
+    error: null,
+    category: 'idle'
   }
 }
 
