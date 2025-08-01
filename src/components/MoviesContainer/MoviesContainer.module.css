@@ -18,13 +18,48 @@
 }
 
 .moviesContainer {
+  position: relative;
+}
+
+.itemsContainer {
   display: flex;
   gap: 8px;
-  padding: 0 4%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   scrollbar-width: none;
+}
+
+.scrollButton {
+  padding: 0px;
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.scrollLeft {
+  left: 0px;
+  transform: translate(-50%, -50%);
+}
+
+.scrollRight {
+  right: 0px;
+  transform: translate(50%, -50%);
+}
+
+.scrollIcon {
+  width: 24px;
+  height: 24px;
 }
 
 @media screen and (max-width: 480px) {
@@ -37,4 +72,31 @@
   .title {
     font-size: 1.2rem;
   }
+
+  .itemsContainer {
+    overflow-x: auto;
+  }
+
+  .scrollButton {
+    display: none;
+  }
+
+}
+
+/* Estilos para dispositivos que SI soportan hover */
+@media (hover:hover) and (pointer:fine) {
+
+  .scrollButton:hover {
+    background: rgba(0,0,0,0.8);
+  }
+
+}
+
+/* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
+@media (hover:none) and (pointer:coarse) {
+  
+  .scrollButton {
+    background: rgba(0,0,0,0.8);
+  }
+
 }
