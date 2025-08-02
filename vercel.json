@@ -1,0 +1,32 @@
+{
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "^/api/findById/([^/]+)$",
+      "dest": "/api/findById/[id]?id=$1",
+      "check": true
+    },
+    {
+      "src": "^/api(/.*)?$",
+      "status": 404
+    },
+    {
+      "handle": "error"
+    },
+    {
+      "status": 404,
+      "src": "^(?!/api).*$",
+      "dest": "/index.html"
+    },
+    {
+      "handle": "miss"
+    },
+    {
+      "src": "^/api/(.+)(?:\\.(?:js))$",
+      "dest": "/api/$1",
+      "check": true
+    }
+  ]
+}
