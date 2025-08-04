@@ -1,5 +1,4 @@
 .movieCard {
-  flex: 0 0 200px;
   height: fit-content;
   cursor: pointer;
   position: relative;
@@ -9,6 +8,14 @@
   transition: border 0.3s ease;
   display: flex;
   flex-direction: column;
+}
+
+.movieCardRow {
+  flex: 0 0 200px;
+}
+
+.movieCardGrid {
+  flex: 0 0 16%;
 }
 
 .movieCard::before {

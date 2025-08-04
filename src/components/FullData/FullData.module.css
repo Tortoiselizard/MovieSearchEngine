@@ -1,0 +1,15 @@
+.container {
+  padding: 68px 4%;
+}
+
+.itemsContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}

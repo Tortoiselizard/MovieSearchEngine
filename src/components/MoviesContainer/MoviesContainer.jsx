@@ -1,14 +1,17 @@
+import PropTypes from 'prop-types'
 import MovieCard from '../MovieCard/MovieCard'
 
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 
 import { useMyContext } from '../../context/MyContext'
-
-import styles from './MoviesContainer.module.css'
 import { useEffect, useRef, useState } from 'react'
 
+import { updateMode } from '../../context/actions'
+
+import styles from './MoviesContainer.module.css'
+
 export default function MoviesContainer () {
-  const { state: globalState } = useMyContext()
+  const { state: globalState, dispatch } = useMyContext()
   const { movies } = globalState
   const [position, setPosition] = useState(0)
   const itemsContainer = useRef()
@@ -47,10 +50,17 @@ export default function MoviesContainer () {
     else if (!scrollButtonRightVisibility) setScrollButtonRightVisibility(true)
   }
 
+  function changeToFullDataMode () {
+    dispatch(updateMode('fullData'))
+  }
+
   return (
     <div className={styles.content}>
       <div className={styles.row}>
-        <h2 className={styles.title}>Trending Now</h2>
+        <div className={styles.titleContainer}>
+          <h2 className={styles.title}>Trending Now</h2>
+          <button className={styles.more} onClick={changeToFullDataMode}>See more</button>
+        </div>
         <div id='popular' className={styles.moviesContainer}>
           <button
             className={`${styles.scrollButton} ${styles.scrollLeft}`}
@@ -77,4 +87,8 @@ export default function MoviesContainer () {
       </div>
     </div>
   )
+}
+
+MoviesContainer.propTypes = {
+  changeMode: PropTypes.func.isRequired
 }

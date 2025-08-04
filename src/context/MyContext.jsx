@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES, LOAD_MOVIES } from './actions'
+import { UPDATE_MOVIES, LOAD_MOVIES, UPDATE_MODE } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -11,7 +11,8 @@ const initialState = {
     status: 'idle',
     error: null,
     category: 'idle'
-  }
+  },
+  mode: 'summary'
 }
 
 // Reducer
@@ -27,6 +28,12 @@ function reducer (state, action) {
           ...state.movies,
           status: 'pending'
         }
+      }
+    }
+    case UPDATE_MODE: {
+      return {
+        ...state,
+        mode: action.payload
       }
     }
     default: {

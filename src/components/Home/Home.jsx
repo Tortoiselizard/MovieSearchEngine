@@ -1,5 +1,6 @@
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
+import FullData from '../FullData/FullData.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
@@ -10,7 +11,7 @@ import styles from './Home.module.css'
 
 export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { movies, mode } = globalState
 
   // Get popular movies
   useEffect(() => {
@@ -44,8 +45,22 @@ export default function Home () {
                   movies.list.length
                     ? (
                       <div className={styles.container}>
-                        <HeroBanner />
-                        <MoviesContainer />
+                        {
+                          mode === 'summary'
+                            ? (
+                              <>
+                                <HeroBanner />
+                                <MoviesContainer />
+                              </>
+                              )
+                            : mode === 'fullData'
+                              ? (
+                                <>
+                                  <FullData />
+                                </>
+                                )
+                              : null
+                        }
                       </div>
                       )
                     : (
