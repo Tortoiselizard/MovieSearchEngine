@@ -26,12 +26,13 @@ export default async function handler (request, response) {
       throw newError
     }
     const data = await responseApi.json()
-    const moviesFiltered = data.results.filter(movie => necessaryData.every(property => movie[property]))
-    const dataFiltered = {
-      ...data,
-      results: moviesFiltered
-    }
-    response.status(200).json(dataFiltered)
+    // const moviesFiltered = data.results.filter(movie => necessaryData.every(property => movie[property]))
+    // const dataFiltered = {
+    // ...data,
+    // results: moviesFiltered
+    // }
+    // response.status(200).json(dataFiltered)
+    response.status(200).json(data)
   } catch (error) {
     if (error instanceof ApiError) {
       return response.status(error.statusCode).json({
