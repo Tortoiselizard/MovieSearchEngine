@@ -8,9 +8,9 @@ import styles from './NavBar.module.css'
 
 export default function NavBar () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { movies, mode } = globalState
   const isHome = useMatch('/')
-  if (!isHome) return
+  if (!isHome || mode === 'fullData') return
 
   async function getMovies (category) {
     if (movies.category === category) return

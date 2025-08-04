@@ -1,14 +1,30 @@
-import { Link, useMatch } from 'react-router'
+import { useNavigate, useMatch } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
+import { useMyContext } from '../../context/MyContext'
+
+import { updateMode } from '../../context/actions'
 
 import styles from './ComeBack.module.css'
 
 export default function ComeBack () {
   const isHome = useMatch('/')
-  if (isHome) return null
+  const navigate = useNavigate()
+  const { state: globalState, dispatch } = useMyContext()
+  const { mode } = globalState
+  if (isHome && mode === 'summary') return null
+
+  function moveTo () {
+    if (isHome && mode === 'fullData') return changeToSummaryMode()
+    navigate('/')
+  }
+
+  function changeToSummaryMode () {
+    dispatch(updateMode('summary'))
+  }
+
   return (
-    <Link className={styles.container} to='/'>
+    <button className={styles.container} onClick={moveTo}>
       <ArrowLeft />
-    </Link>
+    </button>
   )
 }
