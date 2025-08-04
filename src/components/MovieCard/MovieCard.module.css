@@ -8,6 +8,7 @@
   transition: border 0.3s ease;
   display: flex;
   flex-direction: column;
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.8);
 }
 
 .movieCardRow {
