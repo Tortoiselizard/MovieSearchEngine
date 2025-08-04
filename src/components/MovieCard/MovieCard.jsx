@@ -28,8 +28,7 @@ export default function MovieCard ({ movie }) {
             justifyContent: 'center',
             alignItems: 'center',
             gap: '8px',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            cursor: 'none'
+            backgroundColor: 'rgba(0,0,0,0.5)'
           }}
         >
           <ImageIcon />

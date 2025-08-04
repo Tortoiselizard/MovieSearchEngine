@@ -35,7 +35,7 @@
   gap: 1rem
 }
 
-.heroImage {
+.heroImageContainer {
   position: absolute;
   top: 0;
   left: 0;
@@ -44,7 +44,7 @@
   z-index: 1;
 }
 
-.heroImage img {
+.heroImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
