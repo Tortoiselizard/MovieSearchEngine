@@ -3,6 +3,8 @@ import { useMyContext } from '../../context/MyContext'
 import { updateMovies, loadMovies } from '../../context/actions.js'
 import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
 
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
 import styles from './Pager.module.css'
 
 export default function Pager () {
@@ -57,29 +59,36 @@ export default function Pager () {
   }
 
   return (
-    <div className={styles.container}>
-      <button
-        className={styles.button}
-        disabled={movies.page <= 1}
-        onClick={goToPrevious}
-      >
-        Previous
-      </button>
-      {
-        Array.from({ length: 5 }, (_, i) => i + 1).map((page, index) => (
-          <button
-            key={index + 1}
-            className={styles.button}
-            onClick={() => { gotToPage(index + 1) }}
-          >{page}
-          </button>
-        ))
-      }
-      <button
-        className={styles.button}
-        onClick={goToNext}
-      >Next
-      </button>
-    </div>
+    <>
+      <div className={styles.pagerContainer}>
+        <button
+          className={`${styles.buttonPager} ${styles.prevNext}`}
+          disabled={movies.page <= 1}
+          onClick={goToPrevious}
+        >
+          <ChevronLeft />
+          Previous
+        </button>
+        {
+          Array.from({ length: 10 }, (_, i) => i + 1).slice(0, 5).map((page) => (
+            <button
+              key={page}
+              className={`${styles.buttonPager} ${page === movies.page ? styles.active : ''}`}
+              onClick={() => { gotToPage(page) }}
+            >{page}
+            </button>
+          ))
+        }
+        <button
+          className={`${styles.buttonPager} ${styles.prevNext}`}
+          onClick={goToNext}
+        >
+          Next
+          <ChevronRight />
+        </button>
+
+      </div>
+      <p className={styles.pageInfo}>showing n of m movies</p>
+    </>
   )
 }

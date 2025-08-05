@@ -10,7 +10,7 @@ export default function FullData () {
   const { movies } = globalState
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.moviesContainer}>
         <div className={styles.itemsContainer}>
           {
             movies.list.map(movie => (
@@ -18,8 +18,8 @@ export default function FullData () {
             ))
           }
         </div>
+        <Pager />
       </div>
-      <Pager currentPage={1} totalPage={3} />
     </>
   )
 }

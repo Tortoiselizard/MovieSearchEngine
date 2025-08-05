@@ -1,10 +1,11 @@
-.container {
+.moviesContainer {
   padding: 68px 4%;
 }
 
 .itemsContainer {
   width: 100%;
   min-height: 100vh;
+  margin-bottom: 68px;
   display: flex;
   justify-content: space-between;
   align-items: space-between;
