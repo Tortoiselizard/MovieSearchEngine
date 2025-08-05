@@ -4,7 +4,6 @@ import { updateMovies, loadMovies } from '../../context/actions.js'
 import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
 
 import styles from './Pager.module.css'
-import { useEffect } from 'react'
 
 export default function Pager () {
   const { state: globalState, dispatch } = useMyContext()
@@ -18,9 +17,19 @@ export default function Pager () {
     getMovies({ category: movies.category, operation: '+' })
   }
 
-  async function getMovies ({ category, operation }) {
-    const newPage = operation === '+' ? movies.page + 1 : movies.page - 1
+  function gotToPage (page) {
+    getMovies({ category: movies.category, pag: page })
+  }
+
+  async function getMovies ({ category, operation, pag }) {
+    let newPage
+    if (operation) {
+      newPage = operation === '+' ? movies.page + 1 : movies.page - 1
+    } else if (pag) {
+      newPage = pag
+    }
     if (!(newPage >= 1)) return
+    if (newPage === movies.page) return
     dispatch(loadMovies())
     try {
       let page, results, total_pages, total_results
@@ -61,6 +70,7 @@ export default function Pager () {
           <button
             key={index + 1}
             className={styles.button}
+            onClick={() => { gotToPage(index + 1) }}
           >{page}
           </button>
         ))
