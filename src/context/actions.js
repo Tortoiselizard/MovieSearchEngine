@@ -2,17 +2,13 @@ export const UPDATE_MOVIES = 'UPDATE_MOVIES'
 export const LOAD_MOVIES = 'LOAD_MOVIES'
 export const UPDATE_MODE = 'UPDATE_MODE'
 
-export function updateMovies ({ list, category, title, page, totalPages }) {
+export function updateMovies (newMovies) {
   return {
     type: UPDATE_MOVIES,
     payload: {
-      list,
+      ...newMovies,
       status: 'successful',
-      error: null,
-      category,
-      title: title || null,
-      page,
-      totalPages
+      error: null
     }
   }
 }

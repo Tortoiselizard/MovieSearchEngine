@@ -18,8 +18,8 @@ export default function NavBar () {
       case 'popular': {
         dispatch(loadMovies())
         try {
-          const { page, results, total_pages, total_results } = await requestPopularMovies()
-          dispatch(updateMovies({ list: results, category: 'popular' }))
+          const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1 })
+          dispatch(updateMovies({ list: results, category, page, totalPages: total_pages }))
         } catch (error) {
           alert(error.message)
         }
