@@ -65,9 +65,10 @@ export default function SearchBar () {
   async function getMoviesByTitle (query) {
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
-        query
+        query,
+        page: 1
       })
-      dispatch(updateMovies({ list: results, category: 'search' }))
+      dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages }))
     } catch (error) {
       alert(error.message)
     }

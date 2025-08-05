@@ -10,7 +10,9 @@ const initialState = {
     list: [],
     status: 'idle',
     error: null,
-    category: 'idle'
+    category: 'idle',
+    page: 1,
+    totalPages: 1
   },
   mode: 'summary'
 }

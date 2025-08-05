@@ -1,7 +1,7 @@
 import { getQueriesString } from '../libs/mappers'
 
-export async function requestPopularMovies () {
-  const response = await fetch('/api/popular')
+export async function requestPopularMovies ({ page }) {
+  const response = await fetch(`/api/popular?page=${page}`)
   if (!response.ok) {
     const errorData = await response.json()
     throw new Error(errorData.message)

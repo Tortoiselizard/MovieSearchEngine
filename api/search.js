@@ -2,13 +2,11 @@ import { ApiError } from '../errors/index.js'
 
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
-const necessaryData = ['title', 'backdrop_path', 'poster_path', 'vote_average', 'release_date', 'overview', 'genre_ids']
-
 export default async function handler (request, response) {
   const { query } = request
   try {
-    const { query: text } = query
-    const url = `${VITE_API_URL}/search/movie?query=${text}`
+    const { query: text, page } = query
+    const url = `${VITE_API_URL}/search/movie?query=${text}&page=${page}`
     const options = {
       method: 'GET',
       headers: {
@@ -26,12 +24,6 @@ export default async function handler (request, response) {
       throw newError
     }
     const data = await responseApi.json()
-    // const moviesFiltered = data.results.filter(movie => necessaryData.every(property => movie[property]))
-    // const dataFiltered = {
-    // ...data,
-    // results: moviesFiltered
-    // }
-    // response.status(200).json(dataFiltered)
     response.status(200).json(data)
   } catch (error) {
     if (error instanceof ApiError) {

@@ -3,8 +3,10 @@ import { ApiError } from '../errors/index.js'
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
 export default async function handler (request, response) {
+  const { query } = request
   try {
-    const url = `${VITE_API_URL}/movie/popular`
+    const page = query.page || 1
+    const url = `${VITE_API_URL}/movie/popular?page=${page}`
     const options = {
       method: 'GET',
       headers: {
