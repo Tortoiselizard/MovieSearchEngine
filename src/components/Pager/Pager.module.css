@@ -48,13 +48,15 @@
 .buttonsContainerLeft {
   position: absolute;
   right: calc(100% + 8px);
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .buttonsContainerRight {
   position: absolute;
   left: calc(100% + 8px);
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .pagesContainer {
@@ -84,4 +86,27 @@
 
 .ellipse:disabled {
   display: none;
+}
+
+/* Estilos para pantallas de móviles */
+@media screen and (max-width: 576px) {
+
+  .buttonsContainer {
+    height: 32px;
+  }
+
+  .buttonPager {
+    padding: 0.5rem 0.25rem;
+    border-radius: 12px;
+    min-width: 32px;
+  }
+
+  .prevNext {
+    padding: 0.3rem 0rem;
+  }
+
+  .ellipse {
+    padding: 0.25rem;
+  }
+
 }

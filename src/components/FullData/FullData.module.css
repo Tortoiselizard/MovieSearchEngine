@@ -11,8 +11,22 @@
   margin-bottom: 68px;
   display: flex;
   justify-content: space-between;
-  align-items: space-between;
   gap: 32px;
   flex-wrap: wrap;
   box-sizing: border-box;
+}
+
+/* Estilos para pantallas de móviles */
+@media screen and (max-width: 480px) {
+
+  .moviesContainer {
+    padding: 68px 2%;
+  }
+
+  .itemsContainer {
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
 }

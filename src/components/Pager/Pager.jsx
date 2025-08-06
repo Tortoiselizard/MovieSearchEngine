@@ -6,22 +6,36 @@ import { requestPopularMovies, requestMoviesByTitle } from '../../services/movie
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 
 import styles from './Pager.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Pager () {
   const { state: globalState, dispatch } = useMyContext()
   const { movies } = globalState
-  const [nPages, setNPages] = useState(10)
-  const [pages, setPages] = useState(() => {
-    const wholePart = Math.trunc(movies.page / nPages)
-    const rest = movies.page % nPages
-    const firstPage = rest === 0 ? wholePart * nPages - nPages : wholePart * nPages
-    const lastPage = firstPage + nPages
-    return {
+  const [nPages, setNPages] = useState(null)
+  const [pages, setPages] = useState(null)
+
+  // Adjust nPages to screen width
+  useEffect(() => {
+    const totalWidth = window.innerWidth
+    let newNPages
+
+    // smarthphone
+    if (totalWidth <= 768) newNPages = 4
+    else if (totalWidth > 768 && totalWidth <= 992) newNPages = 6
+    // coputers
+    else if (totalWidth > 992) newNPages = 10
+
+    const wholePart = Math.trunc(movies.page / newNPages)
+    const rest = movies.page % newNPages
+    const firstPage = rest === 0 ? wholePart * newNPages - newNPages : wholePart * newNPages
+    const lastPage = firstPage + newNPages
+
+    setNPages(newNPages)
+    setPages({
       firstPage,
       lastPage
-    }
-  })
+    })
+  }, [window.innerWidth])
 
   function goToPrevious () {
     getMovies({ category: movies.category, operation: '-' })
@@ -94,6 +108,8 @@ export default function Pager () {
     setPages(newPages)
   }
 
+  if (!pages) return null
+
   return (
     <>
       <div className={styles.pagerContainer}>
@@ -104,7 +120,7 @@ export default function Pager () {
             onClick={goToPrevious}
           >
             <ChevronLeft />
-            Previous
+            {nPages !== 4 ? 'Previous' : ''}
           </button>
           <button
             className={`${styles.ellipse}`}
@@ -138,7 +154,7 @@ export default function Pager () {
             className={`${styles.buttonPager} ${styles.prevNext}`}
             onClick={goToNext}
           >
-            Next
+            {nPages !== 4 ? 'Next' : ''}
             <ChevronRight />
           </button>
         </div>

@@ -96,12 +96,13 @@
   }
 }
 
+/* Estilos para pantallas de móviles */
 @media screen and (max-width: 480px) {
-  /* Estilos para pantallas de móviles */
 
   .movieCard {
     flex: 0 0 120px;
     border-radius: 8px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
   }
 
 }
