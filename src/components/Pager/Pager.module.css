@@ -1,8 +1,6 @@
 .pagerContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+  width: fit-content;
+  position: relative;
   margin-bottom: 2rem;
 }
 
@@ -42,6 +40,48 @@
   transform: none;
 }
 
+.buttonsContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.buttonsContainerLeft {
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 0;
+}
+
+.buttonsContainerRight {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 0;
+}
+
+.pagesContainer {
+  display: flex;
+  gap: 8px;
+}
+
 .prevNext {
   padding: 0.5rem 1rem;
+}
+
+.ellipse {
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: transparent;
+  color: wheat;
+  border: solid 1px transparent;
+  transition: all 0.3s ease;
+}
+
+.ellipse:hover {
+  border: solid 1px white;
+}
+
+.ellipse:disabled {
+  display: none;
 }

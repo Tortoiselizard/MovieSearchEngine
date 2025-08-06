@@ -3,13 +3,25 @@ import { useMyContext } from '../../context/MyContext'
 import { updateMovies, loadMovies } from '../../context/actions.js'
 import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
 
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 
 import styles from './Pager.module.css'
+import { useState } from 'react'
 
 export default function Pager () {
   const { state: globalState, dispatch } = useMyContext()
   const { movies } = globalState
+  const [nPages, setNPages] = useState(10)
+  const [pages, setPages] = useState(() => {
+    const wholePart = Math.trunc(movies.page / nPages)
+    const rest = movies.page % nPages
+    const firstPage = rest === 0 ? wholePart * nPages - nPages : wholePart * nPages
+    const lastPage = firstPage + nPages
+    return {
+      firstPage,
+      lastPage
+    }
+  })
 
   function goToPrevious () {
     getMovies({ category: movies.category, operation: '-' })
@@ -58,35 +70,78 @@ export default function Pager () {
     }
   }
 
+  function scroll (direction) {
+    let newPages
+    switch (direction) {
+      case '-': {
+        newPages = {
+          firstPage: pages.firstPage - nPages,
+          lastPage: pages.lastPage - nPages
+        }
+        if (newPages.firstPage < 0) return
+        break
+      }
+      case '+': {
+        newPages = {
+          firstPage: pages.firstPage + nPages,
+          lastPage: pages.lastPage + nPages
+        }
+        if (newPages.firstPage > movies.totalPages - 1) return
+        break
+      }
+    }
+
+    setPages(newPages)
+  }
+
   return (
     <>
       <div className={styles.pagerContainer}>
-        <button
-          className={`${styles.buttonPager} ${styles.prevNext}`}
-          disabled={movies.page <= 1}
-          onClick={goToPrevious}
-        >
-          <ChevronLeft />
-          Previous
-        </button>
-        {
-          Array.from({ length: 10 }, (_, i) => i + 1).slice(0, 5).map((page) => (
-            <button
-              key={page}
-              className={`${styles.buttonPager} ${page === movies.page ? styles.active : ''}`}
-              onClick={() => { gotToPage(page) }}
-            >{page}
-            </button>
-          ))
-        }
-        <button
-          className={`${styles.buttonPager} ${styles.prevNext}`}
-          onClick={goToNext}
-        >
-          Next
-          <ChevronRight />
-        </button>
-
+        <div className={`${styles.buttonsContainer} ${styles.buttonsContainerLeft}`}>
+          <button
+            className={`${styles.buttonPager} ${styles.prevNext}`}
+            disabled={movies.page <= 1}
+            onClick={goToPrevious}
+          >
+            <ChevronLeft />
+            Previous
+          </button>
+          <button
+            className={`${styles.ellipse}`}
+            onClick={() => { scroll('-') }}
+            disabled={pages.firstPage <= 0}
+          >
+            <Ellipsis />
+          </button>
+        </div>
+        <div className={styles.pagesContainer}>
+          {
+            Array.from({ length: movies.totalPages }, (_, i) => i + 1).slice(pages.firstPage, pages.lastPage).map((page) => (
+              <button
+                key={page}
+                className={`${styles.buttonPager} ${page === movies.page ? styles.active : ''}`}
+                onClick={() => { gotToPage(page) }}
+              >{page}
+              </button>
+            ))
+          }
+        </div>
+        <div className={`${styles.buttonsContainer} ${styles.buttonsContainerRight}`}>
+          <button
+            className={`${styles.ellipse}`}
+            onClick={() => { scroll('+') }}
+            disabled={pages.lastPage >= movies.totalPages - 1}
+          >
+            <Ellipsis />
+          </button>
+          <button
+            className={`${styles.buttonPager} ${styles.prevNext}`}
+            onClick={goToNext}
+          >
+            Next
+            <ChevronRight />
+          </button>
+        </div>
       </div>
       <p className={styles.pageInfo}>showing n of m movies</p>
     </>
