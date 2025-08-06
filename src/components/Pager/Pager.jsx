@@ -159,7 +159,7 @@ export default function Pager () {
           </button>
         </div>
       </div>
-      <p className={styles.pageInfo}>showing n of m movies</p>
+      <p className={styles.pageInfo}>Showing {`${(movies.page - 1) * movies.list.length + 1}-${(movies.page - 1) * movies.list.length + movies.list.length}`} of {movies.totalPages} movies</p>
     </>
   )
 }
