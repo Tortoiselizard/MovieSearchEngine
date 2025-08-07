@@ -46,10 +46,12 @@ export default function Pager () {
   }
 
   function gotToPage (page) {
-    getMovies({ category: movies.category, pag: page })
+    getMovies({ pag: page })
   }
 
-  async function getMovies ({ category, operation, pag }) {
+  async function getMovies ({ operation, pag }) {
+    const category = movies.category
+    const quantity = movies.moviesPerPage
     let newPage
     if (operation) {
       newPage = operation === '+' ? movies.page + 1 : movies.page - 1
@@ -63,7 +65,7 @@ export default function Pager () {
       let page, results, total_pages, total_results
       switch (category) {
         case 'popular': {
-          ({ page, results, total_pages, total_results } = await requestPopularMovies({ page: newPage }))
+          ({ page, results, total_pages, total_results } = await requestPopularMovies({ page: newPage, quantity }))
           break
         }
         case 'search': {
@@ -78,7 +80,11 @@ export default function Pager () {
           return
         }
       }
-      dispatch(updateMovies({ list: results, category, title: movies.title, page, totalPages: total_pages }))
+      const newMovies = { list: results, category, page, totalPages: total_pages, total_results, moviesPerPage: quantity }
+      if (category === 'search') {
+        newMovies.title = movies.title
+      }
+      dispatch(updateMovies(newMovies))
     } catch (error) {
       alert(error.message)
     }
@@ -159,7 +165,7 @@ export default function Pager () {
           </button>
         </div>
       </div>
-      <p className={styles.pageInfo}>Showing {`${(movies.page - 1) * movies.list.length + 1}-${(movies.page - 1) * movies.list.length + movies.list.length}`} of {movies.totalPages} movies</p>
+      <p className={styles.pageInfo}>Showing {`${(movies.page - 1) * movies.list.length + 1}-${(movies.page - 1) * movies.list.length + movies.list.length}`} of {movies.total_results} movies</p>
     </>
   )
 }

@@ -9,7 +9,7 @@ export class PopularService {
 
   async getPopulars ({ page, moviesPerPage }) {
     // Get pages to do request
-    const { pages, startPage } = getAPIPages({ page, moviesPerPage })
+    const { pages, startMovie } = getAPIPages({ page, moviesPerPage })
 
     // Do request to pages
     const moviesAPI = []
@@ -19,7 +19,14 @@ export class PopularService {
     }
 
     // map response request
-    const response = mapMovies({ moviesAPI, start: startPage, moviesPerPage, page })
+    const response = mapMovies({ moviesAPI, start: startMovie, moviesPerPage, page })
+    if (page * moviesPerPage > 100) {
+      const resultLength = response.results.length
+      const leftover = startMovie + resultLength - 100
+      if (leftover > 0) {
+        response.results = response.results.slice(0, resultLength - leftover + 1)
+      }
+    }
 
     // return await this.#popularRepository.getPopularMovies({ page })
     return response

@@ -7,10 +7,9 @@
 
 .itemsContainer {
   width: 100%;
-  min-height: 100vh;
   margin-bottom: 68px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 32px;
   flex-wrap: wrap;
   box-sizing: border-box;
@@ -24,7 +23,6 @@
   }
 
   .itemsContainer {
-    justify-content: center;
     gap: 8px;
     box-sizing: border-box;
   }

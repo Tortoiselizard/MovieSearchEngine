@@ -20,10 +20,12 @@ export default function Home () {
   }, [])
 
   async function getPopularMovies () {
+    const widthViewport = window.innerWidth
+    const quantity = widthViewport < 480 ? 18 : 20
     dispatch(loadMovies())
     try {
-      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1 })
-      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages }))
+      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1, quantity })
+      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)
     }
