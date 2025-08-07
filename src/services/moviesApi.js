@@ -7,6 +7,7 @@ export async function requestPopularMovies ({ page }) {
     throw new Error(errorData.message)
   }
   const data = await response.json()
+  console.log('data:', data)
   return data
 }
 

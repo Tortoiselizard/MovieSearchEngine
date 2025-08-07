@@ -1,30 +1,17 @@
 import { ApiError } from '../errors/index.js'
-
-const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
+import { PopularService } from '../servicesAPI/popularService.js'
 
 export default async function handler (request, response) {
   const { query } = request
+
+  const popularService = new PopularService()
   try {
     const page = query.page || 1
-    const url = `${VITE_API_URL}/movie/popular?page=${page}`
-    const options = {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
-      }
-    }
-    const responseApi = await fetch(url, options)
-    if (!responseApi.ok) {
-      const errorData = await responseApi.json()
-      const errorDetails = {
-        scope: 'requesting trending movies'
-      }
-      const newError = new ApiError(errorData.status_message, responseApi.status, errorDetails)
-      throw newError
-    }
-    const data = await responseApi.json()
-    response.status(200).json(data)
+    const moviesPerPage = query.quantity || 20
+
+    const movies = await popularService.getPopulars({ page, moviesPerPage })
+
+    response.status(200).json(movies)
   } catch (error) {
     if (error instanceof ApiError) {
       return response.status(error.statusCode).json({
