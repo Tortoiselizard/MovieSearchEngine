@@ -165,7 +165,9 @@ export default function Pager () {
           </button>
         </div>
       </div>
-      <p className={styles.pageInfo}>Showing {`${(movies.page - 1) * movies.list.length + 1}-${(movies.page - 1) * movies.list.length + movies.list.length}`} of {movies.total_results} movies</p>
+      <p className={styles.pageInfo}>
+        Showing {`${(movies.page - 1) * movies.moviesPerPage + 1}-${(movies.page - 1) * movies.moviesPerPage + movies.list.length}`} of {movies.total_results} movies
+      </p>
     </>
   )
 }
