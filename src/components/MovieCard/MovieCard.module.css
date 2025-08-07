@@ -16,7 +16,7 @@
 }
 
 .movieCardGrid {
-  flex: 0 0 16%;
+  /*flex: 0 0 16%;*/
 }
 
 .movieCard::before {
@@ -100,9 +100,12 @@
 @media screen and (max-width: 480px) {
 
   .movieCard {
-    flex: 0 0 120px;
     border-radius: 8px;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  .movieCardRow {
+    flex: 0 0 120px;
   }
 
 }

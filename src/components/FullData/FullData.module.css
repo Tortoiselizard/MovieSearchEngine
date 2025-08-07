@@ -8,8 +8,8 @@
 .itemsContainer {
   width: 100%;
   margin-bottom: 68px;
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
   gap: 32px;
   flex-wrap: wrap;
   box-sizing: border-box;
@@ -23,6 +23,7 @@
   }
 
   .itemsContainer {
+    grid-template-columns: repeat(3, auto);
     gap: 8px;
     box-sizing: border-box;
   }
