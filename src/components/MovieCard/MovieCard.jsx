@@ -7,12 +7,10 @@ import { ImageIcon } from 'lucide-react'
 
 import styles from './MovieCard.module.css'
 
-export default function MovieCard ({ movie }) {
+export default function MovieCard ({ movie, imageSize }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
   const { state: globalState } = useMyContext()
   const { mode } = globalState
-
-  const imageSize = mode === 'fullData' ? '/w342' : '/w185'
 
   if (!movie.poster_path) {
     return (
@@ -54,5 +52,6 @@ export default function MovieCard ({ movie }) {
 }
 
 MovieCard.propTypes = {
-  movie: PropTypes.object.isRequired
+  movie: PropTypes.object.isRequired,
+  imageSize: PropTypes.string.isRequired
 }

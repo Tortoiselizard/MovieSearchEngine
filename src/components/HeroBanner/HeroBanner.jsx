@@ -59,7 +59,7 @@ export default function HeroBanner () {
             ? (
               <img
                 className={styles.heroImage}
-                src={`${VITE_API_IMAGE_URL}/w1280/${isMobile ? movie.poster_path : movie.backdrop_path}`} alt={movie.title}
+                src={`${VITE_API_IMAGE_URL}/${isMobile ? 'w500' : 'w1280'}/${isMobile ? movie.poster_path : movie.backdrop_path}`} alt={movie.title}
               />
               )
             : (

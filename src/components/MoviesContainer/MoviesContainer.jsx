@@ -4,7 +4,7 @@ import MovieCard from '../MovieCard/MovieCard'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 
 import { useMyContext } from '../../context/MyContext'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { updateMode } from '../../context/actions'
 
@@ -17,6 +17,11 @@ export default function MoviesContainer () {
   const itemsContainer = useRef()
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(true)
   const [countCardVisibles, setCountCardVisibles] = useState(0)
+  const imageSize = useMemo(() => {
+    const viewportWidth = window.innerWidth
+    if (viewportWidth < 480) return '/w185'
+    else return '/w342'
+  }, [])
 
   // Initialice scrollbar in 0
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function MoviesContainer () {
           <div ref={itemsContainer} className={styles.itemsContainer}>
             {
               movies.list.slice(1).map(movie => (
-                <MovieCard key={movie.id} movie={movie} />
+                <MovieCard key={movie.id} movie={movie} imageSize={imageSize} />
               ))
             }
           </div>
