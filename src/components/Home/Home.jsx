@@ -5,7 +5,7 @@ import FullData from '../FullData/FullData.jsx'
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
+import { requestPopularMovies, requestMoviesByTitle, requestLeakedMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
 
@@ -14,8 +14,8 @@ export default function Home () {
   const { movies, mode } = globalState
 
   useEffect(() => {
-    console.log('globalState:', globalState)
-  }, [globalState])
+    getLeakedMovies()
+  }, [])
 
   // Get popular movies
   useEffect(() => {
@@ -60,6 +60,21 @@ export default function Home () {
         quantity
       })
       dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  async function getLeakedMovies () {
+    const quantity = movies.moviesPerPage
+    try {
+      const { page, results, total_pages, total_results } = await requestLeakedMovies({
+        with_genres: 16,
+        page: 1,
+        quantity: 20
+      })
+      console.log('results desde getLeakedMovies:', results)
+      // dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)
     }

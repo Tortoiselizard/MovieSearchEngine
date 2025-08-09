@@ -1,8 +1,11 @@
+import { getQueriesString } from '../src/libs/mappers.js'
+
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
-export class SearchRepository {
-  async getSearchMovies ({ text, page }) {
-    const url = `${VITE_API_URL}/search/movie?query=${text}&page=${page}`
+export class DiscoverRepository {
+  async getDiscoverMovies ({ queries }) {
+    const filters = getQueriesString(queries)
+    const url = `${VITE_API_URL}/discover/movie${filters}`
 
     const options = {
       method: 'GET',
@@ -16,7 +19,7 @@ export class SearchRepository {
     if (!responseApi.ok) {
       const errorData = await responseApi.json()
       const errorDetails = {
-        scope: 'requesting search movies'
+        scope: 'requesting discover movies'
       }
       const newError = new ApiError(errorData.status_message, responseApi.status, errorDetails)
       throw newError

@@ -1,16 +1,18 @@
 import { ApiError } from '../errors/index.js'
-import { SearchService } from '../servicesAPI/searchService.js'
+import { DiscoverService } from '../servicesAPI/discoverService.js'
 
 export default async function handler (request, response) {
   const { query } = request
 
-  const searchService = new SearchService()
+  const discoverService = new DiscoverService()
   try {
-    const text = query.query
     const page = Number(query.page) || 1
     const moviesPerPage = Number(query.quantity) || 20
+    const filters = query
+    delete filters.page
+    delete filters.moviesPerPage
 
-    const movies = await searchService.getSearch({ text, page, moviesPerPage })
+    const movies = await discoverService.getDiscover({ filters, page, moviesPerPage })
 
     response.status(200).json(movies)
   } catch (error) {
