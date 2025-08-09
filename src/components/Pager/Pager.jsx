@@ -14,6 +14,10 @@ export default function Pager () {
   const [nPages, setNPages] = useState(null)
   const [pages, setPages] = useState(null)
 
+  useEffect(() => {
+    console.log('movies:', movies)
+  }, [movies])
+
   // Adjust nPages to screen width
   useEffect(() => {
     const totalWidth = window.innerWidth
@@ -158,6 +162,7 @@ export default function Pager () {
           </button>
           <button
             className={`${styles.buttonPager} ${styles.prevNext}`}
+            disabled={movies.page >= movies.totalPages}
             onClick={goToNext}
           >
             {nPages !== 4 ? 'Next' : ''}
