@@ -1,30 +1,20 @@
 import { ApiError } from '../errors/index.js'
+import { SearchService } from '../servicesAPI/searchService.js'
 
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
 export default async function handler (request, response) {
   const { query } = request
+
+  const searchService = new SearchService()
   try {
-    const { query: text, page } = query
-    const url = `${VITE_API_URL}/search/movie?query=${text}&page=${page}`
-    const options = {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json'
-      }
-    }
-    const responseApi = await fetch(url, options)
-    if (!responseApi.ok) {
-      const errorData = await responseApi.json()
-      const errorDetails = {
-        scope: 'requesting trending movies'
-      }
-      const newError = new ApiError(errorData.status_message, responseApi.status, errorDetails)
-      throw newError
-    }
-    const data = await responseApi.json()
-    response.status(200).json(data)
+    const text = query.query
+    const page = Number(query.page) || 1
+    const moviesPerPage = Number(query.quantity) || 20
+
+    const movies = await searchService.getSearch({ text, page, moviesPerPage })
+
+    response.status(200).json(movies)
   } catch (error) {
     if (error instanceof ApiError) {
       return response.status(error.statusCode).json({

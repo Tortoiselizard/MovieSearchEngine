@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types'
-
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
@@ -14,10 +12,16 @@ export default function SearchBar () {
   const isHome = useMatch('/')
   if (!isHome) return
   const [query, setQuery] = useState('')
-  const { dispatch } = useMyContext()
+  const { state: globalState, dispatch } = useMyContext()
+  const movies = useRef(globalState.movies)
   const [isExpanded, setIsExpanded] = useState(false)
   const searchRef = useRef(null)
   const queryRef = useRef(query)
+
+  // Update movies value
+  useEffect(() => {
+    movies.current = globalState.movies
+  }, [globalState.movies])
 
   // handle clicks outside the component
   useEffect(() => {
@@ -63,12 +67,14 @@ export default function SearchBar () {
   }
 
   async function getMoviesByTitle (query) {
+    const quantity = movies.current.moviesPerPage
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
         query,
-        page: 1
+        page: 1,
+        quantity
       })
-      dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages }))
+      dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)
     }
@@ -112,8 +118,4 @@ export default function SearchBar () {
       </div>
     </div>
   )
-}
-
-SearchBar.propTypes = {
-  getMoviesByTitle: PropTypes.func.isRequired
 }

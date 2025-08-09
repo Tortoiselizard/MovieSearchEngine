@@ -14,10 +14,6 @@ export default function Pager () {
   const [nPages, setNPages] = useState(null)
   const [pages, setPages] = useState(null)
 
-  useEffect(() => {
-    console.log('movies:', movies)
-  }, [movies])
-
   // Adjust nPages to screen width
   useEffect(() => {
     const totalWidth = window.innerWidth
@@ -75,7 +71,8 @@ export default function Pager () {
         case 'search': {
           ({ page, results, total_pages, total_results } = await requestMoviesByTitle({
             query: movies.title,
-            page: newPage
+            page: newPage,
+            quantity
           })
           )
           break
