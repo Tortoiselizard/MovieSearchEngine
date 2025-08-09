@@ -13,6 +13,10 @@ export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
   const { movies, mode } = globalState
 
+  useEffect(() => {
+    console.log('globalState:', globalState)
+  }, [globalState])
+
   // Get popular movies
   useEffect(() => {
     const { category, page } = movies
@@ -27,6 +31,7 @@ export default function Home () {
         break
       }
       case 'search': {
+        if (page === 1) return
         getMoviesByTitle()
         break
       }
