@@ -2,10 +2,15 @@ import { ChevronDown } from 'lucide-react'
 
 import styles from './GenreSelector.module.css'
 import { useEffect, useState } from 'react'
+import { useMyContext } from '../../context/MyContext'
 
-import { requestMovieGenre } from '../../services/moviesApi'
+import { requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
+
+import { updateMovies, loadMovies } from '../../context/actions'
 
 export default function GenreSelector () {
+  const { state: globalState, dispatch } = useMyContext()
+  const { movies } = globalState
   const [isOpen, setIsOpen] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState(null)
   const [genres, setGenres] = useState({
@@ -55,7 +60,23 @@ export default function GenreSelector () {
 
   function handleGenreSelected (genre) {
     setSelectedGenre(genre)
+    getLeakedMovies(genre)
     setIsOpen(false)
+  }
+
+  async function getLeakedMovies (genre) {
+    const quantity = movies.moviesPerPage
+    dispatch(loadMovies())
+    try {
+      const { page, results, total_pages, total_results } = await requestLeakedMovies({
+        with_genres: genre.id,
+        page: 1,
+        quantity
+      })
+      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   return (

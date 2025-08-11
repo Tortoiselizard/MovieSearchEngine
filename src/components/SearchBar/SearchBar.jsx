@@ -91,7 +91,7 @@ export default function SearchBar () {
         <button
           onClick={() => { handleClick() }}
           className={styles.searchButton}
-          arial-label='Search'
+          aria-label='Search'
         >
           <Search className={styles.searchIcon} />
         </button>

@@ -42,3 +42,13 @@ export async function requestMoviesById (id) {
   const data = await response.json()
   return data
 }
+
+export async function requestMovieGenre () {
+  const response = await fetch('/api/genre')
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message)
+  }
+  const data = await response.json()
+  return data
+}
