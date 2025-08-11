@@ -4,7 +4,7 @@ import styles from './GenreSelector.module.css'
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
 
-import { requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
+import { requestPopularMovies, requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
 
 import { updateMovies, loadMovies } from '../../context/actions'
 
@@ -60,7 +60,11 @@ export default function GenreSelector () {
 
   function handleGenreSelected (genre) {
     setSelectedGenre(genre)
-    getLeakedMovies(genre)
+    if (genre.name === 'All genders') {
+      getPopularMovies()
+    } else {
+      getLeakedMovies(genre)
+    }
     setIsOpen(false)
   }
 
@@ -73,6 +77,18 @@ export default function GenreSelector () {
         page: 1,
         quantity
       })
+      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  async function getPopularMovies () {
+    const widthViewport = window.innerWidth
+    const quantity = widthViewport < 480 ? 18 : 20
+    dispatch(loadMovies())
+    try {
+      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1, quantity })
       dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)
