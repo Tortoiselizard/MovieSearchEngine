@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
 import { useMatch } from 'react-router'
 
-import { updateMovies } from '../../context/actions'
+import { updateMovies, updateMode } from '../../context/actions'
 import { requestMoviesByTitle } from '../../services/moviesApi.js'
 
 import styles from './SearchBar.module.css'
@@ -74,6 +74,7 @@ export default function SearchBar () {
         page: 1,
         quantity
       })
+      dispatch(updateMode('fullData'))
       dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)
