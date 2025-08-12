@@ -11,11 +11,11 @@ import styles from './Home.module.css'
 
 export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
-  const { home } = globalState
+  const { mode } = globalState
 
   // Get popular movies
   useEffect(() => {
-    const { category, page } = home.movies
+    const { category, page } = globalState[mode].movies
     switch (category) {
       case 'idle': {
         getPopularMovies()
@@ -32,30 +32,51 @@ export default function Home () {
         break
       }
     }
-  }, [home.mode])
+  }, [mode])
 
   async function getPopularMovies () {
     const widthViewport = window.innerWidth
     const quantity = widthViewport < 480 ? 18 : 20
-    dispatch(loadMovies())
+    dispatch(loadMovies({ mode }))
     try {
       const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1, quantity })
-      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+      dispatch(updateMovies({
+        newMoviesData: {
+          list: results,
+          category: 'popular',
+          page,
+          totalPages: total_pages,
+          total_results,
+          moviesPerPage: quantity
+        },
+        mode
+      }))
     } catch (error) {
       alert(error.message)
     }
   }
 
   async function getMoviesByTitle () {
-    const quantity = home.moviesPerPage
-    const query = home.title
+    const quantity = globalState[mode].moviesPerPage
+    const query = globalState[mode].title
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
         query,
         page: 1,
         quantity
       })
-      dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+      dispatch(updateMovies({
+        newMoviesData: {
+          list: results,
+          category: 'search',
+          title: query,
+          page,
+          totalPages: total_pages,
+          total_results,
+          moviesPerPage: quantity
+        },
+        mode
+      }))
     } catch (error) {
       alert(error.message)
     }
@@ -64,28 +85,28 @@ export default function Home () {
   return (
     <>
       {
-        home.movies.status === 'pending'
+        globalState[mode].movies.status === 'pending'
           ? (
             <p>Cargando...</p>
             )
-          : home.movies.status === 'fail'
+          : globalState[mode].movies.status === 'fail'
             ? (
               <p>Error</p>
               )
-            : home.movies.status === 'successful'
+            : globalState[mode].movies.status === 'successful'
               ? (
-                  home.movies.list.length
+                  globalState[mode].movies.list.length
                     ? (
                       <div className={styles.container}>
                         {
-                          home.mode === 'home'
+                          mode === 'home'
                             ? (
                               <>
                                 <HeroBanner />
                                 <MoviesContainer />
                               </>
                               )
-                            : home.mode === 'search'
+                            : mode === 'search'
                               ? (
                                 <>
                                   <FullData />

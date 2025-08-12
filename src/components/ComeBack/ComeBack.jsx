@@ -10,7 +10,7 @@ export default function ComeBack () {
   const isHome = useMatch('/')
   const navigate = useNavigate()
   const { state: globalState, dispatch } = useMyContext()
-  const { mode } = globalState.home
+  const { mode } = globalState
   if (isHome && mode === 'home') return null
 
   function moveTo () {

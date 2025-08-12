@@ -2,20 +2,26 @@ export const UPDATE_MOVIES = 'UPDATE_MOVIES'
 export const LOAD_MOVIES = 'LOAD_MOVIES'
 export const UPDATE_MODE = 'UPDATE_MODE'
 
-export function updateMovies (newMovies) {
+export function updateMovies ({ newMoviesData, mode }) {
   return {
     type: UPDATE_MOVIES,
     payload: {
-      ...newMovies,
-      status: 'successful',
-      error: null
+      newMoviesData: {
+        ...newMoviesData,
+        status: 'successful',
+        error: null
+      },
+      mode
     }
   }
 }
 
-export function loadMovies () {
+export function loadMovies ({ mode }) {
   return {
-    type: LOAD_MOVIES
+    type: LOAD_MOVIES,
+    payload: {
+      mode
+    }
   }
 }
 

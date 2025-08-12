@@ -10,7 +10,7 @@ import styles from './MovieCard.module.css'
 export default function MovieCard ({ movie, imageSize }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
   const { state: globalState } = useMyContext()
-  const { mode } = globalState.home
+  const { mode } = globalState
 
   if (!movie.poster_path) {
     return (

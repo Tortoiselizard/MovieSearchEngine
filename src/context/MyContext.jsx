@@ -14,8 +14,7 @@ const initialState = {
       category: 'idle',
       page: 1,
       totalPages: 1
-    },
-    mode: 'home'
+    }
   },
   search: {
     movies: {
@@ -26,28 +25,31 @@ const initialState = {
       page: 1,
       totalPages: 1
     }
-  }
+  },
+  mode: 'home'
 }
 
 // Reducer
 function reducer (state, action) {
   switch (action.type) {
     case UPDATE_MOVIES: {
+      const { newMoviesData, mode } = action.payload
       return {
         ...state,
-        home: {
-          ...state.home,
-          movies: action.payload
+        [mode]: {
+          ...state[mode],
+          movies: newMoviesData
         }
       }
     }
     case LOAD_MOVIES: {
+      const { mode } = action.payload
       return {
         ...state,
-        home: {
-          ...state.home,
+        [mode]: {
+          ...state[mode],
           movies: {
-            ...state.home.movies,
+            ...state[mode].movies,
             status: 'pending'
           }
         }

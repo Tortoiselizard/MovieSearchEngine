@@ -6,7 +6,7 @@ import { ChevronRight, ChevronLeft } from 'lucide-react'
 import { useMyContext } from '../../context/MyContext'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { updateMode } from '../../context/actions'
+import { updateMode, updateMovies } from '../../context/actions'
 
 import styles from './MoviesContainer.module.css'
 
@@ -57,6 +57,12 @@ export default function MoviesContainer () {
 
   function changeToFullDataMode () {
     dispatch(updateMode('search'))
+    dispatch(updateMovies({
+      newMoviesData: {
+        ...movies
+      },
+      mode: 'search'
+    }))
   }
 
   return (

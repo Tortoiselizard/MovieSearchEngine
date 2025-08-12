@@ -10,7 +10,7 @@ import { updateMovies, loadMovies } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState.home
+  const { home, mode } = globalState
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState(null)
@@ -24,13 +24,6 @@ export default function GenreSelector () {
   useEffect(() => {
     getGenreMovies()
   }, [])
-
-  // Update selectedGenre
-  useEffect(() => {
-    if (!genres.list.length) return
-    const newSelectedGenre = genres.list[0]
-    setSelectedGenre(newSelectedGenre)
-  }, [genres])
 
   // handle clicks outside the component
   useEffect(() => {
@@ -57,6 +50,8 @@ export default function GenreSelector () {
         list,
         error: null
       })
+      const newSelectedGenre = list[0]
+      setSelectedGenre(newSelectedGenre)
     } catch (error) {
       alert(error.message)
       setGenres({
@@ -78,15 +73,25 @@ export default function GenreSelector () {
   }
 
   async function getLeakedMovies (genre) {
-    const quantity = movies.moviesPerPage
-    dispatch(loadMovies())
+    const quantity = home.movies.moviesPerPage
+    dispatch(loadMovies({ mode }))
     try {
       const { page, results, total_pages, total_results } = await requestLeakedMovies({
         with_genres: genre.id,
         page: 1,
         quantity
       })
-      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+      dispatch(updateMovies({
+        newMoviesData: {
+          list: results,
+          category: 'popular',
+          page,
+          totalPages: total_pages,
+          total_results,
+          moviesPerPage: quantity
+        },
+        mode
+      }))
     } catch (error) {
       alert(error.message)
     }
@@ -95,10 +100,24 @@ export default function GenreSelector () {
   async function getPopularMovies () {
     const widthViewport = window.innerWidth
     const quantity = widthViewport < 480 ? 18 : 20
-    dispatch(loadMovies())
+    dispatch(loadMovies({ mode }))
     try {
       const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1, quantity })
-      dispatch(updateMovies({ list: results, category: 'popular', page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+      if (mode === 'home') {
+        dispatch(updateMovies({
+          newMoviesData: {
+            list: results,
+            category: 'popular',
+            page,
+            totalPages: total_pages,
+            total_results,
+            moviesPerPage: quantity
+          },
+          mode
+        }))
+      } else if (mode === 'search') {
+
+      }
     } catch (error) {
       alert(error.message)
     }

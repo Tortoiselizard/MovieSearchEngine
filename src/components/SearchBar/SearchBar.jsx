@@ -13,15 +13,16 @@ export default function SearchBar () {
   if (!isHome) return
   const [query, setQuery] = useState('')
   const { state: globalState, dispatch } = useMyContext()
-  const movies = useRef(globalState.movies)
+  const { mode } = globalState
+  const movies = useRef(globalState[mode].movies)
   const [isExpanded, setIsExpanded] = useState(false)
   const searchRef = useRef(null)
   const queryRef = useRef(query)
 
   // Update movies value
   useEffect(() => {
-    movies.current = globalState.movies
-  }, [globalState.movies])
+    movies.current = globalState[mode].movies
+  }, [globalState[mode].movies])
 
   // handle clicks outside the component
   useEffect(() => {
@@ -75,7 +76,18 @@ export default function SearchBar () {
         quantity
       })
       dispatch(updateMode('search'))
-      dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
+      dispatch(updateMovies({
+        newMoviesData: {
+          list: results,
+          category: 'search',
+          title: query,
+          page,
+          totalPages: total_pages,
+          total_results,
+          moviesPerPage: quantity
+        },
+        mode: 'search'
+      }))
     } catch (error) {
       alert(error.message)
     }
