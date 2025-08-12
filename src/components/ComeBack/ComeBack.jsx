@@ -10,16 +10,16 @@ export default function ComeBack () {
   const isHome = useMatch('/')
   const navigate = useNavigate()
   const { state: globalState, dispatch } = useMyContext()
-  const { mode } = globalState
-  if (isHome && mode === 'summary') return null
+  const { mode } = globalState.home
+  if (isHome && mode === 'home') return null
 
   function moveTo () {
-    if (isHome && mode === 'fullData') return changeToSummaryMode()
+    if (isHome && mode === 'search') return changeToSummaryMode()
     navigate('/')
   }
 
   function changeToSummaryMode () {
-    dispatch(updateMode('summary'))
+    dispatch(updateMode('home'))
   }
 
   return (

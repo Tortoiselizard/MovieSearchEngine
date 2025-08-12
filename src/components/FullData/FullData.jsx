@@ -8,7 +8,7 @@ import styles from './FullData.module.css'
 
 export default function FullData () {
   const { state: globalState } = useMyContext()
-  const { movies } = globalState
+  const { home } = globalState
   const imageSize = useMemo(() => {
     const viewportWidth = window.innerWidth
     if (viewportWidth < 480) return '/w185'
@@ -20,7 +20,7 @@ export default function FullData () {
       <div className={styles.moviesContainer}>
         <div className={styles.itemsContainer}>
           {
-            movies.list.map(movie => (
+            home.movies.map(movie => (
               <MovieCard key={movie.id} movie={movie} imageSize={imageSize} />
             ))
           }

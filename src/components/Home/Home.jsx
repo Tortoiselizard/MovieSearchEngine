@@ -11,11 +11,11 @@ import styles from './Home.module.css'
 
 export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies, mode } = globalState
+  const { home } = globalState
 
   // Get popular movies
   useEffect(() => {
-    const { category, page } = movies
+    const { category, page } = home.movies
     switch (category) {
       case 'idle': {
         getPopularMovies()
@@ -32,7 +32,7 @@ export default function Home () {
         break
       }
     }
-  }, [mode])
+  }, [home.mode])
 
   async function getPopularMovies () {
     const widthViewport = window.innerWidth
@@ -47,8 +47,8 @@ export default function Home () {
   }
 
   async function getMoviesByTitle () {
-    const quantity = movies.moviesPerPage
-    const query = movies.title
+    const quantity = home.moviesPerPage
+    const query = home.title
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
         query,
@@ -64,28 +64,28 @@ export default function Home () {
   return (
     <>
       {
-        movies.status === 'pending'
+        home.movies.status === 'pending'
           ? (
             <p>Cargando...</p>
             )
-          : movies.status === 'fail'
+          : home.movies.status === 'fail'
             ? (
               <p>Error</p>
               )
-            : movies.status === 'successful'
+            : home.movies.status === 'successful'
               ? (
-                  movies.list.length
+                  home.movies.list.length
                     ? (
                       <div className={styles.container}>
                         {
-                          mode === 'summary'
+                          home.mode === 'home'
                             ? (
                               <>
                                 <HeroBanner />
                                 <MoviesContainer />
                               </>
                               )
-                            : mode === 'fullData'
+                            : home.mode === 'search'
                               ? (
                                 <>
                                   <FullData />

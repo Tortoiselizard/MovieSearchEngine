@@ -12,7 +12,7 @@ import styles from './MoviesContainer.module.css'
 
 export default function MoviesContainer () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { movies } = globalState.home
   const [position, setPosition] = useState(0)
   const itemsContainer = useRef()
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(true)
@@ -56,7 +56,7 @@ export default function MoviesContainer () {
   }
 
   function changeToFullDataMode () {
-    dispatch(updateMode('fullData'))
+    dispatch(updateMode('search'))
   }
 
   return (

@@ -6,29 +6,50 @@ const MyContext = createContext()
 
 // Initial state
 const initialState = {
-  movies: {
-    list: [],
-    status: 'idle',
-    error: null,
-    category: 'idle',
-    page: 1,
-    totalPages: 1
+  home: {
+    movies: {
+      status: 'idle',
+      error: null,
+      list: [],
+      category: 'idle',
+      page: 1,
+      totalPages: 1
+    },
+    mode: 'home'
   },
-  mode: 'summary'
+  search: {
+    movies: {
+      status: 'idle',
+      error: null,
+      list: [],
+      category: 'idle',
+      page: 1,
+      totalPages: 1
+    }
+  }
 }
 
 // Reducer
 function reducer (state, action) {
   switch (action.type) {
     case UPDATE_MOVIES: {
-      return { ...state, movies: action.payload }
+      return {
+        ...state,
+        home: {
+          ...state.home,
+          movies: action.payload
+        }
+      }
     }
     case LOAD_MOVIES: {
       return {
         ...state,
-        movies: {
-          ...state.movies,
-          status: 'pending'
+        home: {
+          ...state.home,
+          movies: {
+            ...state.home.movies,
+            status: 'pending'
+          }
         }
       }
     }

@@ -74,7 +74,7 @@ export default function SearchBar () {
         page: 1,
         quantity
       })
-      dispatch(updateMode('fullData'))
+      dispatch(updateMode('search'))
       dispatch(updateMovies({ list: results, category: 'search', title: query, page, totalPages: total_pages, total_results, moviesPerPage: quantity }))
     } catch (error) {
       alert(error.message)

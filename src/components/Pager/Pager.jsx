@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 
 export default function Pager () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { home } = globalState
   const [nPages, setNPages] = useState(null)
   const [pages, setPages] = useState(null)
 
@@ -25,8 +25,8 @@ export default function Pager () {
     // coputers
     else if (totalWidth > 992) newNPages = 10
 
-    const wholePart = Math.trunc(movies.page / newNPages)
-    const rest = movies.page % newNPages
+    const wholePart = Math.trunc(home.page / newNPages)
+    const rest = home.page % newNPages
     const firstPage = rest === 0 ? wholePart * newNPages - newNPages : wholePart * newNPages
     const lastPage = firstPage + newNPages
 
@@ -38,11 +38,11 @@ export default function Pager () {
   }, [window.innerWidth])
 
   function goToPrevious () {
-    getMovies({ category: movies.category, operation: '-' })
+    getMovies({ category: home.category, operation: '-' })
   }
 
   function goToNext () {
-    getMovies({ category: movies.category, operation: '+' })
+    getMovies({ category: home.category, operation: '+' })
   }
 
   function gotToPage (page) {
@@ -50,16 +50,16 @@ export default function Pager () {
   }
 
   async function getMovies ({ operation, pag }) {
-    const category = movies.category
-    const quantity = movies.moviesPerPage
+    const category = home.category
+    const quantity = home.moviesPerPage
     let newPage
     if (operation) {
-      newPage = operation === '+' ? movies.page + 1 : movies.page - 1
+      newPage = operation === '+' ? home.page + 1 : home.page - 1
     } else if (pag) {
       newPage = pag
     }
     if (!(newPage >= 1)) return
-    if (newPage === movies.page) return
+    if (newPage === home.page) return
     dispatch(loadMovies())
     try {
       let page, results, total_pages, total_results
@@ -70,7 +70,7 @@ export default function Pager () {
         }
         case 'search': {
           ({ page, results, total_pages, total_results } = await requestMoviesByTitle({
-            query: movies.title,
+            query: home.title,
             page: newPage,
             quantity
           })
@@ -83,7 +83,7 @@ export default function Pager () {
       }
       const newMovies = { list: results, category, page, totalPages: total_pages, total_results, moviesPerPage: quantity }
       if (category === 'search') {
-        newMovies.title = movies.title
+        newMovies.title = home.title
       }
       dispatch(updateMovies(newMovies))
     } catch (error) {
@@ -107,7 +107,7 @@ export default function Pager () {
           firstPage: pages.firstPage + nPages,
           lastPage: pages.lastPage + nPages
         }
-        if (newPages.firstPage > movies.totalPages - 1) return
+        if (newPages.firstPage > home.totalPages - 1) return
         break
       }
     }
@@ -123,7 +123,7 @@ export default function Pager () {
         <div className={`${styles.buttonsContainer} ${styles.buttonsContainerLeft}`}>
           <button
             className={`${styles.buttonPager} ${styles.prevNext}`}
-            disabled={movies.page <= 1}
+            disabled={home.page <= 1}
             onClick={goToPrevious}
           >
             <ChevronLeft />
@@ -139,10 +139,10 @@ export default function Pager () {
         </div>
         <div className={styles.pagesContainer}>
           {
-            Array.from({ length: movies.totalPages }, (_, i) => i + 1).slice(pages.firstPage, pages.lastPage).map((page) => (
+            Array.from({ length: home.totalPages }, (_, i) => i + 1).slice(pages.firstPage, pages.lastPage).map((page) => (
               <button
                 key={page}
-                className={`${styles.buttonPager} ${page === movies.page ? styles.active : ''}`}
+                className={`${styles.buttonPager} ${page === home.page ? styles.active : ''}`}
                 onClick={() => { gotToPage(page) }}
               >{page}
               </button>
@@ -153,13 +153,13 @@ export default function Pager () {
           <button
             className={`${styles.ellipse}`}
             onClick={() => { scroll('+') }}
-            disabled={pages.lastPage >= movies.totalPages - 1}
+            disabled={pages.lastPage >= home.totalPages - 1}
           >
             <Ellipsis />
           </button>
           <button
             className={`${styles.buttonPager} ${styles.prevNext}`}
-            disabled={movies.page >= movies.totalPages}
+            disabled={home.page >= home.totalPages}
             onClick={goToNext}
           >
             {nPages !== 4 ? 'Next' : ''}
@@ -168,7 +168,7 @@ export default function Pager () {
         </div>
       </div>
       <p className={styles.pageInfo}>
-        Showing {`${(movies.page - 1) * movies.moviesPerPage + 1}-${(movies.page - 1) * movies.moviesPerPage + movies.list.length}`} of {movies.total_results} movies
+        Showing {`${(home.page - 1) * home.moviesPerPage + 1}-${(home.page - 1) * home.moviesPerPage + home.movies.length}`} of {home.total_results} movies
       </p>
     </>
   )

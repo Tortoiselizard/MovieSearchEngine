@@ -10,7 +10,7 @@ import styles from './HeroBanner.module.css'
 export default function HeroBanner () {
   const { VITE_API_IMAGE_URL } = import.meta.env
   const { state: globalState } = useMyContext()
-  const movie = globalState.movies.list[0]
+  const movie = globalState.home.movies.list[0]
   const [windowWidth, setWindowWith] = useState(window.innerWidth)
 
   // Breakpoints

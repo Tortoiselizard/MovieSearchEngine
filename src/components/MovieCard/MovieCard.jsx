@@ -10,12 +10,12 @@ import styles from './MovieCard.module.css'
 export default function MovieCard ({ movie, imageSize }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
   const { state: globalState } = useMyContext()
-  const { mode } = globalState
+  const { mode } = globalState.home
 
   if (!movie.poster_path) {
     return (
       <div
-        className={`${styles.movieCard} ${mode === 'summary' ? styles.movieCardRow : styles.movieCardGrid}`}
+        className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid}`}
         style={{ cursor: 'not-allowed' }}
       >
         <div
@@ -41,7 +41,7 @@ export default function MovieCard ({ movie, imageSize }) {
   }
 
   return (
-    <Link className={`${styles.movieCard} ${mode === 'summary' ? styles.movieCardRow : styles.movieCardGrid}`} to={`/${movie.id}`}>
+    <Link className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid}`} to={`/${movie.id}`}>
       <img className={styles.movieCardImage} src={`${VITE_API_IMAGE_URL}${imageSize}${movie.poster_path}`} alt={movie.title} />
       <div className={styles.movieInfo}>
         <p className={styles.title}>{movie.title}</p>

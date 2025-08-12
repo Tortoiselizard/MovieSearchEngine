@@ -10,7 +10,7 @@ import { updateMovies, loadMovies } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { movies } = globalState.home
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState(null)
@@ -22,7 +22,6 @@ export default function GenreSelector () {
 
   // Initialice genres
   useEffect(() => {
-    console.log('obteniendo los diferentes géneros')
     getGenreMovies()
   }, [])
 
@@ -51,17 +50,14 @@ export default function GenreSelector () {
       status: 'pending'
     }))
     try {
-      console.log('entrndo en el try')
       const { genres } = await requestMovieGenre()
-      const list = [{ name: 'All genders' }, ...genres]
-      console.log('list:', list)
+      const list = [{ id: 0, name: 'All genders' }, ...genres]
       setGenres({
         status: 'successful',
         list,
         error: null
       })
     } catch (error) {
-      console.log('algo salió mal')
       alert(error.message)
       setGenres({
         status: 'fail',
