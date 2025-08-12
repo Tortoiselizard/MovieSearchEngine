@@ -1,7 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 
 import styles from './GenreSelector.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
 
 import { requestPopularMovies, requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
@@ -11,6 +11,7 @@ import { updateMovies, loadMovies } from '../../context/actions'
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
   const { movies } = globalState
+  const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState(null)
   const [genres, setGenres] = useState({
@@ -31,6 +32,18 @@ export default function GenreSelector () {
     const newSelectedGenre = genres.list[0]
     setSelectedGenre(newSelectedGenre)
   }, [genres])
+
+  // handle clicks outside the component
+  useEffect(() => {
+    function handleClickOutside (event) {
+      if (genreSelectorRef.current && !genreSelectorRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   async function getGenreMovies () {
     setGenres((prevState) => ({
@@ -110,7 +123,7 @@ export default function GenreSelector () {
               ? (
                   genres.list.length
                     ? (
-                      <div className={styles.genreSelector}>
+                      <div className={styles.genreSelector} ref={genreSelectorRef}>
                         <button
                           className={styles.selectorButton}
                           onClick={() => setIsOpen(!isOpen)}
