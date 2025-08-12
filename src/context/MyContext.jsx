@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES, LOAD_MOVIES, UPDATE_MODE } from './actions'
+import { UPDATE_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -26,7 +26,12 @@ const initialState = {
       totalPages: 1
     }
   },
-  mode: 'home'
+  mode: 'home',
+  genres: {
+    status: 'idle',
+    list: [],
+    error: null
+  }
 }
 
 // Reducer
@@ -59,6 +64,21 @@ function reducer (state, action) {
       return {
         ...state,
         mode: action.payload
+      }
+    }
+    case UPDATE_GENRES: {
+      return {
+        ...state,
+        genres: action.payload
+      }
+    }
+    case LOAD_GENRES: {
+      return {
+        ...state,
+        genres: {
+          ...state.genres,
+          status: 'pending'
+        }
       }
     }
     default: {

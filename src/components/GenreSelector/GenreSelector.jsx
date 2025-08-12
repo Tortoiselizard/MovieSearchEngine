@@ -3,25 +3,27 @@ import { ChevronDown } from 'lucide-react'
 import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
+import { useMatch } from 'react-router'
 
 import { requestPopularMovies, requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
 
-import { updateMovies, loadMovies } from '../../context/actions'
+import { updateMovies, loadMovies, loadGenres, updateGenres } from '../../context/actions'
 
 export default function GenreSelector () {
+  const isHome = useMatch('/')
+  if (!isHome) return
   const { state: globalState, dispatch } = useMyContext()
-  const { home, mode } = globalState
+  const { home, mode, genres } = globalState
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedGenre, setSelectedGenre] = useState(null)
-  const [genres, setGenres] = useState({
-    status: 'idle',
-    list: [],
-    error: null
+  const [selectedGenre, setSelectedGenre] = useState(() => {
+    if (genres.status === 'successful' && genres.list.length) return genres.list[0]
+    return null
   })
 
   // Initialice genres
   useEffect(() => {
+    if (genres.status !== 'idle') return
     getGenreMovies()
   }, [])
 
@@ -38,27 +40,24 @@ export default function GenreSelector () {
   }, [])
 
   async function getGenreMovies () {
-    setGenres((prevState) => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadGenres())
     try {
       const { genres } = await requestMovieGenre()
       const list = [{ id: 0, name: 'All genders' }, ...genres]
-      setGenres({
-        status: 'successful',
+      dispatch(updateGenres({
         list,
+        status: 'successful',
         error: null
-      })
+      }))
       const newSelectedGenre = list[0]
       setSelectedGenre(newSelectedGenre)
     } catch (error) {
       alert(error.message)
-      setGenres({
-        status: 'fail',
+      dispatch(updateGenres({
         list: [],
+        status: 'fail',
         error: error.message
-      })
+      }))
     }
   }
 
