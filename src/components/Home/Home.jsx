@@ -15,6 +15,7 @@ export default function Home () {
 
   // Get popular movies
   useEffect(() => {
+    if (mode !== 'home') return
     const { category, page } = globalState[mode].movies
     switch (category) {
       case 'idle': {
@@ -37,9 +38,10 @@ export default function Home () {
   async function getPopularMovies () {
     const widthViewport = window.innerWidth
     const quantity = widthViewport < 480 ? 18 : 20
+    const { page: currentPage } = globalState[mode].movies
     dispatch(loadMovies({ mode }))
     try {
-      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1, quantity })
+      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: currentPage, quantity })
       dispatch(updateMovies({
         newMoviesData: {
           list: results,

@@ -14,11 +14,11 @@ export default function ComeBack () {
   if (isHome && mode === 'home') return null
 
   function moveTo () {
-    if (isHome && mode === 'search') return changeToSummaryMode()
+    if (isHome && mode === 'search') return changeToHomeMode()
     navigate('/')
   }
 
-  function changeToSummaryMode () {
+  function changeToHomeMode () {
     dispatch(updateMode('home'))
   }
 
