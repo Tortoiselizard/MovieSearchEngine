@@ -1,5 +1,5 @@
 .movieCard {
-  height: fit-content;
+  aspect-ratio: 2/3;
   cursor: pointer;
   position: relative;
   border-radius: 4px;
@@ -47,8 +47,11 @@
 }
 
 .movieCardImage {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  aspect-ratio: 2/3;
+  height: 100%;
   object-fit: cover;
 }
 

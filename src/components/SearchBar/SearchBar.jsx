@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
 import { useMatch } from 'react-router'
 
-import { updateMovies, updateMode } from '../../context/actions'
+import { updateMovies, updateMode, loadMovies } from '../../context/actions'
 import { requestMoviesByTitle } from '../../services/moviesApi.js'
 
 import styles from './SearchBar.module.css'
@@ -68,6 +68,8 @@ export default function SearchBar () {
   }
 
   async function getMoviesByTitle (query) {
+    dispatch(loadMovies({ mode: 'search' }))
+    dispatch(updateMode('search'))
     const quantity = movies.current.moviesPerPage
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
@@ -75,7 +77,6 @@ export default function SearchBar () {
         page: 1,
         quantity
       })
-      dispatch(updateMode('search'))
       dispatch(updateMovies({
         newMoviesData: {
           list: results,
