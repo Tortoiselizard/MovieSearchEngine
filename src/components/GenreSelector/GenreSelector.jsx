@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
 import { useMatch } from 'react-router'
 
-import { requestPopularMovies, requestMovieGenre, requestLeakedMovies } from '../../services/moviesApi'
+import { requestPopularMovies, requestMovieGenre, requestMovies } from '../../services/moviesApi'
 
 import { updateMovies, loadMovies, loadGenres, updateGenres } from '../../context/actions'
 
@@ -74,11 +74,15 @@ export default function GenreSelector () {
   async function getLeakedMovies (genre) {
     const quantity = home.movies.moviesPerPage
     dispatch(loadMovies({ mode }))
+    const filters = {
+      ...(globalState[mode].movies.filters || {}),
+      genre: genre.id
+    }
     try {
-      const { page, results, total_pages, total_results } = await requestLeakedMovies({
-        with_genres: genre.id,
+      const { page, results, total_pages, total_results } = await requestMovies({
         page: 1,
-        quantity
+        quantity,
+        ...filters
       })
       dispatch(updateMovies({
         newMoviesData: {
@@ -87,7 +91,8 @@ export default function GenreSelector () {
           page,
           totalPages: total_pages,
           total_results,
-          moviesPerPage: quantity
+          moviesPerPage: quantity,
+          filters
         },
         mode
       }))

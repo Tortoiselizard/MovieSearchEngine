@@ -27,11 +27,6 @@ export default function Home () {
         getPopularMovies()
         break
       }
-      case 'search': {
-        if (page === 1) return
-        getMoviesByTitle()
-        break
-      }
     }
   }, [mode])
 
@@ -46,32 +41,6 @@ export default function Home () {
         newMoviesData: {
           list: results,
           category: 'popular',
-          page,
-          totalPages: total_pages,
-          total_results,
-          moviesPerPage: quantity
-        },
-        mode
-      }))
-    } catch (error) {
-      alert(error.message)
-    }
-  }
-
-  async function getMoviesByTitle () {
-    const quantity = globalState[mode].moviesPerPage
-    const query = globalState[mode].title
-    try {
-      const { page, results, total_pages, total_results } = await requestMoviesByTitle({
-        query,
-        page: 1,
-        quantity
-      })
-      dispatch(updateMovies({
-        newMoviesData: {
-          list: results,
-          category: 'search',
-          title: query,
           page,
           totalPages: total_pages,
           total_results,
