@@ -55,7 +55,8 @@ function reducer (state, action) {
           ...state[mode],
           movies: {
             ...state[mode].movies,
-            status: 'pending'
+            status: 'pending',
+            list: []
           }
         }
       }
