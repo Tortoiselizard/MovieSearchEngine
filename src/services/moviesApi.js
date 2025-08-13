@@ -33,6 +33,19 @@ export async function requestLeakedMovies (queries) {
   return data
 }
 
+export async function requestMovies (queries) {
+  let response
+  const nFilters = Object.keys(queries).length
+  if ('title' in queries) {
+    response = await requestMoviesByTitle(queries)
+  } else if (nFilters > 2 && !('title' in queries)) {
+    response = await requestLeakedMovies(queries)
+  } else {
+    response = await requestPopularMovies(queries)
+  }
+  return response
+}
+
 export async function requestMoviesById (id) {
   const response = await fetch(`/api/findById/${id}`)
   if (!response.ok) {

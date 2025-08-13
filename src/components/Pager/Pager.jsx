@@ -1,7 +1,7 @@
 import { useMyContext } from '../../context/MyContext'
 
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies, requestMoviesByTitle } from '../../services/moviesApi'
+import { requestPopularMovies, requestMoviesByTitle, requestMovies } from '../../services/moviesApi'
 
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 
@@ -63,24 +63,11 @@ export default function Pager () {
     if (newPage === movies.page) return
     dispatch(loadMovies({ mode }))
     try {
-      let page, results, total_pages, total_results
-      switch (category) {
-        case 'popular': {
-          ({ page, results, total_pages, total_results } = await requestPopularMovies({ page: newPage, quantity }))
-          break
-        }
-        case 'search': {
-          ({ page, results, total_pages, total_results } = await requestMoviesByTitle({
-            page: newPage,
-            quantity,
-            ...movies.filters
-          }))
-          break
-        }
-        default: {
-          return
-        }
-      }
+      const { page, results, total_pages, total_results } = await requestMovies({
+        page: newPage,
+        quantity,
+        ...movies.filters
+      })
       const newMoviesData = {
         list: results,
         category,
