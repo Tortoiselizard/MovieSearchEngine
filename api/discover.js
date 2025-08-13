@@ -6,13 +6,7 @@ export default async function handler (request, response) {
 
   const discoverService = new DiscoverService()
   try {
-    const page = Number(query.page) || 1
-    const moviesPerPage = Number(query.quantity) || 20
-    const filters = query
-    delete filters.page
-    delete filters.moviesPerPage
-
-    const movies = await discoverService.getDiscover({ filters, page, moviesPerPage })
+    const movies = await discoverService.getDiscover(query)
 
     response.status(200).json(movies)
   } catch (error) {

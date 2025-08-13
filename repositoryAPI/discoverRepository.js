@@ -3,7 +3,7 @@ import { getQueriesString } from '../src/libs/mappers.js'
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
 export class DiscoverRepository {
-  async getDiscoverMovies ({ queries }) {
+  async getDiscoverMovies (queries) {
     const filters = getQueriesString(queries)
     const url = `${VITE_API_URL}/discover/movie${filters}`
 

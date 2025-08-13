@@ -6,6 +6,10 @@ export function getFilters (query) {
         filters[property] = query[property]
         break
       }
+      case 'genre': {
+        filters.with_genres = query[property]
+        break
+      }
       case 'page': {
         filters[property] = Number(query[property])
         break
