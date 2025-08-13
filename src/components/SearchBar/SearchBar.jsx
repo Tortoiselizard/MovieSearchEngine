@@ -27,7 +27,7 @@ export default function SearchBar () {
   // handle clicks outside the component
   useEffect(() => {
     function handleClickOutside (event) {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
+      if (searchRef.current && !searchRef.current.contains(event.target) && !queryRef.current) {
         setIsExpanded(false)
       }
     }
