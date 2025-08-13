@@ -6,11 +6,17 @@ import { useMyContext } from '../../context/MyContext'
 import { ImageIcon } from 'lucide-react'
 
 import styles from './MovieCard.module.css'
+import { useState } from 'react'
 
 export default function MovieCard ({ movie, imageSize }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
   const { state: globalState } = useMyContext()
   const { mode } = globalState
+  const [loading, setLoading] = useState(true)
+
+  function handleImageLoad () {
+    setLoading(false)
+  }
 
   if (!movie.poster_path) {
     return (
@@ -41,8 +47,17 @@ export default function MovieCard ({ movie, imageSize }) {
   }
 
   return (
-    <Link className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid}`} to={`/${movie.id}`}>
-      <img className={styles.movieCardImage} src={`${VITE_API_IMAGE_URL}${imageSize}${movie.poster_path}`} alt={movie.title} />
+    <Link
+      className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${loading ? '' : styles.spinnerOff}`}
+      to={`/${movie.id}`}
+    >
+      <img
+        className={styles.movieCardImage}
+        src={`${VITE_API_IMAGE_URL}${imageSize}${movie.poster_path}`}
+        alt={movie.title}
+        onLoad={handleImageLoad}
+        style={{ display: loading ? 'none' : 'block' }}
+      />
       <div className={styles.movieInfo}>
         <p className={styles.title}>{movie.title}</p>
         <p className={styles.release_date}>{movie.release_date}</p>

@@ -11,12 +11,27 @@
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.8);
 }
 
+.movieCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease;
+}
+
 .movieCardRow {
   flex: 0 0 200px;
 }
 
 .movieCardGrid {
   /*flex: 0 0 16%;*/
+}
+
+.movieCard.spinnerOff::after {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .movieCard::before {
