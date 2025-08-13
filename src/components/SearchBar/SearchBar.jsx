@@ -67,25 +67,29 @@ export default function SearchBar () {
     getMoviesByTitle(queryRef.current)
   }
 
-  async function getMoviesByTitle (query) {
+  async function getMoviesByTitle (title) {
     dispatch(loadMovies({ mode: 'search' }))
     dispatch(updateMode('search'))
-    const quantity = movies.current.moviesPerPage
+    const quantity = movies.current.moviesPerPage || 20
+    const filters = {
+      title,
+      ...movies.current.filters
+    }
     try {
       const { page, results, total_pages, total_results } = await requestMoviesByTitle({
-        query,
         page: 1,
-        quantity
+        quantity,
+        ...filters
       })
       dispatch(updateMovies({
         newMoviesData: {
           list: results,
           category: 'search',
-          title: query,
           page,
           totalPages: total_pages,
           total_results,
-          moviesPerPage: quantity
+          moviesPerPage: quantity,
+          filters
         },
         mode: 'search'
       }))

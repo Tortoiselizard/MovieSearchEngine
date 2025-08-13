@@ -71,20 +71,24 @@ export default function Pager () {
         }
         case 'search': {
           ({ page, results, total_pages, total_results } = await requestMoviesByTitle({
-            query: movies.title,
             page: newPage,
-            quantity
-          })
-          )
+            quantity,
+            ...movies.filters
+          }))
           break
         }
         default: {
           return
         }
       }
-      const newMoviesData = { list: results, category, page, totalPages: total_pages, total_results, moviesPerPage: quantity }
-      if (category === 'search') {
-        newMoviesData.title = movies.title
+      const newMoviesData = {
+        list: results,
+        category,
+        page,
+        totalPages: total_pages,
+        total_results,
+        moviesPerPage: quantity,
+        filters: { ...movies.filters }
       }
       dispatch(updateMovies({ newMoviesData, mode }))
     } catch (error) {
