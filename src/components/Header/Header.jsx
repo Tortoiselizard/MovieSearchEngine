@@ -13,7 +13,7 @@ export default function Header () {
         <SearchBar />
       </div>
       <ComeBack />
-      <NavBar />
+      {/* <NavBar /> */}
     </header>
   )
 }
