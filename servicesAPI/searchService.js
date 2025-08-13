@@ -1,5 +1,6 @@
 import { SearchRepository } from '../repositoryAPI/searchRepository.js'
 import { getAPIPages, mapMovies } from '../libsAPI/pagination.js'
+import { getFilters } from '../libsAPI/mappers.js'
 
 export class SearchService {
   #searchRepository
@@ -7,20 +8,23 @@ export class SearchService {
     this.#searchRepository = new SearchRepository()
   }
 
-  async getSearch ({ text, page, moviesPerPage }) {
+  async getSearch (query) {
+    // Get filters
+    const filters = getFilters(query)
+
     // Get pages to do request
-    const { pages, startMovie } = getAPIPages({ page, moviesPerPage })
+    const { pages, startMovie } = getAPIPages(filters)
 
     // Do request to pages
     const moviesAPI = []
     for (const page of pages) {
-      const response = await this.#searchRepository.getSearchMovies({ text, page })
+      const response = await this.#searchRepository.getSearchMovies({ ...filters, page })
       moviesAPI.push(response)
     }
 
     // map response request
-    const response = mapMovies({ moviesAPI, start: startMovie, moviesPerPage, page })
-    if (page * moviesPerPage > 100) {
+    const response = mapMovies({ moviesAPI, start: startMovie, ...filters })
+    if (filters.page * filters.moviesPerPage > 100) {
       const resultLength = response.results.length
       const leftover = startMovie + resultLength - 100
       if (leftover > 0) {

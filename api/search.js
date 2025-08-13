@@ -1,16 +1,14 @@
 import { ApiError } from '../errors/index.js'
 import { SearchService } from '../servicesAPI/searchService.js'
 
+// import { getFilters } from '../libsAPI/mappers.js'
+
 export default async function handler (request, response) {
   const { query } = request
 
   const searchService = new SearchService()
   try {
-    const text = query.query
-    const page = Number(query.page) || 1
-    const moviesPerPage = Number(query.quantity) || 20
-
-    const movies = await searchService.getSearch({ text, page, moviesPerPage })
+    const movies = await searchService.getSearch(query)
 
     response.status(200).json(movies)
   } catch (error) {
