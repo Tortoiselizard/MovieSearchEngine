@@ -130,60 +130,54 @@ export default function GenreSelector () {
   return (
     <>
       {
-        genres.status === 'pending'
-          ? (
-            <p>Cargando...</p>
-            )
-          : genres.status === 'fail'
+        genres.status === 'pending' || genres.status === 'fail'
+          ? null
+          : genres.status === 'successful' && selectedGenre
             ? (
-              <p>Error: {genres.error}</p>
+                genres.list.length
+                  ? (
+                    <div className={styles.genreSelector} ref={genreSelectorRef}>
+                      <button
+                        className={styles.selectorButton}
+                        onClick={() => setIsOpen(!isOpen)}
+                        aria-expanded={isOpen}
+                        aria-haspopup='listbox'
+                      >
+                        <span className={styles.selectedGenre}>{selectedGenre.name}</span>
+                        <ChevronDown className={styles.chevron} />
+                      </button>
+
+                      {
+                        isOpen && (
+                          <div className={styles.dropDown}>
+                            <ul className={styles.genreList} role='listbox'>
+                              {
+                                genres.list.map(genre => (
+                                  <li key={genre.id}>
+                                    <button
+                                      className={`${styles.genreOption} ${selectedGenre.id === genre.id ? styles.selected : ''}`}
+                                      onClick={() => { handleGenreSelected(genre) }}
+                                      role='option'
+                                      aria-selected={selectedGenre.id === genre.id}
+                                    >
+                                      {genre.name}
+                                    </button>
+                                  </li>
+
+                                ))
+
+                              }
+                            </ul>
+                          </div>
+                        )
+                      }
+                    </div>
+                    )
+                  : (
+                    <p>No Genres found</p>
+                    )
               )
-            : genres.status === 'successful' && selectedGenre
-              ? (
-                  genres.list.length
-                    ? (
-                      <div className={styles.genreSelector} ref={genreSelectorRef}>
-                        <button
-                          className={styles.selectorButton}
-                          onClick={() => setIsOpen(!isOpen)}
-                          aria-expanded={isOpen}
-                          aria-haspopup='listbox'
-                        >
-                          <span className={styles.selectedGenre}>{selectedGenre.name}</span>
-                          <ChevronDown className={styles.chevron} />
-                        </button>
-
-                        {
-                          isOpen && (
-                            <div className={styles.dropDown}>
-                              <ul className={styles.genreList} role='listbox'>
-                                {
-                                  genres.list.map(genre => (
-                                    <li key={genre.id}>
-                                      <button
-                                        className={`${styles.genreOption} ${selectedGenre.id === genre.id ? styles.selected : ''}`}
-                                        onClick={() => { handleGenreSelected(genre) }}
-                                        role='option'
-                                        aria-selected={selectedGenre.id === genre.id}
-                                      >
-                                        {genre.name}
-                                      </button>
-                                    </li>
-
-                                  ))
-
-                                }
-                              </ul>
-                            </div>
-                          )
-                        }
-                      </div>
-                      )
-                    : (
-                      <p>No Genres found</p>
-                      )
-                )
-              : null
+            : null
       }
     </>
   )

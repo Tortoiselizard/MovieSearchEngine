@@ -1,6 +1,7 @@
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
 import FullData from '../FullData/FullData.jsx'
+import Spinner from '../Spinner/Spinner.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
@@ -58,7 +59,7 @@ export default function Home () {
       {
         globalState[mode].movies.status === 'pending'
           ? (
-            <p>Cargando...</p>
+            <Spinner />
             )
           : globalState[mode].movies.status === 'fail'
             ? (
