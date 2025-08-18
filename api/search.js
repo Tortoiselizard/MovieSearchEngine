@@ -1,8 +1,6 @@
 import { ApiError } from '../errors/index.js'
 import { SearchService } from '../servicesAPI/searchService.js'
 
-// import { getFilters } from '../libsAPI/mappers.js'
-
 export default async function handler (request, response) {
   const { query } = request
 

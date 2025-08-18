@@ -7,7 +7,7 @@ export function getFilters (query) {
         break
       }
       case 'genre': {
-        filters.with_genres = query[property]
+        filters.with_genres = Number(query[property])
         break
       }
       case 'page': {

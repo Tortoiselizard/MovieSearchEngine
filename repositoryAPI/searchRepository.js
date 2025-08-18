@@ -1,3 +1,4 @@
+import { ApiError } from '../errors/ApiError.js'
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
 export class SearchRepository {

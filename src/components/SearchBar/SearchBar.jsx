@@ -4,7 +4,7 @@ import { useMyContext } from '../../context/MyContext.jsx'
 import { useMatch } from 'react-router'
 
 import { updateMovies, updateMode, loadMovies } from '../../context/actions'
-import { requestMoviesByTitle } from '../../services/moviesApi.js'
+import { requestMovies } from '../../services/moviesApi.js'
 
 import styles from './SearchBar.module.css'
 
@@ -76,7 +76,7 @@ export default function SearchBar () {
       ...movies.current.filters
     }
     try {
-      const { page, results, total_pages, total_results } = await requestMoviesByTitle({
+      const { page, results, total_pages, total_results } = await requestMovies({
         page: 1,
         quantity,
         ...filters
