@@ -18,10 +18,14 @@ export default function MovieCard ({ movie, imageSize }) {
     setLoading(false)
   }
 
+  function handleImageError () {
+    setLoading(false)
+  }
+
   if (!movie.poster_path) {
     return (
       <div
-        className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid}`}
+        className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${styles.spinnerOff}`}
         style={{ cursor: 'not-allowed' }}
       >
         <div
@@ -56,6 +60,7 @@ export default function MovieCard ({ movie, imageSize }) {
         src={`${VITE_API_IMAGE_URL}${imageSize}${movie.poster_path}`}
         alt={movie.title}
         onLoad={handleImageLoad}
+        onError={handleImageError}
         style={{ display: loading ? 'none' : 'block' }}
       />
       <div className={styles.movieInfo}>
