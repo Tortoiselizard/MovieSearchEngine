@@ -1,7 +1,7 @@
 import { useMyContext } from '../../context/MyContext'
 
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies, requestMoviesByTitle, requestMovies } from '../../services/moviesApi'
+import { requestMovies } from '../../services/moviesApi'
 
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 

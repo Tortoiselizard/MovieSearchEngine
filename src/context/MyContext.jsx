@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
+import { UPDATE_MOVIES, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -47,6 +47,29 @@ function reducer (state, action) {
         }
       }
     }
+    case ADD_MOVIES: {
+      const { newMoviesData, mode } = action.payload
+      return {
+        ...state,
+        [mode]: {
+          ...state[mode],
+          movies: newMoviesData
+        }
+      }
+    }
+    case RESET_MOVIES: {
+      const { mode } = action.payload
+      return {
+        ...state,
+        [mode]: {
+          ...state[mode],
+          movies: {
+            ...state[mode].movies,
+            list: []
+          }
+        }
+      }
+    }
     case LOAD_MOVIES: {
       const { mode } = action.payload
       return {
@@ -55,8 +78,7 @@ function reducer (state, action) {
           ...state[mode],
           movies: {
             ...state[mode].movies,
-            status: 'pending',
-            list: []
+            status: 'pending'
           }
         }
       }

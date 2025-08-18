@@ -1,4 +1,6 @@
 export const UPDATE_MOVIES = 'UPDATE_MOVIES'
+export const ADD_MOVIES = 'UPDATE_MOVIES'
+export const RESET_MOVIES = 'UPDATE_MOVIES'
 export const LOAD_MOVIES = 'LOAD_MOVIES'
 export const UPDATE_MODE = 'UPDATE_MODE'
 export const LOAD_GENRES = 'LOAD_GENRES'
@@ -18,11 +20,33 @@ export function updateMovies ({ newMoviesData, mode }) {
   }
 }
 
-export function loadMovies ({ mode }) {
+export function addMovies ({ newMoviesData, mode }) {
+  return {
+    type: UPDATE_MOVIES,
+    payload: {
+      newMoviesData: {
+        ...newMoviesData,
+        status: 'successful',
+        error: null
+      },
+      mode
+    }
+  }
+}
+
+export function resetMovies ({ mode }) {
+  return {
+    type: RESET_MOVIES,
+    payload: { mode }
+  }
+}
+
+export function loadMovies ({ mode, option }) {
   return {
     type: LOAD_MOVIES,
     payload: {
-      mode
+      mode,
+      option
     }
   }
 }

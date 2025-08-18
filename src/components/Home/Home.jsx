@@ -6,7 +6,7 @@ import Spinner from '../Spinner/Spinner.jsx'
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies, requestMoviesByTitle, requestLeakedMovies } from '../../services/moviesApi'
+import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
 
@@ -57,42 +57,38 @@ export default function Home () {
   return (
     <>
       {
-        globalState[mode].movies.status === 'pending'
+        globalState.mode === 'home'
           ? (
-            <Spinner />
-            )
-          : globalState[mode].movies.status === 'fail'
-            ? (
-              <p>Error</p>
-              )
-            : globalState[mode].movies.status === 'successful'
-              ? (
-                  globalState[mode].movies.list.length
+              globalState.home.movies.status === 'pending'
+                ? (
+                  <Spinner />
+                  )
+                : globalState.home.movies.status === 'fail'
+                  ? (
+                    <p>Error</p>
+                    )
+                  : globalState.home.movies.status === 'successful'
                     ? (
-                      <div className={styles.container}>
-                        {
-                          mode === 'home'
-                            ? (
-                              <>
-                                <HeroBanner />
-                                <MoviesContainer />
-                              </>
-                              )
-                            : mode === 'search'
-                              ? (
-                                <>
-                                  <FullData />
-                                </>
-                                )
-                              : null
-                        }
-                      </div>
+                        globalState.home.movies.list.length
+                          ? (
+                            <div className={styles.container}>
+                              <HeroBanner />
+                              <MoviesContainer />
+                            </div>
+                            )
+                          : (
+                            <p>No se han encontrado coincidencias</p>
+                            )
                       )
-                    : (
-                      <p>No se han encontrado coincidencias</p>
-                      )
-                )
-              : null
+                    : null
+            )
+          : globalState.mode === 'search'
+            ? (
+              <>
+                <FullData />
+              </>
+              )
+            : null
       }
     </>
   )
