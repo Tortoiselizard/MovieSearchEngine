@@ -1,23 +1,21 @@
 export function getFilters (query) {
-  const filters = {}
-  for (const property in query) {
-    switch (property) {
+  const filters = {
+    page: Number(query.page) || 1,
+    lastMovie: Number(query.lastMovie) || 0,
+    moviesPerPage: Number(query.quantity) || 20
+  }
+
+  for (const filter in query) {
+    switch (filter) {
       case 'title': {
-        filters[property] = query[property]
+        filters.title = query[filter]
         break
       }
       case 'genre': {
-        filters.with_genres = Number(query[property])
+        filters.with_genres = Number(query[filter])
         break
       }
-      case 'page': {
-        filters[property] = Number(query[property])
-        break
-      }
-      case 'quantity': {
-        filters.moviesPerPage = Number(query[property])
-        break
-      }
+      default: break
     }
   }
   return filters
