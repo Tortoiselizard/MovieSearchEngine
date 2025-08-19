@@ -49,17 +49,15 @@ export default function FullData () {
   }, [loadingZoneAssigned])
 
   async function getMore () {
-    const category = movies.category
-    const quantity = movies.moviesPerPage
-    const newPage = movies.page + 1
-    if (!(newPage >= 1)) return
-    if (newPage === movies.page) return
+    const { category, moviesPerPage: quantity, lastMovie: indexMovie, page } = movies
+    const newPage = page + (indexMovie ? 0 : 1)
     setLoadingNextPage(true)
     setLoadingZoneAssigned(false)
-    dispatch(loadMovies({ mode, option: 'keep' }))
+    dispatch(loadMovies({ mode }))
     try {
-      const { page, results, total_pages, total_results } = await requestMovies({
+      const { page, lastMovie, results } = await requestMovies({
         page: newPage,
+        lastMovie: indexMovie,
         quantity,
         ...movies.filters
       })
@@ -68,8 +66,7 @@ export default function FullData () {
         list: newList,
         category,
         page,
-        totalPages: total_pages,
-        total_results,
+        lastMovie,
         moviesPerPage: quantity,
         filters: { ...movies.filters }
       }

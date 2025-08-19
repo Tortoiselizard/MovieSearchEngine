@@ -1,5 +1,5 @@
 import { PopularRepository } from '../repositoryAPI/popularRepository.js'
-import { getAPIPages, mapMovies } from '../libsAPI/pagination.js'
+import { getFilters } from '../libsAPI/mappers.js'
 
 export class PopularService {
   #popularRepository
@@ -7,28 +7,26 @@ export class PopularService {
     this.#popularRepository = new PopularRepository()
   }
 
-  async getPopulars ({ page, moviesPerPage }) {
-    // Get pages to do request
-    const { pages, startMovie } = getAPIPages({ page, moviesPerPage })
+  async getPopulars (query) {
+    // Get filters
+    const filters = getFilters(query)
 
+    const moviePackage = {
+      results: [],
+      lastMovie: filters.lastMovie
+    }
     // Do request to pages
-    const moviesAPI = []
-    for (const page of pages) {
-      const response = await this.#popularRepository.getPopularMovies({ page })
-      moviesAPI.push(response)
+    for (let page = filters.page; moviePackage.results.length < filters.moviesPerPage; page++) {
+      const { results } = await this.#popularRepository.getPopularMovies({ page })
+      moviePackage.results.push(...results.slice(moviePackage.lastMovie))
+      moviePackage.page = page
     }
 
-    // map response request
-    const response = mapMovies({ moviesAPI, start: startMovie, moviesPerPage, page })
-    if (page * moviesPerPage > 100) {
-      const resultLength = response.results.length
-      const leftover = startMovie + resultLength - 100
-      if (leftover > 0) {
-        response.results = response.results.slice(0, resultLength - leftover + 1)
-      }
+    if (moviePackage.results.length !== filters.moviesPerPage) {
+      moviePackage.results = moviePackage.results.slice(0, filters.moviesPerPage)
+      moviePackage.lastMovie = filters.moviesPerPage
     }
 
-    // return await this.#popularRepository.getPopularMovies({ page })
-    return response
+    return moviePackage
   }
 }

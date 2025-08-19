@@ -14,6 +14,7 @@ export async function requestPopularMovies (queries) {
 export async function requestMoviesByTitle (queries) {
   const queriesString = getQueriesString(queries)
   const response = await fetch(`/api/search${queriesString}`)
+
   if (!response.ok) {
     const errorData = await response.json()
     throw new Error(errorData.message)
@@ -38,7 +39,7 @@ export async function requestMovies (queries) {
   const nFilters = Object.keys(queries).length
   if ('title' in queries) {
     response = await requestMoviesByTitle(queries)
-  } else if (nFilters > 2 && !('title' in queries)) {
+  } else if (nFilters > 3 && !('title' in queries)) {
     response = await requestLeakedMovies(queries)
   } else {
     response = await requestPopularMovies(queries)

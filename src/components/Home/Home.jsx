@@ -37,14 +37,13 @@ export default function Home () {
     const { page: currentPage } = globalState[mode].movies
     dispatch(loadMovies({ mode }))
     try {
-      const { page, results, total_pages, total_results } = await requestPopularMovies({ page: currentPage, quantity })
+      const { page, lastMovie, results } = await requestPopularMovies({ page: currentPage, quantity })
       dispatch(updateMovies({
         newMoviesData: {
           list: results,
           category: 'popular',
           page,
-          totalPages: total_pages,
-          total_results,
+          lastMovie,
           moviesPerPage: quantity
         },
         mode

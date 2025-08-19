@@ -41,12 +41,11 @@ export function resetMovies ({ mode }) {
   }
 }
 
-export function loadMovies ({ mode, option }) {
+export function loadMovies ({ mode }) {
   return {
     type: LOAD_MOVIES,
     payload: {
-      mode,
-      option
+      mode
     }
   }
 }

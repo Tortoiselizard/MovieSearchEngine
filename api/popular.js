@@ -6,10 +6,7 @@ export default async function handler (request, response) {
 
   const popularService = new PopularService()
   try {
-    const page = Number(query.page) || 1
-    const moviesPerPage = Number(query.quantity) || 20
-
-    const movies = await popularService.getPopulars({ page, moviesPerPage })
+    const movies = await popularService.getPopulars(query)
 
     response.status(200).json(movies)
   } catch (error) {
