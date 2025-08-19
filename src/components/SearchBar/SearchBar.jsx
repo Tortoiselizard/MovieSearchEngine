@@ -76,9 +76,10 @@ export default function SearchBar () {
       ...movies.current.filters
     }
     try {
-      const { page, results, total_pages, total_results } = await requestMovies({
+      const { page, results, lastMovie } = await requestMovies({
         page: 1,
         quantity,
+        lastMovie: 0,
         ...filters
       })
       dispatch(updateMovies({
@@ -86,8 +87,7 @@ export default function SearchBar () {
           list: results,
           category: 'search',
           page,
-          totalPages: total_pages,
-          total_results,
+          lastMovie,
           moviesPerPage: quantity,
           filters
         },

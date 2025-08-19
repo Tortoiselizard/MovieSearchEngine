@@ -56,13 +56,13 @@ export default function MoviesContainer () {
   }
 
   function changeToFullDataMode () {
-    dispatch(updateMode('search'))
     dispatch(updateMovies({
       newMoviesData: {
         ...movies
       },
       mode: 'search'
     }))
+    dispatch(updateMode('search'))
   }
 
   return (

@@ -11,10 +11,9 @@ import Spinner from '../Spinner/Spinner.jsx'
 export default function FullData () {
   const { state: globalState, dispatch } = useMyContext()
   const { search, mode } = globalState
-  const { movies } = search
+  const movies = useRef(search.movies)
   const loadingZone = useRef()
   const [loadingNextPage, setLoadingNextPage] = useState(false)
-  const [loadingZoneAssigned, setLoadingZoneAssigned] = useState(true)
   const imageSize = useMemo(() => {
     const viewportWidth = window.innerWidth
     if (viewportWidth < 480) return '/w185'
@@ -30,13 +29,17 @@ export default function FullData () {
         }
       })
     })
-    setLoadingZoneAssigned(true)
     return observer
   }, [loadingNextPage])
 
+  // Update movies
+  useEffect(() => {
+    movies.current = globalState.search.movies
+  }, [globalState.search.movies])
+
   // Update movies when reach the end of the scroll
   useEffect(() => {
-    if (!loadingZoneAssigned) return
+    if (loadingNextPage) return
     if (loadingZone.current) {
       observer.observe(loadingZone.current)
     }
@@ -46,29 +49,27 @@ export default function FullData () {
         observer.unobserve(loadingZone.current)
       }
     }
-  }, [loadingZoneAssigned])
+  }, [loadingNextPage])
 
   async function getMore () {
-    const { category, moviesPerPage: quantity, lastMovie: indexMovie, page } = movies
+    const { category, moviesPerPage: quantity, lastMovie: indexMovie, page } = movies.current
     const newPage = page + (indexMovie ? 0 : 1)
     setLoadingNextPage(true)
-    setLoadingZoneAssigned(false)
-    dispatch(loadMovies({ mode }))
     try {
       const { page, lastMovie, results } = await requestMovies({
         page: newPage,
         lastMovie: indexMovie,
         quantity,
-        ...movies.filters
+        ...movies.current.filters
       })
-      const newList = [...movies.list, ...results]
+      const newList = [...movies.current.list, ...results]
       const newMoviesData = {
         list: newList,
         category,
         page,
         lastMovie,
         moviesPerPage: quantity,
-        filters: { ...movies.filters }
+        filters: { ...movies.current.filters }
       }
       dispatch(addMovies({ newMoviesData, mode }))
       setLoadingNextPage(false)
@@ -78,25 +79,41 @@ export default function FullData () {
   }
 
   return (
-    <>
-      <div className={styles.moviesContainer}>
-        <div className={styles.itemsContainer}>
-          {
-            globalState[mode].movies.list.map((movie, index) => (
-              <MovieCard key={`id:${movie.id}-index:${index}`} movie={movie} imageSize={imageSize} />
-            ))
-          }
-        </div>
-        <div className={styles.loadingZone} ref={loadingZone}>
-          {
-            movies.status === 'pending'
+    <div className={styles.fullDataContainer}>
+      <div className={styles.fullDataItems}>
+        {
+          globalState[mode].movies.status === 'pending'
+            ? (
+              <Spinner />
+              )
+            : globalState[mode].movies.status === 'fail'
               ? (
-                <Spinner />
+                <p>Error: {globalState[mode].movies.error}</p>
                 )
-              : null
-          }
-        </div>
+              : globalState[mode].movies.status === 'successful'
+                ? (
+                    globalState[mode].movies.list.length
+                      ? (
+                          globalState[mode].movies.list.map((movie, index) => (
+                            <MovieCard key={`id:${movie.id}-index:${index}`} movie={movie} imageSize={imageSize} />
+                          ))
+                        )
+                      : (
+                        <p>No se han encontrado coincidencias</p>
+                        )
+                  )
+                : null
+        }
       </div>
-    </>
+      <div className={styles.loadingZone} ref={loadingZone}>
+        {
+          loadingNextPage
+            ? (
+              <Spinner />
+              )
+            : null
+        }
+      </div>
+    </div>
   )
 }
