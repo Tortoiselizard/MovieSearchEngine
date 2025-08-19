@@ -85,8 +85,8 @@ export default function FullData () {
       <div className={styles.moviesContainer}>
         <div className={styles.itemsContainer}>
           {
-            globalState[mode].movies.list.map(movie => (
-              <MovieCard key={movie.id} movie={movie} imageSize={imageSize} />
+            globalState[mode].movies.list.map((movie, index) => (
+              <MovieCard key={`id:${movie.id}-index:${index}`} movie={movie} imageSize={imageSize} />
             ))
           }
         </div>
