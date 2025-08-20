@@ -1,9 +1,5 @@
 export function getFilters (query) {
-  const filters = {
-    page: Number(query.page) || 1,
-    lastMovie: Number(query.lastMovie) || 0,
-    moviesPerPage: Number(query.quantity) || 20
-  }
+  const filters = {}
 
   for (const filter in query) {
     switch (filter) {
@@ -19,4 +15,14 @@ export function getFilters (query) {
     }
   }
   return filters
+}
+
+export function getQueries (query) {
+  const queries = {
+    page: Number(query.page) || 1,
+    lastMovie: Number(query.lastMovie) || 0,
+    moviesPerPage: Number(query.quantity) || 20
+  }
+
+  return queries
 }

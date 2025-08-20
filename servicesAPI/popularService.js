@@ -1,5 +1,5 @@
 import { PopularRepository } from '../repositoryAPI/popularRepository.js'
-import { getFilters } from '../libsAPI/mappers.js'
+import { getQueries } from '../libsAPI/mappers.js'
 
 export class PopularService {
   #popularRepository
@@ -9,15 +9,15 @@ export class PopularService {
 
   async getPopulars (query) {
     // Get filters
-    const filters = getFilters(query)
+    const queries = getQueries(query)
 
     const moviePackage = {
       results: [],
-      lastMovie: filters.lastMovie
+      lastMovie: queries.lastMovie
     }
 
     let lastRequest = []
-    let page = filters.page
+    let page = queries.page
     let totalPages
     // Do request to pages
     do {
@@ -28,10 +28,10 @@ export class PopularService {
       moviePackage.page = page
       moviePackage.lastMovie = 0
       page++
-    } while ((moviePackage.results.length < filters.moviesPerPage) && (page <= totalPages))
+    } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
 
-    if (moviePackage.results.length !== filters.moviesPerPage) {
-      moviePackage.results = moviePackage.results.slice(0, filters.moviesPerPage)
+    if (moviePackage.results.length !== queries.moviesPerPage) {
+      moviePackage.results = moviePackage.results.slice(0, queries.moviesPerPage)
       const lastMovie = moviePackage.results[moviePackage.results.length - 1]
       const indexMovie = lastRequest.findIndex(({ id }) => id === lastMovie.id) + 1
       moviePackage.lastMovie = indexMovie

@@ -1,6 +1,6 @@
 import { DiscoverRepository } from '../repositoryAPI/discoverRepository.js'
-import { getAPIPages, mapMovies } from '../libsAPI/pagination.js'
-import { getFilters } from '../libsAPI/mappers.js'
+import { getFilters, getQueries } from '../libsAPI/mappers.js'
+import { filterBy } from '../libsAPI/filters.js'
 
 export class DiscoverService {
   #discoverRepository
@@ -10,28 +10,43 @@ export class DiscoverService {
 
   async getDiscover (query) {
     // Get filters
+    const queries = getQueries(query)
     const filters = getFilters(query)
 
-    // Get pages to do request
-    const { pages, startMovie } = getAPIPages(filters)
+    const moviePackage = {
+      results: [],
+      lastMovie: queries.lastMovie
+    }
+
+    let lastRequest = []
+    let page = queries.page
+    let totalPages
 
     // Do request to pages
-    const moviesAPI = []
-    for (const page of pages) {
-      const response = await this.#discoverRepository.getDiscoverMovies({ ...filters, page })
-      moviesAPI.push(response)
-    }
-
-    // map response request
-    const response = mapMovies({ moviesAPI, start: startMovie, ...filters })
-    if (filters.page * filters.moviesPerPage > 100) {
-      const resultLength = response.results.length
-      const leftover = startMovie + resultLength - 100
-      if (leftover > 0) {
-        response.results = response.results.slice(0, resultLength - leftover + 1)
+    do {
+      let { results, total_pages } = await this.#discoverRepository.getDiscoverMovies({ ...filters, page })
+      totalPages = total_pages
+      lastRequest = results
+      if (Object.keys(filters).length > 1) {
+        results = filterBy({ movies: results, filters })
       }
+      moviePackage.results.push(...results.slice(moviePackage.lastMovie))
+      moviePackage.page = page
+      moviePackage.lastMovie = 0
+      page++
+    } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
+
+    if (moviePackage.results.length !== queries.moviesPerPage) {
+      moviePackage.results = moviePackage.results.slice(0, queries.moviesPerPage)
+      const lastMovie = moviePackage.results[moviePackage.results.length - 1]
+      const indexMovie = lastRequest.findIndex(({ id }) => id === lastMovie.id) + 1
+      moviePackage.lastMovie = indexMovie
     }
 
-    return response
+    if (page > totalPages) {
+      moviePackage.lastPage = true
+    }
+
+    return moviePackage
   }
 }
