@@ -46,6 +46,7 @@ export default function HeroDetails ({ movie }) {
           </div>
         </div>
       </div>
+      <div className={styles.fadeBottom} />
     </div>
   )
 }

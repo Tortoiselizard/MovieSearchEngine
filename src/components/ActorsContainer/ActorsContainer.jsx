@@ -2,11 +2,9 @@ import ActorCard from '../ActorCard/ActorCard'
 import Carousel from '../Carousel/Carousel'
 import Spinner from '../Spinner/Spinner'
 
-import { useMyContext } from '../../context/MyContext'
 import { useParams } from 'react-router'
 import { useState, useEffect, useMemo } from 'react'
 
-import { updateMode, updateMovies } from '../../context/actions'
 import { requestActors } from '../../services/moviesApi'
 
 import styles from './ActorsContainer.module.css'
@@ -65,7 +63,9 @@ export default function ActorsContainer () {
       {
         actors.status === 'pending'
           ? (
-            <Spinner />
+            <div className={styles.loadingContainer}>
+              <Spinner />
+            </div>
             )
           : actors.status === 'fail'
             ? (
