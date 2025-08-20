@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import MovieCard from '../MovieCard/MovieCard'
 import Carousel from '../Carousel/Carousel'
 
 import { useMyContext } from '../../context/MyContext'
@@ -23,7 +24,9 @@ export default function MoviesContainer () {
 
   return (
     <div className={styles.content}>
-      <Carousel items={movies.list} title='Trending Now' seeMore={changeToFullDataMode} id='popular' />
+      <Carousel items={movies.list} title='Trending Now' seeMore={changeToFullDataMode} id='popular'>
+        <MovieCard />
+      </Carousel>
     </div>
   )
 }

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 
-import MovieCard from '../MovieCard/MovieCard'
+// import MovieCard from '../MovieCard/MovieCard'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, cloneElement } from 'react'
 
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import styles from './Carousel.module.css'
 
-export default function Carousel ({ items, title, seeMore, id }) {
+export default function Carousel ({ items, title, seeMore, id, children }) {
   const [position, setPosition] = useState(0)
   const itemsContainer = useRef()
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(true)
@@ -67,7 +67,11 @@ export default function Carousel ({ items, title, seeMore, id }) {
         <div ref={itemsContainer} className={styles.itemsContainer}>
           {
             items.slice(1).map(item => (
-              <MovieCard key={item.id} movie={item} imageSize={imageSize} />
+              cloneElement(children, {
+                key: item.id,
+                movie: item,
+                imageSize
+              })
             ))
           }
         </div>
@@ -85,6 +89,7 @@ export default function Carousel ({ items, title, seeMore, id }) {
 
 Carousel.propTypes = {
   items: PropTypes.array.isRequired,
+  children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   seeMore: PropTypes.func.isRequired
