@@ -79,7 +79,7 @@ export default function GenreSelector () {
       genre: genre.id
     }
     try {
-      const { page, results, lastMovie } = await requestMovies({
+      const { page, results, lastMovie, lastPage } = await requestMovies({
         page: 1,
         lastPage: 0,
         quantity,
@@ -91,6 +91,7 @@ export default function GenreSelector () {
           category: 'popular',
           page,
           lastMovie,
+          ...(lastPage ? { lastPage } : {}),
           moviesPerPage: quantity,
           filters
         },
@@ -106,7 +107,7 @@ export default function GenreSelector () {
     const quantity = widthViewport < 480 ? 18 : 20
     dispatch(loadMovies({ mode }))
     try {
-      const { page, results, lastMovie } = await requestPopularMovies({
+      const { page, results, lastMovie, lastPage } = await requestPopularMovies({
         page: 1,
         quantity,
         lastMovie: 0
@@ -116,6 +117,7 @@ export default function GenreSelector () {
           list: results,
           category: 'popular',
           page,
+          ...(lastPage ? { lastPage } : {}),
           lastMovie,
           moviesPerPage: quantity
         },

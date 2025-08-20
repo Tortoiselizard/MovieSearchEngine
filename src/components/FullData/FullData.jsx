@@ -52,11 +52,12 @@ export default function FullData () {
   }, [loadingNextPage])
 
   async function getMore () {
-    const { category, moviesPerPage: quantity, lastMovie: indexMovie, page } = movies.current
+    const { category, moviesPerPage: quantity, lastMovie: indexMovie, page, lastPage: lastPagePrev } = movies.current
+    if (lastPagePrev) return
     const newPage = page + (indexMovie ? 0 : 1)
     setLoadingNextPage(true)
     try {
-      const { page, lastMovie, results } = await requestMovies({
+      const { page, lastMovie, results, lastPage } = await requestMovies({
         page: newPage,
         lastMovie: indexMovie,
         quantity,
@@ -68,6 +69,7 @@ export default function FullData () {
         category,
         page,
         lastMovie,
+        ...(lastPage ? { lastPage } : {}),
         moviesPerPage: quantity,
         filters: { ...movies.current.filters }
       }

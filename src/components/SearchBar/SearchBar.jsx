@@ -76,7 +76,7 @@ export default function SearchBar () {
       ...movies.current.filters
     }
     try {
-      const { page, results, lastMovie } = await requestMovies({
+      const { page, results, lastMovie, lastPage } = await requestMovies({
         page: 1,
         quantity,
         lastMovie: 0,
@@ -88,6 +88,7 @@ export default function SearchBar () {
           category: 'search',
           page,
           lastMovie,
+          ...(lastPage ? { lastPage } : {}),
           moviesPerPage: quantity,
           filters
         },
