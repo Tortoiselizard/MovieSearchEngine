@@ -1,7 +1,6 @@
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
-import { useMatch } from 'react-router'
 
 import { updateMovies, updateMode, loadMovies } from '../../context/actions'
 import { requestMovies } from '../../services/moviesApi.js'
@@ -9,8 +8,6 @@ import { requestMovies } from '../../services/moviesApi.js'
 import styles from './SearchBar.module.css'
 
 export default function SearchBar () {
-  const isHome = useMatch('/')
-  if (!isHome) return
   const [query, setQuery] = useState('')
   const { state: globalState, dispatch } = useMyContext()
   const { mode } = globalState

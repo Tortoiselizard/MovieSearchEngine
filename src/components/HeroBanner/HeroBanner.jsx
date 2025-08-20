@@ -40,7 +40,7 @@ export default function HeroBanner () {
           {
             movie.backdrop_path
               ? (
-                <Link className={styles.infoBtn} to={`/${movie.id}`} role='button'>Details</Link>
+                <Link className={styles.infoBtn} to={`/movies/${movie.id}`} role='button'>Details</Link>
                 )
               : (
                 <button

@@ -1,4 +1,3 @@
-import Header from '../Header/Header'
 import HeroDetails from '../HeroDetails/HeroDetails'
 import ActorsContainer from '../ActorsContainer/ActorsContainer'
 import Spinner from '../Spinner/Spinner'
@@ -55,7 +54,6 @@ export default function MovieDetails () {
             : movie.status === 'successful'
               ? (
                 <>
-                  <Header />
                   <HeroDetails movie={movie.data} />
                   <ActorsContainer />
                 </>

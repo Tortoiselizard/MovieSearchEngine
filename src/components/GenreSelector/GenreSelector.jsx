@@ -3,15 +3,12 @@ import { ChevronDown } from 'lucide-react'
 import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
-import { useMatch } from 'react-router'
 
 import { requestPopularMovies, requestMovieGenre, requestMovies } from '../../services/moviesApi'
 
 import { updateMovies, loadMovies, loadGenres, updateGenres } from '../../context/actions'
 
 export default function GenreSelector () {
-  const isHome = useMatch('/')
-  if (!isHome) return
   const { state: globalState, dispatch } = useMyContext()
   const { home, mode, genres } = globalState
   const genreSelectorRef = useRef()

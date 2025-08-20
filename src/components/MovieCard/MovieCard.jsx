@@ -53,7 +53,7 @@ export default function MovieCard ({ data, imageSize }) {
   return (
     <Link
       className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${loading ? '' : styles.spinnerOff}`}
-      to={`/${data.id}`}
+      to={`/movies/${data.id}`}
     >
       <img
         className={styles.movieCardImage}
