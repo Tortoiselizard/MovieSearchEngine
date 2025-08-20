@@ -57,6 +57,17 @@ export async function requestMoviesById (id) {
   return data
 }
 
+export async function requestActors (id) {
+  const queriesString = getQueriesString({ id })
+  const response = await fetch(`/api/cast${queriesString}`)
+  if (!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.message)
+  }
+  const data = await response.json()
+  return data
+}
+
 export async function requestMovieGenre () {
   const response = await fetch('/api/genre')
   if (!response.ok) {

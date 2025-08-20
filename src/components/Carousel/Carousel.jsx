@@ -1,22 +1,15 @@
 import PropTypes from 'prop-types'
 
-// import MovieCard from '../MovieCard/MovieCard'
-
 import { useState, useEffect, useRef, useMemo, cloneElement } from 'react'
 
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import styles from './Carousel.module.css'
 
-export default function Carousel ({ items, title, seeMore, id, children }) {
+export default function Carousel ({ items, title, seeMore, id, children, imageSize }) {
   const [position, setPosition] = useState(0)
   const itemsContainer = useRef()
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(true)
   const [countCardVisibles, setCountCardVisibles] = useState(0)
-  const imageSize = useMemo(() => {
-    const viewportWidth = window.innerWidth
-    if (viewportWidth < 480) return '/w185'
-    else return '/w342'
-  }, [])
 
   // Initialice scrollbar in 0
   useEffect(() => {
@@ -25,7 +18,7 @@ export default function Carousel ({ items, title, seeMore, id, children }) {
 
   // update countCardVisibles
   useEffect(() => {
-    if (!itemsContainer.current) return
+    if (!itemsContainer.current || !items.length) return
     const containerRect = itemsContainer.current.getBoundingClientRect()
     const elementRect = itemsContainer.current.childNodes[1].getBoundingClientRect()
     const n = Math.floor(containerRect.width / (elementRect.width + 8))
@@ -66,10 +59,10 @@ export default function Carousel ({ items, title, seeMore, id, children }) {
         </button>
         <div ref={itemsContainer} className={styles.itemsContainer}>
           {
-            items.slice(1).map(item => (
+            items.map(item => (
               cloneElement(children, {
                 key: item.id,
-                movie: item,
+                data: item,
                 imageSize
               })
             ))

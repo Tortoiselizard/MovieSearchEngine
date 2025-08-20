@@ -1,5 +1,6 @@
 import Header from '../Header/Header'
 import HeroDetails from '../HeroDetails/HeroDetails'
+import ActorsContainer from '../ActorsContainer/ActorsContainer'
 import Spinner from '../Spinner/Spinner'
 
 import { useEffect, useState } from 'react'
@@ -56,6 +57,7 @@ export default function MovieDetails () {
                 <>
                   <Header />
                   <HeroDetails movie={movie.data} />
+                  <ActorsContainer />
                 </>
 
                 )

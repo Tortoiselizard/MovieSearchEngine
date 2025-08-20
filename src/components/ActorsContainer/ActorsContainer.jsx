@@ -1,0 +1,88 @@
+import ActorCard from '../ActorCard/ActorCard'
+import Carousel from '../Carousel/Carousel'
+import Spinner from '../Spinner/Spinner'
+
+import { useMyContext } from '../../context/MyContext'
+import { useParams } from 'react-router'
+import { useState, useEffect, useMemo } from 'react'
+
+import { updateMode, updateMovies } from '../../context/actions'
+import { requestActors } from '../../services/moviesApi'
+
+import styles from './ActorsContainer.module.css'
+
+export default function ActorsContainer () {
+  const { id } = useParams()
+  const [actors, setActors] = useState({
+    status: 'idle',
+    list: [],
+    error: null
+  })
+  const imageSize = useMemo(() => {
+    const viewportWidth = window.innerWidth
+    if (viewportWidth < 480) return '/w185'
+    else return '/h632'
+  }, [])
+
+  useEffect(() => {
+    if (actors.status !== 'idle') return
+    getActors()
+  }, [])
+
+  async function getActors () {
+    setActors(prevState => ({
+      ...prevState,
+      status: 'pending'
+    }))
+    try {
+      const newActors = await requestActors(id)
+      setActors({
+        list: newActors,
+        status: 'successful',
+        error: null
+      })
+    } catch (error) {
+      setActors({
+        list: [],
+        status: 'fail',
+        error: error.message
+      })
+    }
+  }
+
+  function changeToFullDataMode () {
+    // dispatch(updateMovies({
+    // newMoviesData: {
+    // ...movies
+    // },
+    // mode: 'search'
+    // }))
+    // dispatch(updateMode('search'))
+  }
+
+  return (
+    <div className={styles.actorsContainer}>
+      {
+        actors.status === 'pending'
+          ? (
+            <Spinner />
+            )
+          : actors.status === 'fail'
+            ? (
+              <p>Error: {actors.error}</p>
+              )
+            : actors.status === 'successful'
+              ? (
+                  actors.list.length
+                    ? (
+                      <Carousel items={actors.list} title='Cast' seeMore={changeToFullDataMode} id='cast' imageSize={imageSize}>
+                        <ActorCard />
+                      </Carousel>
+                      )
+                    : null
+                )
+              : null
+      }
+    </div>
+  )
+}

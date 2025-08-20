@@ -1,17 +1,13 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 
-import { useMyContext } from '../../context/MyContext'
-
 import { ImageIcon } from 'lucide-react'
 
-import styles from './MovieCard.module.css'
+import styles from './ActorCard.module.css'
 import { useState } from 'react'
 
-export default function MovieCard ({ data, imageSize }) {
+export default function ActorCard ({ data, imageSize }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
-  const { state: globalState } = useMyContext()
-  const { mode } = globalState
   const [loading, setLoading] = useState(true)
 
   function handleImageLoad () {
@@ -22,14 +18,14 @@ export default function MovieCard ({ data, imageSize }) {
     setLoading(false)
   }
 
-  if (!data.poster_path) {
+  if (!data.profile_path) {
     return (
       <div
-        className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${styles.spinnerOff}`}
+        className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${styles.spinnerOff}`}
         style={{ cursor: 'not-allowed' }}
       >
         <div
-          className={styles.movieCardImage}
+          className={styles.actorCardImage}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -42,9 +38,8 @@ export default function MovieCard ({ data, imageSize }) {
           <ImageIcon />
           <p>Image not found</p>
         </div>
-        <div className={styles.movieInfo}>
-          <p className={styles.title}>{data.title}</p>
-          <p className={styles.release_date}>{data.release_date}</p>
+        <div className={styles.actorInfo}>
+          <p className={styles.name}>{data.name}</p>
         </div>
       </div>
     )
@@ -52,26 +47,25 @@ export default function MovieCard ({ data, imageSize }) {
 
   return (
     <Link
-      className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${loading ? '' : styles.spinnerOff}`}
+      className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${loading ? '' : styles.spinnerOff}`}
       to={`/${data.id}`}
     >
       <img
-        className={styles.movieCardImage}
-        src={`${VITE_API_IMAGE_URL}${imageSize}${data.poster_path}`}
-        alt={data.title}
+        className={styles.actorCardImage}
+        src={`${VITE_API_IMAGE_URL}${imageSize}${data.profile_path}`}
+        alt={data.name}
         onLoad={handleImageLoad}
         onError={handleImageError}
         style={{ display: loading ? 'none' : 'block' }}
       />
-      <div className={styles.movieInfo}>
-        <p className={styles.title}>{data.title}</p>
-        <p className={styles.release_date}>{data.release_date}</p>
+      <div className={styles.actorInfo}>
+        <p className={styles.name}>{data.name}</p>
       </div>
     </Link>
   )
 }
 
-MovieCard.propTypes = {
+ActorCard.propTypes = {
   data: PropTypes.object.isRequired,
   imageSize: PropTypes.string.isRequired
 }
