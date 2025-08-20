@@ -2,7 +2,7 @@ import MovieCard from '../MovieCard/MovieCard'
 
 import { useMyContext } from '../../context/MyContext'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { addMovies, loadMovies } from '../../context/actions.js'
+import { addMovies } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 
 import styles from './FullData.module.css'
@@ -97,7 +97,7 @@ export default function FullData () {
                     globalState[mode].movies.list.length
                       ? (
                           globalState[mode].movies.list.map((movie, index) => (
-                            <MovieCard key={`id:${movie.id}-index:${index}`} movie={movie} imageSize={imageSize} />
+                            <MovieCard key={`id:${movie.id}-index:${index}`} data={movie} imageSize={imageSize} />
                           ))
                         )
                       : (

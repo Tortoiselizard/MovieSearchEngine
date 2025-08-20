@@ -1,6 +1,5 @@
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
-import FullData from '../FullData/FullData.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 
 import { useEffect } from 'react'
@@ -56,38 +55,28 @@ export default function Home () {
   return (
     <>
       {
-        globalState.mode === 'home'
+        globalState.home.movies.status === 'pending'
           ? (
-              globalState.home.movies.status === 'pending'
-                ? (
-                  <Spinner />
-                  )
-                : globalState.home.movies.status === 'fail'
-                  ? (
-                    <p>Error</p>
-                    )
-                  : globalState.home.movies.status === 'successful'
-                    ? (
-                        globalState.home.movies.list.length
-                          ? (
-                            <div className={styles.container}>
-                              <HeroBanner />
-                              <MoviesContainer />
-                            </div>
-                            )
-                          : (
-                            <p>No se han encontrado coincidencias</p>
-                            )
-                      )
-                    : null
+            <Spinner />
             )
-          : globalState.mode === 'search'
+          : globalState.home.movies.status === 'fail'
             ? (
-              <>
-                <FullData />
-              </>
+              <p>Error</p>
               )
-            : null
+            : globalState.home.movies.status === 'successful'
+              ? (
+                  globalState.home.movies.list.length
+                    ? (
+                      <div className={styles.container}>
+                        <HeroBanner />
+                        <MoviesContainer />
+                      </div>
+                      )
+                    : (
+                      <p>No se han encontrado coincidencias</p>
+                      )
+                )
+              : null
       }
     </>
   )
