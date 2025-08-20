@@ -1,5 +1,6 @@
 import Header from '../Header/Header'
 import HeroDetails from '../HeroDetails/HeroDetails'
+import Spinner from '../Spinner/Spinner'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -44,7 +45,7 @@ export default function MovieDetails () {
       {
         movie.status === 'pending'
           ? (
-            <p>Cargando...</p>
+            <Spinner />
             )
           : movie.status === 'fail'
             ? (
