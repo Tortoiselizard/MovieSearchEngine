@@ -1,5 +1,6 @@
 import HeroActorDetails from '../HeroActorDetails/HeroActorDetails'
 import Spinner from '../Spinner/Spinner'
+import FilmsActorContainer from '../FilmsActorContainer/FilmsActorContainer'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -54,6 +55,7 @@ export default function ActorDetails () {
               ? (
                 <>
                   <HeroActorDetails actor={actor.data} />
+                  <FilmsActorContainer />
                 </>
 
                 )
