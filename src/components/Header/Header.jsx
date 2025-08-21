@@ -1,6 +1,6 @@
 import SearchBar from '../SearchBar/SearchBar'
 import ComeBack from '../ComeBack/ComeBack'
-// import NavBar from '../NavBar/NavBar'
+import NavBar from '../NavBar/NavBar'
 import GenreSelector from '../GenreSelector/GenreSelector'
 
 import { useLocation } from 'react-router'
@@ -25,7 +25,7 @@ export default function Header () {
         }
       </div>
       <ComeBack />
-      {/* <NavBar /> */}
+      <NavBar />
     </header>
   )
 }
