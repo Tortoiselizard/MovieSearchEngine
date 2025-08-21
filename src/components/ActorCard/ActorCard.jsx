@@ -48,7 +48,7 @@ export default function ActorCard ({ data, imageSize }) {
   return (
     <Link
       className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${loading ? '' : styles.spinnerOff}`}
-      to={`/${data.id}`}
+      to={`/actors/${data.id}`}
     >
       <img
         className={styles.actorCardImage}
