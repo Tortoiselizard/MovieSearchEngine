@@ -1,4 +1,4 @@
-import { ActorRepository } from '../repositoryAPI/actorRepository'
+import { ActorRepository } from '../repositoryAPI/actorRepository.js'
 
 export class ActorService {
   #actorRepository

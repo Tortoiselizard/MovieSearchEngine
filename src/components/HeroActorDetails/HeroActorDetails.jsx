@@ -6,40 +6,44 @@ const { VITE_API_IMAGE_URL } = import.meta.env
 
 export default function HeroActorDetails ({ actor }) {
   return (
-    <div className={styles.container}>
+    <div className={styles.heroActorDetailsContainer}>
       <div className={styles.hero}>
         <div className={styles.heroBackground}>
           <img
-            src={`${VITE_API_IMAGE_URL}/w1280/${actor.backdrop_path}`}
-            alt={actor.title}
+            src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
+            alt={actor.name}
             className={styles.backgroundImage}
           />
           <div className={styles.heroGradient} />
         </div>
         <div className={styles.heroContent}>
           <div className={styles.heroInfo}>
-            <h1 className={styles.title}>{actor.title}</h1>
+            <h1 className={styles.name}>{actor.name}</h1>
 
             <div className={styles.metadata}>
-              <span className={styles.rating}>{actor.vote_average}</span>
-              <span className={styles.year}>{actor.release_date.split('-')[0]}</span>
-            </div>
-
-            <p className={styles.description}>{actor.overview}</p>
-
-            <div className={styles.genres}>
+              <span className={styles.specialDate}>{actor.birthday}</span>
               {
-              actor.genres.map(({ name, id }) => (
-                <span key={id} className={styles.genre}>{name}</span>
-              ))
-            }
+                actor.deathday && (
+                  <>
+                    -<span className={styles.specialDate}>{actor.deathday}</span>
+                  </>
+                )
+              }
+
+              <span className={styles.placeBirth}>{actor.place_of_birth}</span>
+
             </div>
+
+            <p className={styles.biography}>{actor.biography}</p>
+
+            <span className={styles.popularity}>{actor.popularity}</span>
+
           </div>
 
           <div className={styles.heroPoster}>
             <img
-              src={`${VITE_API_IMAGE_URL}/w500/${actor.poster_path}`}
-              alt={'image: ' + actor.title}
+              src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
+              alt={'image: ' + actor.name}
               className={styles.posterImage}
             />
             <div className={styles.heroGradientPoster} />

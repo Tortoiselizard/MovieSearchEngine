@@ -3,7 +3,7 @@ import Spinner from '../Spinner/Spinner'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { requestMoviesById } from '../../services/moviesApi'
+import { requestActor } from '../../services/moviesApi'
 
 export default function ActorDetails () {
   const { id } = useParams()
@@ -15,18 +15,18 @@ export default function ActorDetails () {
 
   useEffect(() => {
     if (actor.status !== 'idlen') return
-    // getMovieById()
+    getActorById()
   }, [])
 
-  async function getMovieById () {
+  async function getActorById () {
     setActor(prevState => ({
       ...prevState,
       status: 'pending'
     }))
     try {
-      const newMovie = await requestMoviesById(id)
+      const newActor = await requestActor(id)
       setActor({
-        data: newMovie,
+        data: newActor,
         status: 'successful',
         error: null
       })
