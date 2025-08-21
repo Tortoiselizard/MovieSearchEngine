@@ -1,5 +1,5 @@
 import Home from './components/Home/Home'
-import FullData from './components/FullData/FullData'
+import FullDataMovies from './components/FullDataMovies/FullDataMovies.jsx'
 
 import { useMyContext } from './context/MyContext'
 
@@ -17,7 +17,7 @@ export default function App () {
           <Home />
           )
         : (
-          <FullData />
+          <FullDataMovies />
           )
     }
     </>

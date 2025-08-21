@@ -1,55 +1,24 @@
+import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard'
+import Spinner from '../Spinner/Spinner.jsx'
 
 import { useMyContext } from '../../context/MyContext'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { addMovies } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 
-import styles from './FullData.module.css'
-import Spinner from '../Spinner/Spinner.jsx'
+import styles from './FullDataMovies.module.css'
 
-export default function FullData () {
+export default function FullDataMovies () {
   const { state: globalState, dispatch } = useMyContext()
   const { search, mode } = globalState
   const movies = useRef(search.movies)
-  const loadingZone = useRef()
   const [loadingNextPage, setLoadingNextPage] = useState(false)
-  const imageSize = useMemo(() => {
-    const viewportWidth = window.innerWidth
-    if (viewportWidth < 480) return '/w185'
-    else return '/w342'
-  }, [])
-  const observer = useMemo(() => {
-    if (loadingNextPage) return
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          getMore()
-          observer.disconnect()
-        }
-      })
-    })
-    return observer
-  }, [loadingNextPage])
 
   // Update movies
   useEffect(() => {
     movies.current = globalState.search.movies
   }, [globalState.search.movies])
-
-  // Update movies when reach the end of the scroll
-  useEffect(() => {
-    if (loadingNextPage) return
-    if (loadingZone.current) {
-      observer.observe(loadingZone.current)
-    }
-
-    return () => {
-      if (loadingZone.current) {
-        observer.unobserve(loadingZone.current)
-      }
-    }
-  }, [loadingNextPage])
 
   async function getMore () {
     const { category, moviesPerPage: quantity, lastMovie: indexMovie, page, lastPage: lastPagePrev } = movies.current
@@ -82,8 +51,7 @@ export default function FullData () {
 
   return (
     <div className={styles.fullDataContainer}>
-      <div className={styles.fullDataItems}>
-        {
+      {
           globalState[mode].movies.status === 'pending'
             ? (
               <Spinner />
@@ -96,9 +64,9 @@ export default function FullData () {
                 ? (
                     globalState[mode].movies.list.length
                       ? (
-                          globalState[mode].movies.list.map((movie, index) => (
-                            <MovieCard key={`id:${movie.id}-index:${index}`} data={movie} imageSize={imageSize} />
-                          ))
+                        <Grid items={globalState[mode].movies.list} getMoreItems={getMore} loadingNextPage={loadingNextPage}>
+                          <MovieCard />
+                        </Grid>
                         )
                       : (
                         <p>No se han encontrado coincidencias</p>
@@ -106,16 +74,6 @@ export default function FullData () {
                   )
                 : null
         }
-      </div>
-      <div className={styles.loadingZone} ref={loadingZone}>
-        {
-          loadingNextPage
-            ? (
-              <Spinner />
-              )
-            : null
-        }
-      </div>
     </div>
   )
 }
