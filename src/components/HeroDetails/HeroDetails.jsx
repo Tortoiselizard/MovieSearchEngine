@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import HeartButton from '../HeartButton/HeartButton'
+
 import styles from './HeroDetails.module.css'
 
 const { VITE_API_IMAGE_URL } = import.meta.env
@@ -29,11 +31,12 @@ export default function HeroDetails ({ movie }) {
 
             <div className={styles.genres}>
               {
-              movie.genres.map(({ name, id }) => (
-                <span key={id} className={styles.genre}>{name}</span>
-              ))
-            }
+                movie.genres.map(({ name, id }) => (
+                  <span key={id} className={styles.genre}>{name}</span>
+                ))
+              }
             </div>
+            <HeartButton movieId={movie.id} />
           </div>
 
           <div className={styles.heroPoster}>
