@@ -2,10 +2,19 @@ import PropTypes from 'prop-types'
 import { Heart } from 'lucide-react'
 
 import styles from './HeartButton.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function HeartButton ({ movieId }) {
   const [isActive, setIsActive] = useState(false)
+
+  useEffect(() => {
+    const favoritesString = localStorage.getItem('favorites')
+    if (!favoritesString) return
+    const favorites = JSON.parse(favoritesString)
+    const newIsActive = favorites.includes(movieId)
+    if (!newIsActive) return
+    setIsActive(newIsActive)
+  }, [])
 
   function handleClick () {
     const newIsActive = !isActive
