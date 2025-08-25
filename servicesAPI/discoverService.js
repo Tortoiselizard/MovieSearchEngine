@@ -21,19 +21,19 @@ export class DiscoverService {
     let lastRequest = []
     let page = queries.page
     let totalPages
-    const nFilters = Object.keys(filters).length
 
     // Do request to pages
     do {
       let { results, total_pages } = await this.#discoverRepository.getDiscoverMovies({ ...filters, page })
       totalPages = total_pages
       lastRequest = results
-      if (nFilters > 1) {
+      if (Object.keys(filters).length > 1) {
         results = filterBy({ movies: results, filters })
       }
       moviePackage.results.push(...results.slice(moviePackage.lastMovie))
       moviePackage.page = page
       moviePackage.lastMovie = 0
+      filters.currentMovies = [...(filters.currentMovies ? filters.currentMovies : []), ...results.map(movie => movie.id)]
       page++
     } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
 

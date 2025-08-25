@@ -21,6 +21,7 @@ export class SearchService {
     let lastRequest = []
     let page = queries.page
     let totalPages
+
     // Do request to pages
     do {
       let { results, total_pages } = await this.#searchRepository.getSearchMovies({ ...filters, page })
@@ -32,6 +33,7 @@ export class SearchService {
       moviePackage.results.push(...results.slice(moviePackage.lastMovie))
       moviePackage.page = page
       moviePackage.lastMovie = 0
+      filters.currentMovies = [...(filters.currentMovies ? filters.currentMovies : []), ...results.map(movie => movie.id)]
       page++
     } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
 
