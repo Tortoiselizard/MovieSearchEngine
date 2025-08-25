@@ -80,7 +80,8 @@ export default function GenreSelector () {
         page: 1,
         lastPage: 0,
         quantity,
-        ...filters
+        ...filters,
+        currentMovies: globalState[mode].movies.list.map(movie => movie.id)
       })
       dispatch(updateMovies({
         newMoviesData: {

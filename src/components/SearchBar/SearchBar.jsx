@@ -77,7 +77,8 @@ export default function SearchBar () {
         page: 1,
         quantity,
         lastMovie: 0,
-        ...filters
+        ...filters,
+        currentMovies: movies.current.list.map(movie => movie.id)
       })
       dispatch(updateMovies({
         newMoviesData: {

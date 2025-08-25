@@ -11,6 +11,16 @@ export function getFilters (query) {
         filters.with_genres = Number(query[filter])
         break
       }
+      case 'currentMovies': {
+        try {
+          const parsedData = JSON.parse(query[filter])
+          if (!Array.isArray(parsedData)) continue
+          filters.currentMovies = parsedData
+        } catch (error) {
+          continue
+        }
+        break
+      }
       default: break
     }
   }

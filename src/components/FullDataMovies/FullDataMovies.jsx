@@ -30,7 +30,8 @@ export default function FullDataMovies () {
         page: newPage,
         lastMovie: indexMovie,
         quantity,
-        ...movies.current.filters
+        ...movies.current.filters,
+        currentMovies: movies.current.list.map(movie => movie.id)
       })
       const newMoviesData = {
         list: [...results],

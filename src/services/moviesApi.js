@@ -39,7 +39,7 @@ export async function requestMovies (queries) {
   const nFilters = Object.keys(queries).length
   if ('title' in queries) {
     response = await requestMoviesByTitle(queries)
-  } else if (nFilters > 3) {
+  } else if (nFilters > 4) {
     response = await requestLeakedMovies(queries)
   } else {
     response = await requestPopularMovies(queries)

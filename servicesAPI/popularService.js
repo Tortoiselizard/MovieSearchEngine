@@ -1,5 +1,6 @@
 import { PopularRepository } from '../repositoryAPI/popularRepository.js'
-import { getQueries } from '../libsAPI/mappers.js'
+import { getFilters, getQueries } from '../libsAPI/mappers.js'
+import { filterBy } from '../libsAPI/filters.js'
 
 export class PopularService {
   #popularRepository
@@ -10,6 +11,7 @@ export class PopularService {
   async getPopulars (query) {
     // Get filters
     const queries = getQueries(query)
+    const filters = getFilters(query)
 
     const moviePackage = {
       results: [],
@@ -21,12 +23,16 @@ export class PopularService {
     let totalPages
     // Do request to pages
     do {
-      const { results, total_pages } = await this.#popularRepository.getPopularMovies({ page })
+      let { results, total_pages } = await this.#popularRepository.getPopularMovies({ page })
       totalPages = total_pages
       lastRequest = results
+      if (Object.keys(filters).length) {
+        results = filterBy({ movies: results, filters })
+      }
       moviePackage.results.push(...results.slice(moviePackage.lastMovie))
       moviePackage.page = page
       moviePackage.lastMovie = 0
+      filters.currentMovies = [...(filters.currentMovies ? filters.currentMovies : []), ...results.map(movie => movie.id)]
       page++
     } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
 

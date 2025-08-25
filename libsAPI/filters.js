@@ -4,6 +4,9 @@ export function filterBy ({ movies, filters }) {
       const genreIds = movie.genre_ids
       if (!genreIds.includes(filters.with_genres)) return false
     }
+    if ('currentMovies' in filters) {
+      if (filters.currentMovies.includes(movie.id)) return false
+    }
     return true
   })
   return moviesFiltered
