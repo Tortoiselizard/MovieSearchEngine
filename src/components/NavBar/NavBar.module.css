@@ -11,6 +11,12 @@
   font-size: 14px;
   font-weight: 400;
   transition: all 0.4s;
+  padding: 0.6em 1.2em;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: #e5e5e5;
 }
 
 .navLink::after {

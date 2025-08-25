@@ -1,6 +1,7 @@
+import { Link, useMatch } from 'react-router'
+
 import { useMyContext } from '../../context/MyContext.jsx'
 import { updateMovies, loadMovies } from '../../context/actions.js'
-import { useMatch } from 'react-router'
 
 import { requestPopularMovies } from '../../services/moviesApi'
 
@@ -35,32 +36,12 @@ export default function NavBar () {
         }
         break
       }
-      case 'favorites': {
-        // dispatch(loadMovies({ mode }))
-        // try {
-        // const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1 })
-        // dispatch(updateMovies({
-        // newMoviesData: {
-        // list: results,
-        // category: 'popular',
-        // page,
-        // totalPages: total_pages,
-        // total_results,
-        // moviesPerPage: quantity
-        // },
-        // mode
-        // }))
-        // } catch (error) {
-        // alert(error.message)
-        // }
-        // break
-      }
     }
   }
   return (
     <nav className={styles.container}>
       <button className={styles.navLink} onClick={() => { getMovies('popular') }}>Popular</button>
-      <button className={styles.navLink} onClick={() => { getMovies('favorites') }}>Favorites</button>
+      <Link to='/favorites' className={styles.navLink}>Favorites</Link>
     </nav>
   )
 }
