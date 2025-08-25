@@ -20,12 +20,15 @@ export function updateMovies ({ newMoviesData, mode }) {
   }
 }
 
-export function addMovies ({ newMoviesData, mode }) {
+export function addMovies ({ currentMoviesData, newMoviesData, mode }) {
+  const newList = [...currentMoviesData, ...newMoviesData.list]
+
   return {
-    type: UPDATE_MOVIES,
+    type: ADD_MOVIES,
     payload: {
       newMoviesData: {
         ...newMoviesData,
+        list: newList,
         status: 'successful',
         error: null
       },

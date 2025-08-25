@@ -32,9 +32,8 @@ export default function FullDataMovies () {
         quantity,
         ...movies.current.filters
       })
-      const newList = [...movies.current.list, ...results]
       const newMoviesData = {
-        list: newList,
+        list: [...results],
         category,
         page,
         lastMovie,
@@ -42,7 +41,7 @@ export default function FullDataMovies () {
         moviesPerPage: quantity,
         filters: { ...movies.current.filters }
       }
-      dispatch(addMovies({ newMoviesData, mode }))
+      dispatch(addMovies({ currentMoviesData: movies.current.list, newMoviesData, mode }))
       setLoadingNextPage(false)
     } catch (error) {
       alert(error.message)
