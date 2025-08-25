@@ -17,6 +17,7 @@ export default function SearchBar () {
   const navigate = useNavigate()
   const mode = pathname === '/' ? 'home' : 'search'
   const movies = useRef(globalState[mode].movies)
+  const currentURL = useRef(pathname)
   const [isExpanded, setIsExpanded] = useState(false)
   const searchRef = useRef(null)
   const queryRef = useRef(query)
@@ -25,6 +26,11 @@ export default function SearchBar () {
   useEffect(() => {
     movies.current = globalState[mode].movies
   }, [globalState[mode].movies])
+
+  // Update currentURL
+  useEffect(() => {
+    currentURL.current = pathname
+  }, [pathname])
 
   // handle clicks outside the component
   useEffect(() => {
@@ -76,7 +82,8 @@ export default function SearchBar () {
       ...movies.current.filters,
       title
     }
-    if (pathname !== '/search') {
+
+    if (currentURL.current !== '/search') {
       const filterString = getQueriesString(filters)
       navigate(`/search${filterString}`)
     }
