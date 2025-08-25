@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
+import LazyImage from '../LazyImage/LazyImage.jsx'
 
 import { useMyContext } from '../../context/MyContext'
 
@@ -55,13 +56,12 @@ export default function MovieCard ({ data, imageSize }) {
       className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${loading ? '' : styles.spinnerOff}`}
       to={`/movies/${data.id}`}
     >
-      <img
+      <LazyImage
         className={styles.movieCardImage}
         src={`${VITE_API_IMAGE_URL}${imageSize}${data.poster_path}`}
         alt={data.title}
         onLoad={handleImageLoad}
         onError={handleImageError}
-        style={{ display: loading ? 'none' : 'block' }}
       />
       <div className={styles.movieInfo}>
         <p className={styles.title}>{data.title}</p>

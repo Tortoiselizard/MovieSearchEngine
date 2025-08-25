@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
+import LazyImage from '../LazyImage/LazyImage.jsx'
 
 import { ImageIcon } from 'lucide-react'
 
@@ -50,13 +51,12 @@ export default function ActorCard ({ data, imageSize }) {
       className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${loading ? '' : styles.spinnerOff}`}
       to={`/actors/${data.id}`}
     >
-      <img
+      <LazyImage
         className={styles.actorCardImage}
         src={`${VITE_API_IMAGE_URL}${imageSize}${data.profile_path}`}
         alt={data.name}
         onLoad={handleImageLoad}
         onError={handleImageError}
-        style={{ display: loading ? 'none' : 'block' }}
       />
       <div className={styles.actorInfo}>
         <p className={styles.name}>{data.name}</p>
