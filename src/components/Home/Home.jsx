@@ -4,48 +4,35 @@ import Spinner from '../Spinner/Spinner.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMovies, loadMovies } from '../../context/actions.js'
+import { updateMoviesHome, loadMovies } from '../../context/actions.js'
 import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
 
 export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
-  const { mode } = globalState
+  const { movies } = globalState.home
 
   // Get popular movies
   useEffect(() => {
-    if (mode !== 'home') return
-    const { category, page } = globalState[mode].movies
-    switch (category) {
-      case 'idle': {
-        getPopularMovies()
-        break
-      }
-      case 'popular': {
-        if (page === 1) return
-        getPopularMovies()
-        break
-      }
-    }
-  }, [mode])
+    if (movies.status !== 'idle') return
+    getPopularMovies()
+  }, [])
 
   async function getPopularMovies () {
     const widthViewport = window.innerWidth
     const quantity = widthViewport < 480 ? 18 : 20
-    const { page: currentPage } = globalState[mode].movies
-    dispatch(loadMovies({ mode }))
+    const { page: currentPage } = movies
+    dispatch(loadMovies({ mode: 'home' }))
     try {
       const { page, lastMovie, results } = await requestPopularMovies({ page: currentPage, quantity })
-      dispatch(updateMovies({
+      dispatch(updateMoviesHome({
         newMoviesData: {
           list: results,
-          category: 'popular',
           page,
           lastMovie,
           moviesPerPage: quantity
-        },
-        mode
+        }
       }))
     } catch (error) {
       alert(error.message)
@@ -55,17 +42,17 @@ export default function Home () {
   return (
     <>
       {
-        globalState.home.movies.status === 'pending'
+        movies.status === 'pending'
           ? (
             <Spinner />
             )
-          : globalState.home.movies.status === 'fail'
+          : movies.status === 'fail'
             ? (
               <p>Error</p>
               )
-            : globalState.home.movies.status === 'successful'
+            : movies.status === 'successful'
               ? (
-                  globalState.home.movies.list.length
+                  movies.list.length
                     ? (
                       <div className={styles.container}>
                         <HeroBanner />

@@ -1,4 +1,5 @@
-export const UPDATE_MOVIES = 'UPDATE_MOVIES'
+export const UPDATE_MOVIES_HOME = 'UPDATE_MOVIES_HOME'
+export const UPDATE_MOVIES_SEARCH = 'UPDATE_MOVIES_SEARCH'
 export const ADD_MOVIES = 'UPDATE_MOVIES'
 export const RESET_MOVIES = 'UPDATE_MOVIES'
 export const LOAD_MOVIES = 'LOAD_MOVIES'
@@ -6,21 +7,33 @@ export const UPDATE_MODE = 'UPDATE_MODE'
 export const LOAD_GENRES = 'LOAD_GENRES'
 export const UPDATE_GENRES = 'UPDATE_GENRES'
 
-export function updateMovies ({ newMoviesData, mode }) {
+export function updateMoviesHome ({ newMoviesData }) {
   return {
-    type: UPDATE_MOVIES,
+    type: UPDATE_MOVIES_HOME,
     payload: {
       newMoviesData: {
         ...newMoviesData,
         status: 'successful',
         error: null
-      },
-      mode
+      }
     }
   }
 }
 
-export function addMovies ({ currentMoviesData, newMoviesData, mode }) {
+export function updateMoviesSearch ({ newMoviesData }) {
+  return {
+    type: UPDATE_MOVIES_SEARCH,
+    payload: {
+      newMoviesData: {
+        ...newMoviesData,
+        status: 'successful',
+        error: null
+      }
+    }
+  }
+}
+
+export function addMovies ({ currentMoviesData, newMoviesData }) {
   const newList = [...currentMoviesData, ...newMoviesData.list]
 
   return {
@@ -31,8 +44,7 @@ export function addMovies ({ currentMoviesData, newMoviesData, mode }) {
         list: newList,
         status: 'successful',
         error: null
-      },
-      mode
+      }
     }
   }
 }

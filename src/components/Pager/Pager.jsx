@@ -1,6 +1,6 @@
 import { useMyContext } from '../../context/MyContext'
 
-import { updateMovies, loadMovies } from '../../context/actions.js'
+import { updateMoviesSearch, loadMovies } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
@@ -77,7 +77,7 @@ export default function Pager () {
         moviesPerPage: quantity,
         filters: { ...movies.filters }
       }
-      dispatch(updateMovies({ newMoviesData, mode }))
+      dispatch(updateMoviesSearch({ newMoviesData }))
     } catch (error) {
       alert(error.message)
     }

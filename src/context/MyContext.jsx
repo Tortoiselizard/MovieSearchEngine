@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
+import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -11,7 +11,6 @@ const initialState = {
       status: 'idle',
       error: null,
       list: [],
-      category: 'idle',
       page: 1,
       totalPages: 1
     }
@@ -21,12 +20,10 @@ const initialState = {
       status: 'idle',
       error: null,
       list: [],
-      category: 'idle',
       page: 1,
       totalPages: 1
     }
   },
-  mode: 'home',
   genres: {
     status: 'idle',
     list: [],
@@ -37,22 +34,32 @@ const initialState = {
 // Reducer
 function reducer (state, action) {
   switch (action.type) {
-    case UPDATE_MOVIES: {
-      const { newMoviesData, mode } = action.payload
+    case UPDATE_MOVIES_HOME: {
+      const { newMoviesData } = action.payload
       return {
         ...state,
-        [mode]: {
-          ...state[mode],
+        home: {
+          ...state.home,
+          movies: newMoviesData
+        }
+      }
+    }
+    case UPDATE_MOVIES_SEARCH: {
+      const { newMoviesData } = action.payload
+      return {
+        ...state,
+        search: {
+          ...state.search,
           movies: newMoviesData
         }
       }
     }
     case ADD_MOVIES: {
-      const { newMoviesData, mode } = action.payload
+      const { newMoviesData } = action.payload
       return {
         ...state,
-        [mode]: {
-          ...state[mode],
+        search: {
+          ...state.search,
           movies: newMoviesData
         }
       }

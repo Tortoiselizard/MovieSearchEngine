@@ -2,17 +2,13 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import LazyImage from '../LazyImage/LazyImage.jsx'
 
-import { useMyContext } from '../../context/MyContext'
-
 import { ImageIcon } from 'lucide-react'
 
 import styles from './MovieCard.module.css'
 import { useState } from 'react'
 
-export default function MovieCard ({ data, imageSize }) {
+export default function MovieCard ({ data, imageSize, mode }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
-  const { state: globalState } = useMyContext()
-  const { mode } = globalState
   const [loading, setLoading] = useState(true)
 
   function handleImageLoad () {
@@ -73,5 +69,6 @@ export default function MovieCard ({ data, imageSize }) {
 
 MovieCard.propTypes = {
   data: PropTypes.object.isRequired,
-  imageSize: PropTypes.string.isRequired
+  imageSize: PropTypes.string.isRequired,
+  mode: PropTypes.string.isRequired
 }

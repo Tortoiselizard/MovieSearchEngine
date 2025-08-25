@@ -8,13 +8,14 @@ import { useLocation } from 'react-router'
 import styles from './Header.module.css'
 
 export default function Header () {
-  const { pathname } = useLocation()
+  const location = useLocation()
+  const { pathname } = location
 
   return (
     <header className={styles.header}>
       <div className={styles.filterContainer}>
         {
-          pathname === '/'
+          pathname === '/' || pathname === '/search'
             ? (
               <>
                 <GenreSelector />
@@ -24,7 +25,9 @@ export default function Header () {
             : null
         }
       </div>
-      <ComeBack />
+      {
+        pathname !== '/' && <ComeBack />
+      }
       <NavBar />
     </header>
   )

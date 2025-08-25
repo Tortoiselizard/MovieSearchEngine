@@ -1,8 +1,8 @@
 import { Link, useMatch } from 'react-router'
 
 import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMovies, loadMovies } from '../../context/actions.js'
 
+import { updateMoviesSearch, loadMovies } from '../../context/actions.js'
 import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './NavBar.module.css'
@@ -20,7 +20,7 @@ export default function NavBar () {
         dispatch(loadMovies({ mode }))
         try {
           const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1 })
-          dispatch(updateMovies({
+          dispatch(updateMoviesSearch({
             newMoviesData: {
               list: results,
               category: 'popular',

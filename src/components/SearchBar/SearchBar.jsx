@@ -1,16 +1,21 @@
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
+import { useLocation, useNavigate } from 'react-router'
 
-import { updateMovies, updateMode, loadMovies } from '../../context/actions'
+import { updateMoviesSearch, loadMovies } from '../../context/actions'
 import { requestMovies } from '../../services/moviesApi.js'
+
+import { getQueriesString } from '../../libs/mappers.js'
 
 import styles from './SearchBar.module.css'
 
 export default function SearchBar () {
   const [query, setQuery] = useState('')
   const { state: globalState, dispatch } = useMyContext()
-  const { mode } = globalState
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const mode = pathname === '/' ? 'home' : 'search'
   const movies = useRef(globalState[mode].movies)
   const [isExpanded, setIsExpanded] = useState(false)
   const searchRef = useRef(null)
@@ -66,11 +71,14 @@ export default function SearchBar () {
 
   async function getMoviesByTitle (title) {
     dispatch(loadMovies({ mode: 'search' }))
-    dispatch(updateMode('search'))
     const quantity = movies.current.moviesPerPage || 20
     const filters = {
       ...movies.current.filters,
       title
+    }
+    if (pathname !== '/search') {
+      const filterString = getQueriesString(filters)
+      navigate(`/search${filterString}`)
     }
     try {
       const { page, results, lastMovie, lastPage } = await requestMovies({
@@ -80,7 +88,7 @@ export default function SearchBar () {
         ...filters,
         currentMovies: movies.current.list.map(movie => movie.id)
       })
-      dispatch(updateMovies({
+      dispatch(updateMoviesSearch({
         newMoviesData: {
           list: results,
           category: 'search',
@@ -89,8 +97,7 @@ export default function SearchBar () {
           ...(lastPage ? { lastPage } : {}),
           moviesPerPage: quantity,
           filters
-        },
-        mode: 'search'
+        }
       }))
     } catch (error) {
       alert(error.message)

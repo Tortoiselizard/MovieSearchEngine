@@ -3,6 +3,7 @@ import App from './App.jsx'
 import MovieDetails from './components/MovieDetails/MovieDetails.jsx'
 import ActorDetails from './components/ActorDetails/ActorDetails.jsx'
 import Favorites from './components/Favorites/Favorites.jsx'
+import FullDataMovies from './components/FullDataMovies/FullDataMovies.jsx'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/' element={<Layout />}>
             <Route index element={<App />} />
             <Route path='movies/:id' element={<MovieDetails />} />
+            <Route path='search' element={<FullDataMovies />} />
             <Route path='actors/:id' element={<ActorDetails />} />
             <Route path='favorites' element={<Favorites />} />
           </Route>

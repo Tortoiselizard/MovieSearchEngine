@@ -27,6 +27,10 @@
   transition: all 0.4s;
 }
 
+.more:hover {
+  color: #e5e5e5;
+}
+
 .more::after {
   content: '';
   position: absolute;

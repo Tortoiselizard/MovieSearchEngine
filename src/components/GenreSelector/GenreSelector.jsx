@@ -3,14 +3,19 @@ import { ChevronDown } from 'lucide-react'
 import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
+import { useLocation, useNavigate } from 'react-router'
 
-import { requestPopularMovies, requestMovieGenre, requestMovies } from '../../services/moviesApi'
+import { requestMovieGenre, requestMovies } from '../../services/moviesApi'
 
-import { updateMovies, loadMovies, loadGenres, updateGenres } from '../../context/actions'
+import { getQueriesString } from '../../libs/mappers'
+import { updateMoviesSearch, loadMovies, loadGenres, updateGenres } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
-  const { home, mode, genres } = globalState
+  const { search, genres } = globalState
+  const { movies } = search
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedGenre, setSelectedGenre] = useState(() => {
@@ -60,20 +65,21 @@ export default function GenreSelector () {
 
   function handleGenreSelected (genre) {
     setSelectedGenre(genre)
-    if (genre.name === 'All genders') {
-      getPopularMovies()
-    } else {
-      getLeakedMovies(genre)
-    }
+    getLeakedMovies(genre)
     setIsOpen(false)
   }
 
   async function getLeakedMovies (genre) {
-    const quantity = home.movies.moviesPerPage
-    dispatch(loadMovies({ mode }))
+    const quantity = movies.moviesPerPage
+    dispatch(loadMovies({ mode: 'search' }))
     const filters = {
-      ...(globalState[mode].movies.filters || {}),
-      genre: genre.id
+      ...(movies.filters || {}),
+      ...(genre.name !== 'All genders' ? { genre: genre.id } : {})
+    }
+
+    if (pathname !== '/search') {
+      const filterString = getQueriesString(filters)
+      navigate(`/search${filterString}`)
     }
     try {
       const { page, results, lastMovie, lastPage } = await requestMovies({
@@ -81,45 +87,17 @@ export default function GenreSelector () {
         lastPage: 0,
         quantity,
         ...filters,
-        currentMovies: globalState[mode].movies.list.map(movie => movie.id)
+        currentMovies: movies.list.map(movie => movie.id)
       })
-      dispatch(updateMovies({
+      dispatch(updateMoviesSearch({
         newMoviesData: {
           list: results,
-          category: 'popular',
           page,
           lastMovie,
           ...(lastPage ? { lastPage } : {}),
           moviesPerPage: quantity,
           filters
-        },
-        mode
-      }))
-    } catch (error) {
-      alert(error.message)
-    }
-  }
-
-  async function getPopularMovies () {
-    const widthViewport = window.innerWidth
-    const quantity = widthViewport < 480 ? 18 : 20
-    dispatch(loadMovies({ mode }))
-    try {
-      const { page, results, lastMovie, lastPage } = await requestPopularMovies({
-        page: 1,
-        quantity,
-        lastMovie: 0
-      })
-      dispatch(updateMovies({
-        newMoviesData: {
-          list: results,
-          category: 'popular',
-          page,
-          ...(lastPage ? { lastPage } : {}),
-          lastMovie,
-          moviesPerPage: quantity
-        },
-        mode
+        }
       }))
     } catch (error) {
       alert(error.message)
@@ -158,6 +136,7 @@ export default function GenreSelector () {
                                       onClick={() => { handleGenreSelected(genre) }}
                                       role='option'
                                       aria-selected={selectedGenre.id === genre.id}
+                                      disabled={selectedGenre.id === genre.id}
                                     >
                                       {genre.name}
                                     </button>

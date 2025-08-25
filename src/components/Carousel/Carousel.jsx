@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { useState, useEffect, useRef, useMemo, cloneElement } from 'react'
+import { useState, useEffect, useRef, cloneElement } from 'react'
 
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import styles from './Carousel.module.css'
@@ -85,5 +85,6 @@ Carousel.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
-  seeMore: PropTypes.func.isRequired
+  seeMore: PropTypes.func.isRequired,
+  imageSize: PropTypes.string.isRequired
 }
