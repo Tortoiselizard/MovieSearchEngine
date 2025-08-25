@@ -69,8 +69,8 @@ export default function SearchBar () {
     dispatch(updateMode('search'))
     const quantity = movies.current.moviesPerPage || 20
     const filters = {
-      title,
-      ...movies.current.filters
+      ...movies.current.filters,
+      title
     }
     try {
       const { page, results, lastMovie, lastPage } = await requestMovies({
