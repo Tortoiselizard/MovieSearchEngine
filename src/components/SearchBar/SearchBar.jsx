@@ -1,41 +1,30 @@
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { useMyContext } from '../../context/MyContext.jsx'
-import { useLocation, useNavigate } from 'react-router'
-
-import { updateMoviesSearch, loadMovies } from '../../context/actions'
-import { requestMovies } from '../../services/moviesApi.js'
-
-import { getQueriesString } from '../../libs/mappers.js'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import styles from './SearchBar.module.css'
 
 export default function SearchBar () {
   const [query, setQuery] = useState('')
-  const { state: globalState, dispatch } = useMyContext()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const mode = pathname === '/' ? 'home' : 'search'
-  const movies = useRef(globalState[mode].movies)
-  const currentURL = useRef(pathname)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const inputNode = useRef()
   const [isExpanded, setIsExpanded] = useState(false)
   const searchRef = useRef(null)
-  const queryRef = useRef(query)
 
-  // Update movies value
+  // Update initial query
   useEffect(() => {
-    movies.current = globalState[mode].movies
-  }, [globalState[mode].movies])
-
-  // Update currentURL
-  useEffect(() => {
-    currentURL.current = pathname
-  }, [pathname])
+    const newQuery = searchParams.get('title')
+    if (!newQuery) return
+    setQuery(newQuery)
+    setIsExpanded(true)
+  }, [])
 
   // handle clicks outside the component
   useEffect(() => {
     function handleClickOutside (event) {
-      if (searchRef.current && !searchRef.current.contains(event.target) && !queryRef.current) {
+      if (searchRef.current && !searchRef.current.contains(event.target) && !inputNode.current.value) {
         setIsExpanded(false)
       }
     }
@@ -47,8 +36,9 @@ export default function SearchBar () {
   // Search movies when you press enter key
   useEffect(() => {
     function handleEnter (event) {
-      if (event.key !== 'Enter' || !queryRef.current) return
-      getMoviesByTitle(queryRef.current)
+      const { value } = inputNode.current
+      if (event.key !== 'Enter' || !value) return
+      getMoviesByTitle(value)
     }
 
     const input = document.querySelector('#search-input')
@@ -56,12 +46,11 @@ export default function SearchBar () {
     return () => {
       input.removeEventListener('keypress', handleEnter)
     }
-  }, [])
+  }, [pathname, query])
 
   function handleChange (event) {
     const newValue = event.target.value
     setQuery(newValue)
-    queryRef.current = newValue
   }
 
   function handleClick () {
@@ -71,44 +60,20 @@ export default function SearchBar () {
       input.focus()
       return
     }
-    if (!queryRef.current) return
-    getMoviesByTitle(queryRef.current)
+
+    const { value } = inputNode.current
+    if (!value) return
+    getMoviesByTitle(value)
   }
 
   async function getMoviesByTitle (title) {
-    dispatch(loadMovies({ mode: 'search' }))
-    const quantity = movies.current.moviesPerPage || 20
-    const filters = {
-      ...movies.current.filters,
-      title
+    searchParams.set('title', title)
+    if (pathname !== '/search') {
+      navigate(`/search?${searchParams.toString()}`)
+      return
     }
 
-    if (currentURL.current !== '/search') {
-      const filterString = getQueriesString(filters)
-      navigate(`/search${filterString}`)
-    }
-    try {
-      const { page, results, lastMovie, lastPage } = await requestMovies({
-        page: 1,
-        quantity,
-        lastMovie: 0,
-        ...filters,
-        currentMovies: movies.current.list.map(movie => movie.id)
-      })
-      dispatch(updateMoviesSearch({
-        newMoviesData: {
-          list: results,
-          category: 'search',
-          page,
-          lastMovie,
-          ...(lastPage ? { lastPage } : {}),
-          moviesPerPage: quantity,
-          filters
-        }
-      }))
-    } catch (error) {
-      alert(error.message)
-    }
+    setSearchParams(searchParams)
   }
 
   function handleClear () {
@@ -133,6 +98,7 @@ export default function SearchBar () {
           onChange={handleChange}
           placeholder='Titles'
           className={`${styles.searchInput} ${isExpanded ? styles.visible : ''}`}
+          ref={inputNode}
         />
 
         {

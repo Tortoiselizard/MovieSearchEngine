@@ -3,18 +3,17 @@ import { ChevronDown } from 'lucide-react'
 import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
-import { requestMovieGenre, requestMovies } from '../../services/moviesApi'
+import { requestMovieGenre } from '../../services/moviesApi'
 
-import { getQueriesString } from '../../libs/mappers'
-import { updateMoviesSearch, loadMovies, loadGenres, updateGenres } from '../../context/actions'
+import { loadGenres, updateGenres } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
-  const { search, genres } = globalState
-  const { movies } = search
+  const { genres } = globalState
   const { pathname } = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
@@ -45,13 +44,19 @@ export default function GenreSelector () {
     dispatch(loadGenres())
     try {
       const { genres } = await requestMovieGenre()
-      const list = [{ id: 0, name: 'All genders' }, ...genres]
+      const list = [{ id: 0, name: 'All genres' }, ...genres]
       dispatch(updateGenres({
         list,
         status: 'successful',
         error: null
       }))
-      const newSelectedGenre = list[0]
+      let newSelectedGenre
+      if (searchParams.has('genre')) {
+        const genreName = searchParams.get('genre')
+        newSelectedGenre = list.find(genre => genre.name === genreName)
+      } else {
+        newSelectedGenre = list[0]
+      }
       setSelectedGenre(newSelectedGenre)
     } catch (error) {
       alert(error.message)
@@ -65,43 +70,22 @@ export default function GenreSelector () {
 
   function handleGenreSelected (genre) {
     setSelectedGenre(genre)
-    getLeakedMovies(genre)
+    upteGenreFilter(genre)
     setIsOpen(false)
   }
 
-  async function getLeakedMovies (genre) {
-    const quantity = movies.moviesPerPage
-    dispatch(loadMovies({ mode: 'search' }))
-    const filters = {
-      ...(movies.filters || {}),
-      ...(genre.name !== 'All genders' ? { genre: genre.id } : {})
+  async function upteGenreFilter ({ name }) {
+    searchParams.set('genre', name)
+
+    if (name === 'All genres') {
+      searchParams.delete('genre')
     }
 
     if (pathname !== '/search') {
-      const filterString = getQueriesString(filters)
-      navigate(`/search${filterString}`)
+      navigate(`/search?${searchParams.toString()}`)
+      return
     }
-    try {
-      const { page, results, lastMovie, lastPage } = await requestMovies({
-        page: 1,
-        lastPage: 0,
-        quantity,
-        ...filters,
-        currentMovies: movies.list.map(movie => movie.id)
-      })
-      dispatch(updateMoviesSearch({
-        newMoviesData: {
-          list: results,
-          page,
-          lastMovie,
-          ...(lastPage ? { lastPage } : {}),
-          moviesPerPage: quantity,
-          filters
-        }
-      }))
-    } catch (error) {
-      alert(error.message)
-    }
+    setSearchParams(searchParams)
   }
 
   return (

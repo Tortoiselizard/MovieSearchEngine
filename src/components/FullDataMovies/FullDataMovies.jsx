@@ -3,7 +3,7 @@ import MovieCard from '../MovieCard/MovieCard'
 import Spinner from '../Spinner/Spinner.jsx'
 
 import { useMyContext } from '../../context/MyContext'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 
 import { addMovies, updateMoviesSearch, loadMovies } from '../../context/actions.js'
@@ -13,37 +13,49 @@ import styles from './FullDataMovies.module.css'
 
 export default function FullDataMovies () {
   const { state: globalState, dispatch } = useMyContext()
-  const searchMovies = globalState.search.movies
+  const { search, genres } = globalState
+  const searchMovies = search.movies
   const [searchParams] = useSearchParams()
   const movies = useRef(searchMovies)
   const [loadingNextPage, setLoadingNextPage] = useState(false)
+  const filters = useMemo(() => {
+    if (genres.status !== 'successful') return
+    const filters = Object.fromEntries(searchParams.entries())
+    if (filters.genre) {
+      filters.genre = genres.list.find(({ name }) => name === filters.genre).id
+    }
+    return filters
+  }, [searchParams, genres])
 
   // Get movies
   useEffect(() => {
-    if (searchMovies.status !== 'idle') return
-    const filters = Object.fromEntries(searchParams.entries())
-    getMovies(filters)
-  }, [])
+    if (genres.status !== 'successful') return
+    getMovies()
+  }, [genres.status, searchParams])
 
   // Update movies
   useEffect(() => {
     movies.current = searchMovies
   }, [searchMovies])
 
-  async function getMovies (filters) {
+  async function getMovies () {
     const widthViewport = window.innerWidth
     const quantity = widthViewport < 480 ? 18 : 20
-    const { page: currentPage } = searchMovies
     dispatch(loadMovies({ mode: 'search' }))
     try {
-      const { page, lastMovie, results } = await requestMovies({ page: currentPage, quantity, ...filters })
+      const { page, lastMovie, results } = await requestMovies({
+        page: 1,
+        lastMovie: 0,
+        quantity,
+        ...filters,
+        currentMovies: []
+      })
       dispatch(updateMoviesSearch({
         newMoviesData: {
           list: results,
           page,
           lastMovie,
-          moviesPerPage: quantity,
-          filters
+          moviesPerPage: quantity
         }
       }))
     } catch (error) {
@@ -61,7 +73,7 @@ export default function FullDataMovies () {
         page: newPage,
         lastMovie: indexMovie,
         quantity,
-        ...movies.current.filters,
+        ...filters,
         currentMovies: movies.current.list.map(movie => movie.id)
       })
       const newMoviesData = {
@@ -69,8 +81,7 @@ export default function FullDataMovies () {
         page,
         lastMovie,
         ...(lastPage ? { lastPage } : {}),
-        moviesPerPage: quantity,
-        filters: { ...movies.current.filters }
+        moviesPerPage: quantity
       }
       dispatch(addMovies({ currentMoviesData: movies.current.list, newMoviesData }))
       setLoadingNextPage(false)
