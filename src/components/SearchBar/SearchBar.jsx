@@ -20,7 +20,11 @@ export default function SearchBar () {
       newQuery = ''
     }
     setQuery(newQuery)
-    setIsExpanded(true)
+    if (!newQuery) {
+      setIsExpanded(false)
+    } else {
+      setIsExpanded(true)
+    }
   }, [searchParams])
 
   // handle clicks outside the component
