@@ -66,7 +66,7 @@ export default function ActorsContainer () {
                   actors.list.length
                     ? (
                       <Carousel
-                        items={actors.list}
+                        items={actors.list.slice(0, 20)}
                         title='Cast'
                         seeMore={`/cast/${id}`}
                         id='cast'

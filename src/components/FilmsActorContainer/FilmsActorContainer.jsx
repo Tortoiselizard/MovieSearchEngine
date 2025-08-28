@@ -65,7 +65,7 @@ export default function FilmsActorContainer () {
               ? (
                   movies.list.length
                     ? (
-                      <Carousel items={movies.list.slice(0, 20)} title='Cast' seeMore='/' id='cast' imageSize={imageSize}>
+                      <Carousel items={movies.list.slice(0, 20)} title='Cast' seeMore={`/actor-films/${id}`} id='cast' imageSize={imageSize}>
                         <MovieCard mode='home' />
                       </Carousel>
                       )

@@ -5,6 +5,7 @@ import ActorDetails from './components/ActorDetails/ActorDetails.jsx'
 import Favorites from './components/Favorites/Favorites.jsx'
 import FullDataMovies from './components/FullDataMovies/FullDataMovies.jsx'
 import Cast from './components/Cast/Cast.jsx'
+import ActorFilms from './components/ActorFilms/ActorFilms.jsx'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='actors/:id' element={<ActorDetails />} />
             <Route path='favorites' element={<Favorites />} />
             <Route path='cast/:id' element={<Cast />} />
+            <Route path='actor-films/:id' element={<ActorFilms />} />
           </Route>
         </Routes>
       </BrowserRouter>
