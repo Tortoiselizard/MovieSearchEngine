@@ -1,44 +1,11 @@
 import { Link } from 'react-router'
 
-import { useMyContext } from '../../context/MyContext.jsx'
-
-import { updateMoviesSearch, loadMovies } from '../../context/actions.js'
-import { requestPopularMovies } from '../../services/moviesApi'
-
 import styles from './NavBar.module.css'
 
 export default function NavBar () {
-  const { state: globalState, dispatch } = useMyContext()
-  const { home, mode } = globalState
-
-  async function getMovies (category) {
-    if (home.movies.category === category) return
-    switch (category) {
-      case 'popular': {
-        dispatch(loadMovies({ mode }))
-        try {
-          const { page, results, total_pages, total_results } = await requestPopularMovies({ page: 1 })
-          dispatch(updateMoviesSearch({
-            newMoviesData: {
-              list: results,
-              category: 'popular',
-              page,
-              totalPages: total_pages,
-              total_results,
-              moviesPerPage: quantity
-            },
-            mode
-          }))
-        } catch (error) {
-          alert(error.message)
-        }
-        break
-      }
-    }
-  }
   return (
     <nav className={styles.navBarContainer}>
-      <button className={styles.navLink} onClick={() => { getMovies('popular') }}>Popular</button>
+      <Link to='/' className={styles.navLink}>Popular</Link>
       <Link to='/favorites' className={styles.navLink}>Favorites</Link>
     </nav>
   )
