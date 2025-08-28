@@ -28,7 +28,9 @@ export default function Header () {
       {
         pathname !== '/' && <ComeBack />
       }
-      <NavBar />
+      {
+        ['/', '/search'].includes(pathname) && <NavBar />
+      }
     </header>
   )
 }

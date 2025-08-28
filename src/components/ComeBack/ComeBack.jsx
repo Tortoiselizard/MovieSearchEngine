@@ -11,7 +11,7 @@ export default function ComeBack () {
   }
 
   return (
-    <button className={styles.container} onClick={goBack}>
+    <button className={styles.comeBackContainer} onClick={goBack}>
       <ArrowLeft />
     </button>
   )

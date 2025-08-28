@@ -1,4 +1,4 @@
-import { Link, useMatch } from 'react-router'
+import { Link } from 'react-router'
 
 import { useMyContext } from '../../context/MyContext.jsx'
 
@@ -10,8 +10,6 @@ import styles from './NavBar.module.css'
 export default function NavBar () {
   const { state: globalState, dispatch } = useMyContext()
   const { home, mode } = globalState
-  const isHome = useMatch('/')
-  if (!isHome || mode === 'search') return
 
   async function getMovies (category) {
     if (home.movies.category === category) return
@@ -39,7 +37,7 @@ export default function NavBar () {
     }
   }
   return (
-    <nav className={styles.container}>
+    <nav className={styles.navBarContainer}>
       <button className={styles.navLink} onClick={() => { getMovies('popular') }}>Popular</button>
       <Link to='/favorites' className={styles.navLink}>Favorites</Link>
     </nav>
