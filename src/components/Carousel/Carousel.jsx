@@ -57,7 +57,6 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
         <Link
           to={seeMore}
           className={styles.more}
-          style={{ visibility: scrollButtonRightVisibility ? '' : 'hidden' }}
         >See more
         </Link>
       </div>
