@@ -4,14 +4,16 @@ import { Heart } from 'lucide-react'
 import styles from './HeartButton.module.css'
 import { useEffect, useState } from 'react'
 
-export default function HeartButton ({ movieId }) {
+import { summaryMovieData } from '../../libs/mappers'
+
+export default function HeartButton ({ movie }) {
   const [isActive, setIsActive] = useState(false)
 
   useEffect(() => {
     const favoritesString = localStorage.getItem('favorites')
     if (!favoritesString) return
     const favorites = JSON.parse(favoritesString)
-    const newIsActive = favorites.includes(movieId)
+    const newIsActive = favorites.some(({ id }) => id === movie.id)
     if (!newIsActive) return
     setIsActive(newIsActive)
   }, [])
@@ -20,31 +22,32 @@ export default function HeartButton ({ movieId }) {
     const newIsActive = !isActive
     setIsActive(newIsActive)
     if (newIsActive) {
-      return addMovieToFavorite(movieId)
+      return addMovieToFavorite(movie)
     }
-    return removeMovieFromFavorite(movieId)
+    return removeMovieFromFavorite(movie)
   }
 
-  function addMovieToFavorite (movieId) {
+  function addMovieToFavorite (movie) {
+    const summerMovie = summaryMovieData(movie)
     const favorites = localStorage.getItem('favorites')
     if (!favorites) {
-      const newFavorites = [movieId]
+      const newFavorites = [summerMovie]
       return localStorage.setItem('favorites', JSON.stringify(newFavorites))
     }
 
     const newFavorites = JSON.parse(favorites)
-    newFavorites.push(movieId)
+    newFavorites.push(summerMovie)
     localStorage.setItem('favorites', JSON.stringify(newFavorites))
   }
 
-  function removeMovieFromFavorite (movieId) {
+  function removeMovieFromFavorite (movie) {
     const favorites = localStorage.getItem('favorites')
     if (!favorites) {
       return
     }
 
     const newFavorites = JSON.parse(favorites)
-    const index = newFavorites.indexOf(movieId)
+    const index = newFavorites.findIndex(({ id }) => id === movie.id)
     if (index === -1) return
     newFavorites.splice(index, 1)
     localStorage.setItem('favorites', JSON.stringify(newFavorites))
@@ -63,5 +66,5 @@ export default function HeartButton ({ movieId }) {
 }
 
 HeartButton.propTypes = {
-  movieId: PropTypes.number.isRequired
+  movie: PropTypes.object.isRequired
 }

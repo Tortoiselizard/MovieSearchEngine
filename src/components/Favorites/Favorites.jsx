@@ -3,7 +3,6 @@ import MovieCard from '../MovieCard/MovieCard'
 import Spinner from '../Spinner/Spinner.jsx'
 
 import { useState, useEffect } from 'react'
-import { requestMoviesById } from '../../services/moviesApi'
 
 import styles from './Favorites.module.css'
 
@@ -38,21 +37,7 @@ export default function Favorites () {
     }
 
     const favorites = JSON.parse(favoritesString)
-    const list = []
-    for (const id of favorites) {
-      try {
-        const response = await requestMoviesById(id)
-        list.push(response)
-      } catch (error) {
-        setMovies({
-          status: 'error',
-          list: [],
-          error: error.message
-        })
-        alert(error.message)
-      }
-    }
-
+    const list = [...favorites]
     setMovies({
       status: 'successful',
       list,
@@ -61,32 +46,6 @@ export default function Favorites () {
   }
 
   async function getMore () {
-    // const { category, moviesPerPage: quantity, lastMovie: indexMovie, page, lastPage: lastPagePrev } = movies.current
-    // if (lastPagePrev) return
-    // const newPage = page + (indexMovie ? 0 : 1)
-    // setLoadingNextPage(true)
-    // try {
-    // const { page, lastMovie, results, lastPage } = await requestMovies({
-    // page: newPage,
-    // lastMovie: indexMovie,
-    // quantity,
-    // ...movies.current.filters
-    // })
-    // const newList = [...movies.current.list, ...results]
-    // const newMoviesData = {
-    // list: newList,
-    // category,
-    // page,
-    // lastMovie,
-    // ...(lastPage ? { lastPage } : {}),
-    // moviesPerPage: quantity,
-    // filters: { ...movies.current.filters }
-    // }
-    // dispatch(addMovies({ newMoviesData, mode }))
-    // setLoadingNextPage(false)
-    // } catch (error) {
-    // alert(error.message)
-    // }
   }
 
   return (

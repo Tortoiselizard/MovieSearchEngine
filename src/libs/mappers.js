@@ -18,3 +18,17 @@ export function getQueriesString (queries) {
 
   return queriesString
 }
+
+export function summaryMovieData ({
+  poster_path,
+  id,
+  release_date,
+  title
+}) {
+  return {
+    poster_path,
+    id,
+    release_date,
+    title
+  }
+}

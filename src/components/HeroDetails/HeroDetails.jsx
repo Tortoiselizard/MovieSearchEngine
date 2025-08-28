@@ -36,7 +36,7 @@ export default function HeroDetails ({ movie }) {
                 ))
               }
             </div>
-            <HeartButton movieId={movie.id} />
+            <HeartButton movie={movie} />
           </div>
 
           <div className={styles.heroPoster}>
