@@ -1,0 +1,6 @@
+.fullDataCast {
+  padding: 68px 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
