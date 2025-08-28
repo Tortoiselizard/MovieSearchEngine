@@ -25,19 +25,20 @@ export class SearchService {
     // Do request to pages
     do {
       let { results, total_pages } = await this.#searchRepository.getSearchMovies({ ...filters, page })
+      results = results.slice(moviePackage.lastMovie)
       totalPages = total_pages
       lastRequest = results
       if (Object.keys(filters).length > 1) {
         results = filterBy({ movies: results, filters })
       }
-      moviePackage.results.push(...results.slice(moviePackage.lastMovie))
+      moviePackage.results.push(...results)
       moviePackage.page = page
       moviePackage.lastMovie = 0
       filters.currentMovies = [...(filters.currentMovies ? filters.currentMovies : []), ...results.map(movie => movie.id)]
       page++
     } while ((moviePackage.results.length < queries.moviesPerPage) && (page <= totalPages))
 
-    if (moviePackage.results.length !== queries.moviesPerPage) {
+    if (moviePackage.results.length > queries.moviesPerPage) {
       moviePackage.results = moviePackage.results.slice(0, queries.moviesPerPage)
       const lastMovie = moviePackage.results[moviePackage.results.length - 1]
       const indexMovie = lastRequest.findIndex(({ id }) => id === lastMovie.id) + 1
