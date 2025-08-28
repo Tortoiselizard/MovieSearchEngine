@@ -48,16 +48,6 @@ export default function FilmsActorContainer () {
     }
   }
 
-  function changeToFullDataMode () {
-    // dispatch(updateMovies({
-    // newMoviesData: {
-    // ...movies
-    // },
-    // mode: 'search'
-    // }))
-    // dispatch(updateMode('search'))
-  }
-
   return (
     <div className={styles.moviesContainer}>
       {
@@ -75,7 +65,7 @@ export default function FilmsActorContainer () {
               ? (
                   movies.list.length
                     ? (
-                      <Carousel items={movies.list} title='Cast' seeMore={changeToFullDataMode} id='cast' imageSize={imageSize}>
+                      <Carousel items={movies.list} title='Cast' seeMore='/' id='cast' imageSize={imageSize}>
                         <MovieCard />
                       </Carousel>
                       )

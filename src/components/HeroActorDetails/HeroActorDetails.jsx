@@ -37,16 +37,17 @@ export default function HeroActorDetails ({ actor }) {
             <p className={styles.biography}>{actor.biography}</p>
 
             <span className={styles.popularity}>{actor.popularity}</span>
-
           </div>
 
-          <div className={styles.heroPoster}>
-            <img
-              src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
-              alt={'image: ' + actor.name}
-              className={styles.posterImage}
-            />
-            <div className={styles.heroGradientPoster} />
+          <div className={styles.heroPosterContainer}>
+            <div className={styles.heroPoster}>
+              <img
+                src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
+                alt={'image: ' + actor.name}
+                className={styles.posterImage}
+              />
+              <div className={styles.heroGradientPoster} />
+            </div>
           </div>
         </div>
       </div>
