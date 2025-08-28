@@ -22,6 +22,19 @@ export default function GenreSelector () {
     return null
   })
 
+  // Update selectedGenre with URL
+  useEffect(() => {
+    if (genres.status !== 'successful') return
+    const genreName = searchParams.get('genre')
+    let newSelectedGenre
+    if (!genreName) {
+      newSelectedGenre = genres.list[0]
+    } else {
+      newSelectedGenre = genres.list.find(({ name }) => name === genreName)
+    }
+    setSelectedGenre(newSelectedGenre)
+  }, [searchParams])
+
   // Initialice genres
   useEffect(() => {
     if (genres.status !== 'idle') return
