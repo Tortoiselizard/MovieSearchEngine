@@ -11,16 +11,16 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(true)
   const [countCardVisibles, setCountCardVisibles] = useState(0)
 
-  // Initialice scrollbar in 0
+  // Initialice horizontal scrollbar in 0
   useEffect(() => {
     itemsContainer.current.scrollTo({ left: 0 })
   }, [])
 
-  // update countCardVisibles
+  // Update countCardVisibles
   useEffect(() => {
     if (!itemsContainer.current || !items.length) return
     const containerRect = itemsContainer.current.getBoundingClientRect()
-    const elementRect = itemsContainer.current.childNodes[1].getBoundingClientRect()
+    const elementRect = itemsContainer.current.childNodes[0].getBoundingClientRect()
     const n = Math.floor(containerRect.width / (elementRect.width + 8))
     setCountCardVisibles(n)
   }, [itemsContainer.current])

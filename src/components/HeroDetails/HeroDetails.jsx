@@ -11,11 +11,19 @@ export default function HeroDetails ({ movie }) {
     <div className={styles.container}>
       <div className={styles.hero}>
         <div className={styles.heroBackground}>
-          <img
-            src={`${VITE_API_IMAGE_URL}/w1280/${movie.backdrop_path}`}
-            alt={movie.title}
-            className={styles.backgroundImage}
-          />
+          {
+            movie.backdrop_path
+              ? (
+                <img
+                  src={`${VITE_API_IMAGE_URL}/w1280/${movie.backdrop_path}`}
+                  alt={movie.title}
+                  className={styles.backgroundImage}
+                />
+                )
+              : (
+                <div className={styles.backgroundImage} />
+                )
+          }
           <div className={styles.heroGradient} />
         </div>
         <div className={styles.heroContent}>
