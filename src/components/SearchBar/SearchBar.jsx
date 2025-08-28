@@ -15,11 +15,13 @@ export default function SearchBar () {
 
   // Update initial query
   useEffect(() => {
-    const newQuery = searchParams.get('title')
-    if (!newQuery) return
+    let newQuery = searchParams.get('title')
+    if (!newQuery) {
+      newQuery = ''
+    }
     setQuery(newQuery)
     setIsExpanded(true)
-  }, [])
+  }, [searchParams])
 
   // handle clicks outside the component
   useEffect(() => {
