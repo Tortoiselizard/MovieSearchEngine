@@ -4,36 +4,27 @@ import Carousel from '../Carousel/Carousel'
 
 import { useMyContext } from '../../context/MyContext'
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router'
 
-import { updateMoviesSearch } from '../../context/actions'
-
-import { getQueriesString } from '../../libs/mappers'
 import styles from './MoviesContainer.module.css'
 
 export default function MoviesContainer () {
-  const { state: globalState, dispatch } = useMyContext()
+  const { state: globalState } = useMyContext()
   const { movies } = globalState.home
-  const navigate = useNavigate()
   const imageSize = useMemo(() => {
     const viewportWidth = window.innerWidth
     if (viewportWidth < 480) return '/w185'
     else return '/w342'
   }, [])
 
-  function changeToFullDataMode () {
-    dispatch(updateMoviesSearch({
-      newMoviesData: {
-        ...movies
-      }
-    }))
-    const filterString = getQueriesString(movies.filters)
-    navigate(`/search${filterString}`)
-  }
-
   return (
     <div className={styles.content}>
-      <Carousel items={movies.list.slice(1)} title='Trending Now' seeMore={changeToFullDataMode} id='popular' imageSize={imageSize}>
+      <Carousel
+        items={movies.list.slice(1)}
+        title='Trending Now'
+        seeMore='/search'
+        id='popular'
+        imageSize={imageSize}
+      >
         <MovieCard mode='home' />
       </Carousel>
     </div>

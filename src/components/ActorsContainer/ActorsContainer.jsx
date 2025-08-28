@@ -48,16 +48,6 @@ export default function ActorsContainer () {
     }
   }
 
-  function changeToFullDataMode () {
-    // dispatch(updateMovies({
-    // newMoviesData: {
-    // ...movies
-    // },
-    // mode: 'search'
-    // }))
-    // dispatch(updateMode('search'))
-  }
-
   return (
     <div className={styles.actorsContainer}>
       {
@@ -75,7 +65,13 @@ export default function ActorsContainer () {
               ? (
                   actors.list.length
                     ? (
-                      <Carousel items={actors.list} title='Cast' seeMore={changeToFullDataMode} id='cast' imageSize={imageSize}>
+                      <Carousel
+                        items={actors.list}
+                        title='Cast'
+                        seeMore={`/cast/${id}`}
+                        id='cast'
+                        imageSize={imageSize}
+                      >
                         <ActorCard />
                       </Carousel>
                       )

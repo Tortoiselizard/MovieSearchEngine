@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import { Link } from 'react-router'
+
 import { useState, useEffect, useRef, cloneElement } from 'react'
 
 import { ChevronRight, ChevronLeft } from 'lucide-react'
@@ -52,12 +54,12 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
     <div className={styles.carouselContainer}>
       <div className={styles.carouselTitle}>
         <h2 className={styles.title}>{title}</h2>
-        <button
+        <Link
+          to={seeMore}
           className={styles.more}
-          onClick={seeMore}
           style={{ visibility: scrollButtonRightVisibility ? '' : 'hidden' }}
         >See more
-        </button>
+        </Link>
       </div>
       <div id={id} className={styles.rowItemsContainer}>
         <button
@@ -95,6 +97,6 @@ Carousel.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
-  seeMore: PropTypes.func.isRequired,
+  seeMore: PropTypes.string.isRequired,
   imageSize: PropTypes.string.isRequired
 }
