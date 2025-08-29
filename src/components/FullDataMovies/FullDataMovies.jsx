@@ -29,7 +29,7 @@ export default function FullDataMovies () {
 
   // Get movies
   useEffect(() => {
-    if (genres.status !== 'successful') return
+    if (genres.status !== 'successful' || searchMovies.status !== 'idle') return
     getMovies()
   }, [genres.status, searchParams])
 
