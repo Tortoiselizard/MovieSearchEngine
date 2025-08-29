@@ -5,7 +5,7 @@ export default function Redirect () {
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate('/notFound')
+    navigate('/notFound', { replace: true })
   }, [])
   return null
 }

@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router'
 
 import styles from './ComeBack.module.css'
 
