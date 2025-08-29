@@ -8,6 +8,7 @@ import { useSearchParams } from 'react-router'
 
 import { addMovies, updateMoviesSearch, loadMovies } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
+import { deepEqual } from '../../libs/validations.js'
 
 import styles from './FullDataMovies.module.css'
 
@@ -29,7 +30,7 @@ export default function FullDataMovies () {
 
   // Get movies
   useEffect(() => {
-    if (genres.status !== 'successful' || searchMovies.status !== 'idle') return
+    if (genres.status !== 'successful' || deepEqual(filters, searchMovies.filters)) return
     getMovies()
   }, [genres.status, searchParams])
 
@@ -55,7 +56,8 @@ export default function FullDataMovies () {
           list: results,
           page,
           lastMovie,
-          moviesPerPage: quantity
+          moviesPerPage: quantity,
+          filters
         }
       }))
     } catch (error) {
@@ -81,7 +83,8 @@ export default function FullDataMovies () {
         page,
         lastMovie,
         ...(lastPage ? { lastPage } : {}),
-        moviesPerPage: quantity
+        moviesPerPage: quantity,
+        filters
       }
       dispatch(addMovies({ currentMoviesData: movies.current.list, newMoviesData }))
       setLoadingNextPage(false)
