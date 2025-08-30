@@ -57,6 +57,7 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
         <Link
           to={seeMore}
           className={styles.more}
+          style={items.length < 19 ? { display: 'none' } : {}}
         >See more
         </Link>
       </div>
@@ -70,7 +71,7 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
         </button>
         <div ref={itemsContainer} className={styles.itemsContainer}>
           {
-            items.map(item => (
+            items.slice(0, 20).map(item => (
               cloneElement(children, {
                 key: item.id,
                 data: item,
