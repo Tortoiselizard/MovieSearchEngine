@@ -2,7 +2,7 @@ import Grid from '../Grid/Grid.jsx'
 import ActorCard from '../ActorCard/ActorCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
 
@@ -15,11 +15,14 @@ export default function Cast () {
   const { id } = useParams()
   const { state: globalState, dispatch } = useMyContext()
   const { cast } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
 
   // Get cast
   useEffect(() => {
-    if (cast.movieId === id) return
-    getCast()
+    if (cast.movieId !== id) {
+      getCast()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getCast () {
@@ -35,6 +38,8 @@ export default function Cast () {
       alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <div className={styles.fullDataCast}>
