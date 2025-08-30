@@ -7,7 +7,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import { requestMovieGenre } from '../../services/moviesApi'
 
-import { loadGenres, updateGenres } from '../../context/actions'
+import { loadGenres, updateAlert, updateGenres } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
@@ -72,7 +72,11 @@ export default function GenreSelector () {
       }
       setSelectedGenre(newSelectedGenre)
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
       dispatch(updateGenres({
         list: [],
         status: 'fail',

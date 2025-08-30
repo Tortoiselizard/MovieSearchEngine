@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
 
 import { requestFilmsActor } from '../../services/moviesApi.js'
-import { updateActorFilms, loadActorFilms } from '../../context/actions.js'
+import { updateActorFilms, loadActorFilms, updateAlert } from '../../context/actions.js'
 
 import styles from './ActorFilms.module.css'
 
@@ -34,7 +34,11 @@ export default function ActorFilms () {
         actorId: id
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

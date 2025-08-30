@@ -1,12 +1,12 @@
 import { useMyContext } from '../../context/MyContext'
+import { useEffect, useState } from 'react'
 
-import { updateMoviesSearch, loadMovies } from '../../context/actions.js'
+import { updateMoviesSearch, loadMovies, updateAlert } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 
 import styles from './Pager.module.css'
-import { useEffect, useState } from 'react'
 
 export default function Pager () {
   const { state: globalState, dispatch } = useMyContext()
@@ -79,7 +79,11 @@ export default function Pager () {
       }
       dispatch(updateMoviesSearch({ newMoviesData }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

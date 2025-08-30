@@ -4,7 +4,7 @@ import Spinner from '../Spinner/Spinner.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMoviesHome, loadMovies } from '../../context/actions.js'
+import { updateMoviesHome, loadMovies, updateAlert } from '../../context/actions.js'
 import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
@@ -35,7 +35,11 @@ export default function Home () {
         }
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

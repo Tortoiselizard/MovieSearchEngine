@@ -6,7 +6,7 @@ import { useMyContext } from '../../context/MyContext'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 
-import { addMovies, updateMoviesSearch, loadMovies } from '../../context/actions.js'
+import { addMovies, updateMoviesSearch, loadMovies, updateAlert } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 import { deepEqual } from '../../libs/validations.js'
 
@@ -61,7 +61,11 @@ export default function FullDataMovies () {
         }
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 
@@ -89,7 +93,11 @@ export default function FullDataMovies () {
       dispatch(addMovies({ currentMoviesData: movies.current.list, newMoviesData }))
       setLoadingNextPage(false)
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

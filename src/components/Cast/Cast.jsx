@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
 
 import { requestActors } from '../../services/moviesApi.js'
-import { updateCast, loadCast } from '../../context/actions.js'
+import { updateCast, loadCast, updateAlert } from '../../context/actions.js'
 
 import styles from './Cast.module.css'
 
@@ -35,7 +35,11 @@ export default function Cast () {
         movieId: id
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

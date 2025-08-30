@@ -7,7 +7,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { useMyContext } from '../../context/MyContext'
 
 import { requestActors } from '../../services/moviesApi'
-import { updateCast, loadCast } from '../../context/actions'
+import { updateCast, loadCast, updateAlert } from '../../context/actions'
 
 import styles from './ActorsContainer.module.css'
 
@@ -38,7 +38,11 @@ export default function ActorsContainer () {
         movieId: id
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 

@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 
 import { requestActor } from '../../services/moviesApi'
 import { useMyContext } from '../../context/MyContext'
-import { updateActorDetails, loadActorDetails } from '../../context/actions'
+import { updateActorDetails, loadActorDetails, updateAlert } from '../../context/actions'
 
 export default function ActorDetails () {
   const { id } = useParams()
@@ -31,7 +31,11 @@ export default function ActorDetails () {
         actorId: id
       }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
     }
   }
 
