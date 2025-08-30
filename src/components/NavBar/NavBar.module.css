@@ -36,6 +36,10 @@
   transform: scaleX(1);
 }
 
+.navLink.active::after {
+  transform: scaleX(1);
+}
+
 /* Estilos para dispositivos que SI soportan hover */
 @media (hover: hover) and (pointer: fine) {
 
