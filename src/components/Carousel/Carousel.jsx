@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { Link } from 'react-router'
+import Link from '../Link/Link'
 
 import { useState, useEffect, useRef, cloneElement } from 'react'
 

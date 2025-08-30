@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router'
+import Link from '../Link/Link.jsx'
 import LazyImage from '../LazyImage/LazyImage.jsx'
 
 import { ImageIcon } from 'lucide-react'

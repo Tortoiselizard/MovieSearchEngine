@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import useHistory from '../../hooks/useHistory'
 
 export default function Redirect () {
-  const navigate = useNavigate()
+  const { replaceLast } = useHistory()
 
   useEffect(() => {
-    navigate('/notFound', { replace: true })
+    replaceLast('/notFound')
   }, [])
   return null
 }

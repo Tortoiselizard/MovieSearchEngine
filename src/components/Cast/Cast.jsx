@@ -2,41 +2,32 @@ import Grid from '../Grid/Grid.jsx'
 import ActorCard from '../ActorCard/ActorCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router'
+import { useMyContext } from '../../context/MyContext.jsx'
 
 import { requestActors } from '../../services/moviesApi.js'
+import { updateCast, loadCast } from '../../context/actions.js'
 
 import styles from './Cast.module.css'
 
 export default function Cast () {
   const { id } = useParams()
-  const [actors, setActors] = useState({
-    status: 'idle',
-    list: [],
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { cast } = globalState
 
-  // Update actors
+  // Get cast
   useEffect(() => {
-    if (actors.status !== 'idle') return
+    if (cast.status !== 'idle') return
     getCast()
   }, [])
 
   async function getCast () {
-    setActors({
-      status: 'pending',
-      list: [],
-      error: null
-    })
+    dispatch(loadCast())
     try {
       const newActors = await requestActors(id)
 
-      setActors({
-        list: newActors,
-        status: 'successful',
-        error: null
-      })
+      dispatch(updateCast(newActors))
     } catch (error) {
       alert(error.message)
     }
@@ -45,19 +36,19 @@ export default function Cast () {
   return (
     <div className={styles.fullDataCast}>
       {
-          actors.status === 'pending'
+          cast.status === 'pending'
             ? (
               <Spinner />
               )
-            : actors.status === 'fail'
+            : cast.status === 'fail'
               ? (
-                <p>Error: {actors.error}</p>
+                <p>Error: {cast.error}</p>
                 )
-              : actors.status === 'successful'
+              : cast.status === 'successful'
                 ? (
-                    actors.list.length
+                    cast.list.length
                       ? (
-                        <Grid items={actors.list} getMoreItems={() => {}} loadingNextPage={false}>
+                        <Grid items={cast.list} getMoreItems={() => {}} loadingNextPage={false}>
                           <ActorCard />
                         </Grid>
                         )

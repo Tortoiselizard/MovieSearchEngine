@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES } from './actions'
+import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES, UPDATE_HISTORY, UPDATE_ACTOR_FILMS, UPDATE_CAST, LOAD_CAST, LOAD_ACTOR_FILMS } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -28,6 +28,20 @@ const initialState = {
     status: 'idle',
     list: [],
     error: null
+  },
+  history: {
+    list: [],
+    index: 0
+  },
+  cast: {
+    status: 'idle',
+    list: [],
+    error: null
+  },
+  actorFilms: {
+    status: 'idle',
+    list: [],
+    error: null
   }
 }
 
@@ -52,6 +66,13 @@ function reducer (state, action) {
           ...state.search,
           movies: newMoviesData
         }
+      }
+    }
+    case UPDATE_ACTOR_FILMS: {
+      const { newActorFilms } = action.payload
+      return {
+        ...state,
+        actorFilms: newActorFilms
       }
     }
     case ADD_MOVIES: {
@@ -108,6 +129,38 @@ function reducer (state, action) {
         genres: {
           ...state.genres,
           status: 'pending'
+        }
+      }
+    }
+    case UPDATE_HISTORY: {
+      return {
+        ...state,
+        history: action.payload
+      }
+    }
+    case UPDATE_CAST: {
+      return {
+        ...state,
+        cast: action.payload
+      }
+    }
+    case LOAD_CAST: {
+      return {
+        ...state,
+        cast: {
+          list: [],
+          status: 'pending',
+          error: null
+        }
+      }
+    }
+    case LOAD_ACTOR_FILMS: {
+      return {
+        ...state,
+        actorFilms: {
+          list: [],
+          status: 'pending',
+          error: null
         }
       }
     }

@@ -6,6 +6,11 @@ export const LOAD_MOVIES = 'LOAD_MOVIES'
 export const UPDATE_MODE = 'UPDATE_MODE'
 export const LOAD_GENRES = 'LOAD_GENRES'
 export const UPDATE_GENRES = 'UPDATE_GENRES'
+export const UPDATE_HISTORY = 'UPDATE_HISTORY'
+export const UPDATE_ACTOR_FILMS = 'UPDATE_ACTOR_FILMS'
+export const UPDATE_CAST = 'UPDATE_CAST'
+export const LOAD_CAST = 'LOAD_CAST'
+export const LOAD_ACTOR_FILMS = 'LOAD_ACTOR_FILMS'
 
 export function updateMoviesHome ({ newMoviesData }) {
   return {
@@ -26,6 +31,19 @@ export function updateMoviesSearch ({ newMoviesData }) {
     payload: {
       newMoviesData: {
         ...newMoviesData,
+        status: 'successful',
+        error: null
+      }
+    }
+  }
+}
+
+export function updateActorFilms (newActorFilms) {
+  return {
+    type: UPDATE_ACTOR_FILMS,
+    payload: {
+      newActorFilms: {
+        list: newActorFilms,
         status: 'successful',
         error: null
       }
@@ -65,6 +83,12 @@ export function loadMovies ({ mode }) {
   }
 }
 
+export function loadActorFilms () {
+  return {
+    type: LOAD_ACTOR_FILMS
+  }
+}
+
 export function updateMode (mode) {
   return {
     type: UPDATE_MODE,
@@ -82,5 +106,43 @@ export function updateGenres (genres) {
 export function loadGenres () {
   return {
     type: LOAD_GENRES
+  }
+}
+
+export function initializeHistory (newHistory) {
+  return {
+    type: UPDATE_HISTORY,
+    payload: newHistory
+  }
+}
+
+export function addURLToHistory (newHistory) {
+  return {
+    type: UPDATE_HISTORY,
+    payload: newHistory
+  }
+}
+
+export function updateLastURLToHistory (newHistory) {
+  return {
+    type: UPDATE_HISTORY,
+    payload: newHistory
+  }
+}
+
+export function updateCast (newCast) {
+  return {
+    type: UPDATE_CAST,
+    payload: {
+      list: newCast,
+      status: 'successful',
+      error: null
+    }
+  }
+}
+
+export function loadCast () {
+  return {
+    type: LOAD_CAST
   }
 }

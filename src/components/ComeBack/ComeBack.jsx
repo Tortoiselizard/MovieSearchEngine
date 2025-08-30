@@ -1,17 +1,25 @@
 import { ArrowLeft } from 'lucide-react'
-import { useNavigate } from 'react-router'
+
+import { useLocation } from 'react-router'
+import useHistory from '../../hooks/useHistory'
 
 import styles from './ComeBack.module.css'
 
 export default function ComeBack () {
-  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const { goToPrevious, replaceLast, history } = useHistory()
+  const { list } = history
 
-  function goBack () {
-    navigate(-1)
+  function goComeBack () {
+    if (pathname === '/notFound' || list.length < 2) {
+      replaceLast('/')
+      return
+    }
+    goToPrevious()
   }
 
   return (
-    <button className={styles.comeBackContainer} onClick={goBack}>
+    <button className={styles.comeBackContainer} onClick={goComeBack}>
       <ArrowLeft />
     </button>
   )

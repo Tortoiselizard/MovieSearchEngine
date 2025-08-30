@@ -2,41 +2,31 @@ import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router'
+import { useMyContext } from '../../context/MyContext.jsx'
 
 import { requestFilmsActor } from '../../services/moviesApi.js'
+import { updateActorFilms, loadActorFilms } from '../../context/actions.js'
 
 import styles from './ActorFilms.module.css'
 
 export default function ActorFilms () {
   const { id } = useParams()
-  const [actorFilms, setActorFilms] = useState({
-    status: 'idle',
-    list: [],
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { actorFilms } = globalState
 
-  // Update actorFilms
+  // Get actorFilms
   useEffect(() => {
     if (actorFilms.status !== 'idle') return
     getActorFilms()
   }, [])
 
   async function getActorFilms () {
-    setActorFilms({
-      status: 'pending',
-      list: [],
-      error: null
-    })
+    dispatch(loadActorFilms())
     try {
       const newActorFilms = await requestFilmsActor(id)
-
-      setActorFilms({
-        list: newActorFilms,
-        status: 'successful',
-        error: null
-      })
+      dispatch(updateActorFilms(newActorFilms))
     } catch (error) {
       alert(error.message)
     }

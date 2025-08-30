@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import Link from '../Link/Link.jsx'
 
 import { useMyContext } from '../../context/MyContext.jsx'
 import { useEffect, useState } from 'react'
