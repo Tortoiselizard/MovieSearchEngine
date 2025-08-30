@@ -53,9 +53,7 @@ export default function FilmsActorContainer () {
       {
         movies.status === 'pending'
           ? (
-            <div className={styles.loadingContainer}>
-              <Spinner />
-            </div>
+            <Spinner />
             )
           : movies.status === 'fail'
             ? (
