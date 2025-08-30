@@ -4,18 +4,18 @@ import Spinner from '../Spinner/Spinner'
 
 import { useState, useMemo, useEffect } from 'react'
 import { useParams } from 'react-router'
+import { useMyContext } from '../../context/MyContext'
 
 import { requestFilmsActor } from '../../services/moviesApi'
+import { updateActorFilms, loadActorFilms } from '../../context/actions'
 
 import styles from './FilmsActorContainer.module.css'
 
 export default function FilmsActorContainer () {
   const { id } = useParams()
-  const [movies, setMovies] = useState({
-    status: 'idle',
-    list: [],
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { actorFilms } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
   const imageSize = useMemo(() => {
     const viewportWidth = window.innerWidth
     if (viewportWidth < 480) return '/w185'
@@ -23,47 +23,43 @@ export default function FilmsActorContainer () {
   }, [])
 
   useEffect(() => {
-    if (movies.status !== 'idle') return
-    getMovies()
+    if (actorFilms.actorId !== id) {
+      getMovies()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getMovies () {
-    setMovies(prevState => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadActorFilms())
     try {
       const newMovies = await requestFilmsActor(id)
-      setMovies({
+      dispatch(updateActorFilms({
         list: newMovies,
-        status: 'successful',
-        error: null
-      })
+        actorId: id
+      }))
     } catch (error) {
-      setMovies({
-        list: [],
-        status: 'fail',
-        error: error.message
-      })
+      alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <div className={styles.moviesContainer}>
       {
-        movies.status === 'pending'
+        actorFilms.status === 'pending'
           ? (
             <Spinner />
             )
-          : movies.status === 'fail'
+          : actorFilms.status === 'fail'
             ? (
-              <p>Error: {movies.error}</p>
+              <p>Error: {actorFilms.error}</p>
               )
-            : movies.status === 'successful'
+            : actorFilms.status === 'successful'
               ? (
-                  movies.list.length
+                  actorFilms.list.length
                     ? (
-                      <Carousel items={movies.list.slice(0, 20)} title='Cast' seeMore={`/actor-films/${id}`} id='cast' imageSize={imageSize}>
+                      <Carousel items={actorFilms.list.slice(0, 20)} title='Cast' seeMore={`/actor-films/${id}`} id='cast' imageSize={imageSize}>
                         <MovieCard mode='home' />
                       </Carousel>
                       )
