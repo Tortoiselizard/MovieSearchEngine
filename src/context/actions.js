@@ -13,6 +13,8 @@ export const LOAD_CAST = 'LOAD_CAST'
 export const LOAD_ACTOR_FILMS = 'LOAD_ACTOR_FILMS'
 export const UPDATE_MOVIE_DETAILS = 'UPDATE_MOVIE_DETAILS'
 export const LOAD_MOVIE_DETAILS = 'LOAD_MOVIE_DETAILS'
+export const UPDATE_ACTOR_DETAILS = 'UPDATE_ACTOR_DETAILS'
+export const LOAD_ACTOR_DETAILS = 'LOAD_ACTOR_DETAILS'
 
 export function updateMoviesHome ({ newMoviesData }) {
   return {
@@ -163,5 +165,22 @@ export function updateMovieDetails (newMovieDetails) {
 export function loadMovieDetails () {
   return {
     type: LOAD_MOVIE_DETAILS
+  }
+}
+
+export function updateActorDetails (newMovieDetails) {
+  return {
+    type: UPDATE_ACTOR_DETAILS,
+    payload: {
+      ...newMovieDetails,
+      status: 'successful',
+      error: null
+    }
+  }
+}
+
+export function loadActorDetails () {
+  return {
+    type: LOAD_ACTOR_DETAILS
   }
 }

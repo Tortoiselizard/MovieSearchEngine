@@ -4,57 +4,54 @@ import FilmsActorContainer from '../FilmsActorContainer/FilmsActorContainer'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+
 import { requestActor } from '../../services/moviesApi'
+import { useMyContext } from '../../context/MyContext'
+import { updateActorDetails, loadActorDetails } from '../../context/actions'
 
 export default function ActorDetails () {
   const { id } = useParams()
-  const [actor, setActor] = useState({
-    status: 'idlen',
-    data: {},
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { actorDetails } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
 
   useEffect(() => {
-    if (actor.status !== 'idlen') return
-    getActorById()
+    if (actorDetails.actorId !== id) {
+      getActorById()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getActorById () {
-    setActor(prevState => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadActorDetails())
     try {
       const newActor = await requestActor(id)
-      setActor({
+      dispatch(updateActorDetails({
         data: newActor,
-        status: 'successful',
-        error: null
-      })
+        actorId: id
+      }))
     } catch (error) {
-      setActor({
-        data: {},
-        status: 'fail',
-        error: error.message
-      })
+      alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <>
       {
-        actor.status === 'pending'
+        actorDetails.status === 'pending'
           ? (
             <Spinner />
             )
-          : actor.status === 'fail'
+          : actorDetails.status === 'fail'
             ? (
-              <p>Error: {actor.error}</p>
+              <p>Error: {actorDetails.error}</p>
               )
-            : actor.status === 'successful'
+            : actorDetails.status === 'successful'
               ? (
                 <>
-                  <HeroActorDetails actor={actor.data} />
+                  <HeroActorDetails actor={actorDetails.data} />
                   <FilmsActorContainer />
                 </>
 
