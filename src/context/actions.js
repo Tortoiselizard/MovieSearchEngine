@@ -43,7 +43,7 @@ export function updateActorFilms (newActorFilms) {
     type: UPDATE_ACTOR_FILMS,
     payload: {
       newActorFilms: {
-        list: newActorFilms,
+        ...newActorFilms,
         status: 'successful',
         error: null
       }

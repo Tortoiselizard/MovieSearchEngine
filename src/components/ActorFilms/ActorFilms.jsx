@@ -2,7 +2,7 @@ import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
 
@@ -15,22 +15,30 @@ export default function ActorFilms () {
   const { id } = useParams()
   const { state: globalState, dispatch } = useMyContext()
   const { actorFilms } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
 
   // Get actorFilms
   useEffect(() => {
-    if (actorFilms.status !== 'idle') return
-    getActorFilms()
+    if (actorFilms.actorId !== id) {
+      getActorFilms()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getActorFilms () {
     dispatch(loadActorFilms())
     try {
       const newActorFilms = await requestFilmsActor(id)
-      dispatch(updateActorFilms(newActorFilms))
+      dispatch(updateActorFilms({
+        list: newActorFilms,
+        actorId: id
+      }))
     } catch (error) {
       alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <div className={styles.actorFilmsContainer}>
