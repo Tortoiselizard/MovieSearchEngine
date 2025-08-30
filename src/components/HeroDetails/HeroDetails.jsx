@@ -2,15 +2,44 @@ import PropTypes from 'prop-types'
 
 import HeartButton from '../HeartButton/HeartButton'
 
+import { useState } from 'react'
+
 import styles from './HeroDetails.module.css'
 
 const { VITE_API_IMAGE_URL } = import.meta.env
 
 export default function HeroDetails ({ movie }) {
+  const [loadingBackground, setLoadingBackground] = useState(true)
+  const [loadingPoster, setLoadingPoster] = useState(true)
+
+  function handleImageLoad (image) {
+    switch (image) {
+      case 'poster': {
+        setLoadingPoster(false)
+        break
+      }
+      case 'background': {
+        setLoadingBackground(false)
+      }
+    }
+  }
+
+  function handleImageError (image) {
+    switch (image) {
+      case 'poster': {
+        setLoadingPoster(false)
+        break
+      }
+      case 'background': {
+        setLoadingBackground(false)
+      }
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
-        <div className={styles.heroBackground}>
+        <div className={`${styles.heroBackground} ${loadingBackground ? '' : styles.spinnerOff}`}>
           {
             movie.backdrop_path
               ? (
@@ -18,6 +47,8 @@ export default function HeroDetails ({ movie }) {
                   src={`${VITE_API_IMAGE_URL}/w1280/${movie.backdrop_path}`}
                   alt={movie.title}
                   className={styles.backgroundImage}
+                  onLoad={() => { handleImageLoad('background') }}
+                  onError={() => { handleImageError('background') }}
                 />
                 )
               : (
@@ -47,11 +78,13 @@ export default function HeroDetails ({ movie }) {
             <HeartButton movie={movie} />
           </div>
 
-          <div className={styles.heroPoster}>
+          <div className={`${styles.heroPoster} ${loadingPoster ? '' : styles.spinnerOff}`}>
             <img
               src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`}
               alt={'image: ' + movie.title}
               className={styles.posterImage}
+              onLoad={() => { handleImageLoad('poster') }}
+              onError={() => { handleImageError('poster') }}
             />
             <div className={styles.heroGradientPoster} />
           </div>
