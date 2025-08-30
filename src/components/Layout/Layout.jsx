@@ -33,6 +33,7 @@ export default function Layout () {
       }
       case 'add': {
         addNewURL(pathname + search)
+        window.scrollTo(0, 0)
         break
       }
     }
