@@ -4,57 +4,54 @@ import Spinner from '../Spinner/Spinner'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+
 import { requestMoviesById } from '../../services/moviesApi'
+import { useMyContext } from '../../context/MyContext'
+import { updateMovieDetails, loadMovieDetails } from '../../context/actions'
 
 export default function MovieDetails () {
   const { id } = useParams()
-  const [movie, setMovie] = useState({
-    status: 'idlen',
-    data: {},
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { movieDetails } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
 
   useEffect(() => {
-    if (movie.status !== 'idlen') return
-    getMovieById()
+    if (movieDetails.movieId !== id) {
+      getMovieById()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getMovieById () {
-    setMovie(prevState => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadMovieDetails())
     try {
       const newMovie = await requestMoviesById(id)
-      setMovie({
+      dispatch(updateMovieDetails({
         data: newMovie,
-        status: 'successful',
-        error: null
-      })
+        movieId: id
+      }))
     } catch (error) {
-      setMovie({
-        data: {},
-        status: 'fail',
-        error: error.message
-      })
+      alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <>
       {
-        movie.status === 'pending'
+        movieDetails.status === 'pending'
           ? (
             <Spinner />
             )
-          : movie.status === 'fail'
+          : movieDetails.status === 'fail'
             ? (
-              <p>Error: {movie.error}</p>
+              <p>Error: {movieDetails.error}</p>
               )
-            : movie.status === 'successful'
+            : movieDetails.status === 'successful'
               ? (
                 <>
-                  <HeroDetails movie={movie.data} />
+                  <HeroDetails movie={movieDetails.data} />
                   <ActorsContainer />
                 </>
 
