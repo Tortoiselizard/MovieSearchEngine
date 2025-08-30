@@ -12,6 +12,7 @@ export default function HeroBanner () {
   const { state: globalState } = useMyContext()
   const movie = globalState.home.movies.list[0]
   const [windowWidth, setWindowWith] = useState(window.innerWidth)
+  const [loadingBackground, setLoadingBackground] = useState(true)
 
   // Breakpoints
   const isMobile = windowWidth < 768
@@ -29,6 +30,14 @@ export default function HeroBanner () {
 
   function handleResize () {
     setWindowWith(window.innerWidth)
+  }
+
+  function handleImageLoad () {
+    setLoadingBackground(false)
+  }
+
+  function handleImageError () {
+    setLoadingBackground(false)
   }
 
   return (
@@ -53,13 +62,15 @@ export default function HeroBanner () {
           }
         </div>
       </div>
-      <div className={styles.heroImageContainer}>
+      <div className={`${styles.heroImageContainer} ${loadingBackground ? '' : styles.spinnerOff}`}>
         {
           movie.backdrop_path
             ? (
               <img
                 className={styles.heroImage}
                 src={`${VITE_API_IMAGE_URL}/${isMobile ? 'w500' : 'w1280'}/${isMobile ? movie.poster_path : movie.backdrop_path}`} alt={movie.title}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
               />
               )
             : (
