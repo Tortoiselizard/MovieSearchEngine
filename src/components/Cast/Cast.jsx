@@ -18,7 +18,7 @@ export default function Cast () {
 
   // Get cast
   useEffect(() => {
-    if (cast.status !== 'idle') return
+    if (cast.movieId === id) return
     getCast()
   }, [])
 
@@ -27,7 +27,10 @@ export default function Cast () {
     try {
       const newActors = await requestActors(id)
 
-      dispatch(updateCast(newActors))
+      dispatch(updateCast({
+        list: newActors,
+        movieId: id
+      }))
     } catch (error) {
       alert(error.message)
     }

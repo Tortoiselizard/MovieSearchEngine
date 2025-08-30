@@ -134,7 +134,7 @@ export function updateCast (newCast) {
   return {
     type: UPDATE_CAST,
     payload: {
-      list: newCast,
+      ...newCast,
       status: 'successful',
       error: null
     }
