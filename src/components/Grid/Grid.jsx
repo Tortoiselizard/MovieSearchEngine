@@ -55,7 +55,7 @@ export default function Grid ({ items, children, getMoreItems, loadingNextPage }
                 ))
               )
             : (
-              <p>No se han encontrado coincidencias</p>
+              <p>No Matches Found</p>
               )
         }
       </div>

@@ -113,7 +113,7 @@ export default function FullDataMovies () {
                       </Grid>
                       )
                     : (
-                      <p>No se han encontrado coincidencias</p>
+                      <p>No Matches Found</p>
                       )
                 )
               : null

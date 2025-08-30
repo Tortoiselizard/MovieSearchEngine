@@ -61,7 +61,7 @@ export default function Cast () {
                         </Grid>
                         )
                       : (
-                        <p>No se han encontrado coincidencias</p>
+                        <p>No Matches Found</p>
                         )
                   )
                 : null

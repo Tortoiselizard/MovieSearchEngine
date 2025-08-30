@@ -60,7 +60,7 @@ export default function Home () {
                       </div>
                       )
                     : (
-                      <p>No se han encontrado coincidencias</p>
+                      <p>No Matches Found</p>
                       )
                 )
               : null
