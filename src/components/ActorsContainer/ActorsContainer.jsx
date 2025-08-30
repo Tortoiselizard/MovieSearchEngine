@@ -4,18 +4,18 @@ import Spinner from '../Spinner/Spinner'
 
 import { useParams } from 'react-router'
 import { useState, useEffect, useMemo } from 'react'
+import { useMyContext } from '../../context/MyContext'
 
 import { requestActors } from '../../services/moviesApi'
+import { updateCast, loadCast } from '../../context/actions'
 
 import styles from './ActorsContainer.module.css'
 
 export default function ActorsContainer () {
   const { id } = useParams()
-  const [actors, setActors] = useState({
-    status: 'idle',
-    list: [],
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { cast } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
   const imageSize = useMemo(() => {
     const viewportWidth = window.innerWidth
     if (viewportWidth < 480) return '/w185'
@@ -23,48 +23,44 @@ export default function ActorsContainer () {
   }, [])
 
   useEffect(() => {
-    if (actors.status !== 'idle') return
-    getActors()
+    if (cast.movieId !== id) {
+      getActors()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getActors () {
-    setActors(prevState => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadCast())
     try {
       const newActors = await requestActors(id)
-      setActors({
+      dispatch(updateCast({
         list: newActors,
-        status: 'successful',
-        error: null
-      })
+        movieId: id
+      }))
     } catch (error) {
-      setActors({
-        list: [],
-        status: 'fail',
-        error: error.message
-      })
+      alert(error.message)
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <div className={styles.actorsContainer}>
       {
-        actors.status === 'pending'
+        cast.status === 'pending'
           ? (
             <Spinner />
             )
-          : actors.status === 'fail'
+          : cast.status === 'fail'
             ? (
-              <p>Error: {actors.error}</p>
+              <p>Error: {cast.error}</p>
               )
-            : actors.status === 'successful'
+            : cast.status === 'successful'
               ? (
-                  actors.list.length
+                  cast.list.length
                     ? (
                       <Carousel
-                        items={actors.list.slice(0, 20)}
+                        items={cast.list.slice(0, 20)}
                         title='Cast'
                         seeMore={`/cast/${id}`}
                         id='cast'
