@@ -74,8 +74,8 @@ export default function HeroDetails ({ movie }) {
                   <span key={id} className={styles.genre}>{name}</span>
                 ))
               }
+              <HeartButton movie={movie} />
             </div>
-            <HeartButton movie={movie} />
           </div>
 
           <div className={`${styles.heroPoster} ${loadingPoster ? '' : styles.spinnerOff}`}>
