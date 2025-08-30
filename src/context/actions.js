@@ -15,6 +15,8 @@ export const UPDATE_MOVIE_DETAILS = 'UPDATE_MOVIE_DETAILS'
 export const LOAD_MOVIE_DETAILS = 'LOAD_MOVIE_DETAILS'
 export const UPDATE_ACTOR_DETAILS = 'UPDATE_ACTOR_DETAILS'
 export const LOAD_ACTOR_DETAILS = 'LOAD_ACTOR_DETAILS'
+export const UPDATE_ALERT = 'UPDATE_ALERT'
+export const CLOSE_ALERT = 'CLOSE_ALERT'
 
 export function updateMoviesHome ({ newMoviesData }) {
   return {
@@ -182,5 +184,18 @@ export function updateActorDetails (newMovieDetails) {
 export function loadActorDetails () {
   return {
     type: LOAD_ACTOR_DETAILS
+  }
+}
+
+export function updateAlert (alert) {
+  return {
+    type: UPDATE_ALERT,
+    payload: alert
+  }
+}
+
+export function closeAlert () {
+  return {
+    type: CLOSE_ALERT
   }
 }

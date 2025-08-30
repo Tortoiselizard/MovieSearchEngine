@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES, UPDATE_HISTORY, UPDATE_ACTOR_FILMS, UPDATE_CAST, LOAD_CAST, LOAD_ACTOR_FILMS, UPDATE_MOVIE_DETAILS, LOAD_MOVIE_DETAILS, UPDATE_ACTOR_DETAILS, LOAD_ACTOR_DETAILS } from './actions'
+import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES, UPDATE_HISTORY, UPDATE_ACTOR_FILMS, UPDATE_CAST, LOAD_CAST, LOAD_ACTOR_FILMS, UPDATE_MOVIE_DETAILS, LOAD_MOVIE_DETAILS, UPDATE_ACTOR_DETAILS, LOAD_ACTOR_DETAILS, UPDATE_ALERT, CLOSE_ALERT } from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -52,6 +52,11 @@ const initialState = {
     status: 'idle',
     data: {},
     error: null
+  },
+  alert: {
+    open: false,
+    title: '',
+    text: ''
   }
 }
 
@@ -203,6 +208,22 @@ function reducer (state, action) {
           data: {},
           status: 'pending',
           error: null
+        }
+      }
+    }
+    case UPDATE_ALERT: {
+      return {
+        ...state,
+        alert: action.payload
+      }
+    }
+    case CLOSE_ALERT: {
+      return {
+        ...state,
+        alert: {
+          open: false,
+          title: '',
+          text: ''
         }
       }
     }
