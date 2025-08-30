@@ -1,44 +1,11 @@
 .heartButton {
-  --background: #ffffff;
-  --foreground: #475569;
-  --card: #f1f5f9;
-  --card-foreground: #475569;
-  --popover: #ffffff;
-  --popover-foreground: #475569;
-  --primary: #059669;
-  --primary-foreground: #ffffff;
-  --secondary: #10b981;
-  --secondary-foreground: #ffffff;
-  --muted: #f1f5f9;
-  --muted-foreground: #475569;
-  --accent: #10b981;
-  --accent-foreground: #ffffff;
-  --destructive: #f87171;
-  --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #f9fafb;
-  --ring: rgba(9, 66, 128, 0.1);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.5rem;
-  --sidebar: #f1f5f9;
-  --sidebar-foreground: #475569;
-  --sidebar-primary: #ffffff;
-  --sidebar-primary-foreground: #475569;
-  --sidebar-accent: #059669;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: rgba(9, 66, 128, 0.1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: var(--radius);
+  border-radius: 0.5rem;
   background: transparent;
-  color: var(--foreground);
+  color: #475569;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -47,13 +14,13 @@
 }
 
 .heartButton:hover {
-  color: var(--accent);
+  color: white;
   transform: scale(1.1);
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .heartButton:focus-visible {
-  outline: 2px solid var(--ring);
+  outline: 2px solid rgba(9, 66, 128, 0.1);
   outline-offset: 2px;
 }
 
@@ -62,78 +29,11 @@
 }
 
 .heartButton.active {
-  color: var(--primary-foreground);
-  background: var(--primary);
+  color: #ffffff;
+  background: #059669;
 }
 
 .heartButton.active:hover {
-  background: var(--secondary);
+  background: #10b981;
   transform: scale(1.1);
-}
-
-.heartIcon {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.heartButton:hover .heartIcon {
-  filter: drop-shadow(0 0 8px currentColor);
-}
-
-.heartButton.active .heartIcon {
-  animation: heartPulse 0.6s ease-out;
-}
-
-@keyframes heartPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Tamaños */
-.sm {
-  padding: 0.375rem;
-}
-
-.sm .heartIcon {
-  width: 1rem;
-  height: 1rem;
-}
-
-.md {
-  padding: 0.5rem;
-}
-
-.md .heartIcon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.lg {
-  padding: 0.75rem;
-}
-
-.lg .heartIcon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-/* Animación adicional para el estado activo */
-.heartButton.active::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  pointer-events: none;
-  z-index: -1;
 }
