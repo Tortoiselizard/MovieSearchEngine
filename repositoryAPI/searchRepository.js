@@ -2,8 +2,8 @@ import { ApiError } from '../errors/ApiError.js'
 const { API_READ_ACCESS_TOKEN, VITE_API_URL } = process.env
 
 export class SearchRepository {
-  async getSearchMovies ({ title, page }) {
-    const url = `${VITE_API_URL}/search/movie?query=${title}&page=${page}`
+  async getSearchMovies ({ text, page }) {
+    const url = `${VITE_API_URL}/search/movie?query=${text}&page=${page}`
 
     const options = {
       method: 'GET',

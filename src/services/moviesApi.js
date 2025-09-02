@@ -68,7 +68,7 @@ export async function requestLeakedMovies (queries) {
 export async function requestMovies (queries) {
   let response
   const nFilters = Object.keys(queries).length
-  if ('title' in queries) {
+  if ('text' in queries) {
     response = await requestMoviesByTitle(queries)
   } else if (nFilters > 4) {
     response = await requestLeakedMovies(queries)

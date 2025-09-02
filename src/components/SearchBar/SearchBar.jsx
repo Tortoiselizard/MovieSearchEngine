@@ -15,7 +15,7 @@ export default function SearchBar () {
 
   // Update initial query
   useEffect(() => {
-    let newQuery = searchParams.get('title')
+    let newQuery = searchParams.get('text')
     if (!newQuery) {
       newQuery = ''
     }
@@ -72,8 +72,8 @@ export default function SearchBar () {
     getMoviesByTitle(value)
   }
 
-  async function getMoviesByTitle (title) {
-    searchParams.set('title', title)
+  async function getMoviesByTitle (text) {
+    searchParams.set('text', text)
     if (pathname !== '/search') {
       navigate(`/search?${searchParams.toString()}`)
       return

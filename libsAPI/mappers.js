@@ -3,8 +3,8 @@ export function getFilters (query) {
 
   for (const filter in query) {
     switch (filter) {
-      case 'title': {
-        filters.title = query[filter]
+      case 'text': {
+        filters.text = query[filter]
         break
       }
       case 'genre': {
