@@ -34,7 +34,7 @@ export default function MovieDetails () {
       }))
     } catch (error) {
       dispatch(updateErrorMoviesDetails(error.message))
-      toast.error('Error')
+      toast.error('Error getting movie detail')
     }
   }
 

@@ -27,6 +27,7 @@ export const UPDATE_ERROR_MOVIES_DETAILS = 'UPDATE_ERROR_MOVIES_DETAILS'
 
 export const UPDATE_ACTOR_DETAILS = 'UPDATE_ACTOR_DETAILS'
 export const LOAD_ACTOR_DETAILS = 'LOAD_ACTOR_DETAILS'
+export const UPDATE_ERROR_ACTOR_DETAILS = 'UPDATE_ERROR_ACTOR_DETAILS'
 
 export const UPDATE_ALERT = 'UPDATE_ALERT'
 export const CLOSE_ALERT = 'CLOSE_ALERT'
@@ -237,6 +238,16 @@ export function updateActorDetails (newMovieDetails) {
 export function loadActorDetails () {
   return {
     type: LOAD_ACTOR_DETAILS
+  }
+}
+
+export function updateErrorActorDetails (text) {
+  return {
+    type: UPDATE_ERROR_ACTOR_DETAILS,
+    payload: {
+      status: 'fail',
+      error: text
+    }
   }
 }
 

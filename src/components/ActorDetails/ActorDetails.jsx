@@ -1,13 +1,15 @@
 import HeroActorDetails from '../HeroActorDetails/HeroActorDetails'
 import Spinner from '../Spinner/Spinner'
 import FilmsActorContainer from '../FilmsActorContainer/FilmsActorContainer'
+import Error from '../Error/Error'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import toast from 'react-hot-toast'
 
 import { requestActor } from '../../services/moviesApi'
 import { useMyContext } from '../../context/MyContext'
-import { updateActorDetails, loadActorDetails, updateAlert } from '../../context/actions'
+import { updateActorDetails, loadActorDetails, updateAlert, updateErrorActorDetails } from '../../context/actions'
 
 export default function ActorDetails () {
   const { id } = useParams()
@@ -31,11 +33,8 @@ export default function ActorDetails () {
         actorId: id
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorActorDetails(error.message))
+      toast.error('Error getting actor detail')
     }
   }
 
@@ -50,7 +49,7 @@ export default function ActorDetails () {
             )
           : actorDetails.status === 'fail'
             ? (
-              <p>Error: {actorDetails.error}</p>
+              <Error message={actorDetails.error} />
               )
             : actorDetails.status === 'successful'
               ? (

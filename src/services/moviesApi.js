@@ -144,7 +144,7 @@ export async function requestActor (id) {
     const response = await fetch(`/api/actor?id=${id}`)
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message)
     }
     const data = await response.json()
     return data

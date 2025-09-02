@@ -19,6 +19,7 @@ import {
   LOAD_MOVIE_DETAILS,
   UPDATE_ACTOR_DETAILS,
   LOAD_ACTOR_DETAILS,
+  UPDATE_ERROR_ACTOR_DETAILS,
   UPDATE_ALERT,
   CLOSE_ALERT,
   UPDATE_ERROR_MOVIES_HOME,
@@ -268,6 +269,15 @@ function reducer (state, action) {
           data: {},
           status: 'pending',
           error: null
+        }
+      }
+    }
+    case UPDATE_ERROR_ACTOR_DETAILS: {
+      return {
+        ...state,
+        actorDetails: {
+          ...state.actorDetails,
+          ...action.payload
         }
       }
     }

@@ -1,6 +1,8 @@
 import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard'
 import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
+import toast from 'react-hot-toast'
 
 import { useState, useEffect } from 'react'
 
@@ -12,7 +14,6 @@ export default function Favorites () {
     list: [],
     error: null
   })
-  const [loadingNextPage, setLoadingNextPage] = useState(false)
 
   // Update movies
   useEffect(() => {
@@ -21,28 +22,37 @@ export default function Favorites () {
   }, [])
 
   async function getMovies () {
-    setMovies({
-      status: 'pending',
-      list: [],
-      error: null
-    })
-    const favoritesString = localStorage.getItem('favorites')
-    if (!favoritesString) {
+    try {
       setMovies({
-        status: 'successful',
+        status: 'pending',
         list: [],
         error: null
       })
-      return
-    }
+      const favoritesString = localStorage.getItem('favorites')
+      if (!favoritesString) {
+        setMovies({
+          status: 'successful',
+          list: [],
+          error: null
+        })
+        return
+      }
 
-    const favorites = JSON.parse(favoritesString)
-    const list = [...favorites]
-    setMovies({
-      status: 'successful',
-      list,
-      error: null
-    })
+      const favorites = JSON.parse(favoritesString)
+      const list = [...favorites]
+      setMovies({
+        status: 'successful',
+        list,
+        error: null
+      })
+    } catch (error) {
+      setMovies({
+        status: 'fail',
+        list: [],
+        error: 'Sorry, something unexpected happened. Please try again.'
+      })
+      toast.error('Unexpected error')
+    }
   }
 
   async function getMore () {
@@ -57,13 +67,13 @@ export default function Favorites () {
               )
             : movies.status === 'fail'
               ? (
-                <p>Error: {movies.error}</p>
+                <Error message={movies.error} />
                 )
               : movies.status === 'successful'
                 ? (
                     movies.list.length
                       ? (
-                        <Grid items={movies.list} getMoreItems={getMore} loadingNextPage={loadingNextPage}>
+                        <Grid items={movies.list} getMoreItems={getMore} loadingNextPage={false}>
                           <MovieCard />
                         </Grid>
                         )

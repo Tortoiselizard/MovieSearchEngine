@@ -10,16 +10,9 @@ export default async function handler (request, response) {
 
     response.status(200).json(actor)
   } catch (error) {
-    if (error instanceof ApiError) {
-      return response.status(error.statusCode).json({
-        success: false,
-        message: error.totalMessage,
-        details: error.details
-      })
+    if (error.message.includes('fetch failed')) {
+      return response.status(500).json({ message: 'A problem occurred while trying to connect to the server. Check your internet connection' })
     }
-    response.status(500).json({
-      success: false,
-      message: 'something is wrong'
-    })
+    return response.status(500).json({ message: 'Something is wrong with the server' })
   }
 }
