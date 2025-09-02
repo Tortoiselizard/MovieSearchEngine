@@ -12,9 +12,11 @@ import {
   UPDATE_ERROR_GENRES,
   UPDATE_HISTORY,
   UPDATE_ACTOR_FILMS,
+  LOAD_ACTOR_FILMS,
+  UPDATE_ERROR_ACTOR_FILMS,
   UPDATE_CAST,
   LOAD_CAST,
-  LOAD_ACTOR_FILMS,
+  UPDATE_ERROR_CAST,
   UPDATE_MOVIE_DETAILS,
   LOAD_MOVIE_DETAILS,
   UPDATE_ACTOR_DETAILS,
@@ -185,6 +187,15 @@ function reducer (state, action) {
         }
       }
     }
+    case UPDATE_ERROR_ACTOR_FILMS: {
+      return {
+        ...state,
+        actorFilms: {
+          ...state.actorFilms,
+          ...action.payload
+        }
+      }
+    }
     case UPDATE_GENRES: {
       return {
         ...state,
@@ -228,6 +239,15 @@ function reducer (state, action) {
           list: [],
           status: 'pending',
           error: null
+        }
+      }
+    }
+    case UPDATE_ERROR_CAST: {
+      return {
+        ...state,
+        cast: {
+          ...state.cast,
+          ...action.payload
         }
       }
     }

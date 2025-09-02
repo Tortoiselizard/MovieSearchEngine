@@ -1,13 +1,14 @@
 import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
 
 import { requestFilmsActor } from '../../services/moviesApi.js'
-import { updateActorFilms, loadActorFilms, updateAlert } from '../../context/actions.js'
+import { updateActorFilms, loadActorFilms, updateAlert, updateErrorActorFilms } from '../../context/actions.js'
 
 import styles from './ActorFilms.module.css'
 
@@ -34,11 +35,8 @@ export default function ActorFilms () {
         actorId: id
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorActorFilms(error.message))
+      toast.error('Error getting popular movies')
     }
   }
 
@@ -53,7 +51,7 @@ export default function ActorFilms () {
               )
             : actorFilms.status === 'fail'
               ? (
-                <p>Error: {actorFilms.error}</p>
+                <Error message={actorFilms.error} />
                 )
               : actorFilms.status === 'successful'
                 ? (

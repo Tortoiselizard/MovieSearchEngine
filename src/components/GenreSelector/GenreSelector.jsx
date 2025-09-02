@@ -4,10 +4,11 @@ import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
+import toast from 'react-hot-toast'
 
 import { requestMovieGenre } from '../../services/moviesApi'
 
-import { loadGenres, updateAlert, updateGenres } from '../../context/actions'
+import { loadGenres, updateAlert, updateGenres, updateErrorGenres } from '../../context/actions'
 
 export default function GenreSelector () {
   const { state: globalState, dispatch } = useMyContext()
@@ -72,16 +73,8 @@ export default function GenreSelector () {
       }
       setSelectedGenre(newSelectedGenre)
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
-      dispatch(updateGenres({
-        list: [],
-        status: 'fail',
-        error: error.message
-      }))
+      dispatch(updateErrorGenres(error.message))
+      toast.error('Error getting movie genres')
     }
   }
 

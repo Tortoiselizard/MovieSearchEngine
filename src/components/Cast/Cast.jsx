@@ -1,13 +1,15 @@
 import Grid from '../Grid/Grid.jsx'
 import ActorCard from '../ActorCard/ActorCard.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useMyContext } from '../../context/MyContext.jsx'
+import toast from 'react-hot-toast'
 
 import { requestActors } from '../../services/moviesApi.js'
-import { updateCast, loadCast, updateAlert } from '../../context/actions.js'
+import { updateCast, loadCast, updateAlert, updateErrorCast } from '../../context/actions.js'
 
 import styles from './Cast.module.css'
 
@@ -35,11 +37,8 @@ export default function Cast () {
         movieId: id
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorCast(error.message))
+      toast.error('Error getting movie cast')
     }
   }
 
@@ -54,7 +53,7 @@ export default function Cast () {
               )
             : cast.status === 'fail'
               ? (
-                <p>Error: {cast.error}</p>
+                <Error message={cast.error} />
                 )
               : cast.status === 'successful'
                 ? (

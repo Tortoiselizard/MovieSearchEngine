@@ -104,7 +104,7 @@ export async function requestActors (id) {
     const response = await fetch(`/api/cast${queriesString}`)
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message)
     }
     const data = await response.json()
     return data
@@ -164,7 +164,7 @@ export async function requestFilmsActor (id) {
     const response = await fetch(`/api/moviesByActor?id=${id}`)
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message)
     }
     const data = await response.json()
     return data

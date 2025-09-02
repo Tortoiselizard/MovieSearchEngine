@@ -17,9 +17,11 @@ export const UPDATE_HISTORY = 'UPDATE_HISTORY'
 
 export const UPDATE_ACTOR_FILMS = 'UPDATE_ACTOR_FILMS'
 export const LOAD_ACTOR_FILMS = 'LOAD_ACTOR_FILMS'
+export const UPDATE_ERROR_ACTOR_FILMS = 'UPDATE_ERROR_ACTOR_FILMS'
 
 export const UPDATE_CAST = 'UPDATE_CAST'
 export const LOAD_CAST = 'LOAD_CAST'
+export const UPDATE_ERROR_CAST = 'UPDATE_ERROR_CAST'
 
 export const UPDATE_MOVIE_DETAILS = 'UPDATE_MOVIE_DETAILS'
 export const LOAD_MOVIE_DETAILS = 'LOAD_MOVIE_DETAILS'
@@ -91,6 +93,22 @@ export function updateActorFilms (newActorFilms) {
   }
 }
 
+export function loadActorFilms () {
+  return {
+    type: LOAD_ACTOR_FILMS
+  }
+}
+
+export function updateErrorActorFilms (text) {
+  return {
+    type: UPDATE_ERROR_ACTOR_FILMS,
+    payload: {
+      status: 'fail',
+      error: text
+    }
+  }
+}
+
 export function addMovies ({ currentMoviesData, newMoviesData }) {
   const newList = [...currentMoviesData, ...newMoviesData.list]
 
@@ -120,12 +138,6 @@ export function loadMovies ({ mode }) {
     payload: {
       mode
     }
-  }
-}
-
-export function loadActorFilms () {
-  return {
-    type: LOAD_ACTOR_FILMS
   }
 }
 
@@ -194,6 +206,16 @@ export function updateCast (newCast) {
 export function loadCast () {
   return {
     type: LOAD_CAST
+  }
+}
+
+export function updateErrorCast (text) {
+  return {
+    type: UPDATE_ERROR_CAST,
+    payload: {
+      status: 'fail',
+      error: text
+    }
   }
 }
 
