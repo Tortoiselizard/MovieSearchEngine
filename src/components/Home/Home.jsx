@@ -39,7 +39,7 @@ export default function Home () {
       }))
     } catch (error) {
       dispatch(updateErrorMoviesHome(error.message))
-      toast.error('Error')
+      toast.error('Error getting popular movies')
     }
   }
 

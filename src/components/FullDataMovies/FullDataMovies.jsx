@@ -1,12 +1,14 @@
 import Grid from '../Grid/Grid.jsx'
 import MovieCard from '../MovieCard/MovieCard'
 import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
 
 import { useMyContext } from '../../context/MyContext'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
+import toast from 'react-hot-toast'
 
-import { addMovies, updateMoviesSearch, loadMovies, updateAlert } from '../../context/actions.js'
+import { addMovies, updateMoviesSearch, loadMovies, updateAlert, updateErrorMoviesSearch } from '../../context/actions.js'
 import { requestMovies } from '../../services/moviesApi'
 import { deepEqual } from '../../libs/validations.js'
 
@@ -61,11 +63,8 @@ export default function FullDataMovies () {
         }
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorMoviesSearch(error.message))
+      toast.error('Error getting when searching for movies')
     }
   }
 
@@ -93,11 +92,8 @@ export default function FullDataMovies () {
       dispatch(addMovies({ currentMoviesData: movies.current.list, newMoviesData }))
       setLoadingNextPage(false)
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorMoviesSearch(error.message))
+      toast.error('Error searching for more movies')
     }
   }
 
@@ -110,7 +106,7 @@ export default function FullDataMovies () {
             )
           : searchMovies.status === 'fail'
             ? (
-              <p>Error: {searchMovies.error}</p>
+              <Error message={searchMovies.error} />
               )
             : searchMovies.status === 'successful'
               ? (

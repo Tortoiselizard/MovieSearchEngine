@@ -2,12 +2,14 @@ import { createContext, useContext, useReducer } from 'react'
 import {
   UPDATE_MOVIES_HOME,
   UPDATE_MOVIES_SEARCH,
+  UPDATE_ERROR_MOVIES_SEARCH,
   ADD_MOVIES,
   RESET_MOVIES,
   LOAD_MOVIES,
   UPDATE_MODE,
   LOAD_GENRES,
   UPDATE_GENRES,
+  UPDATE_ERROR_GENRES,
   UPDATE_HISTORY,
   UPDATE_ACTOR_FILMS,
   UPDATE_CAST,
@@ -117,6 +119,18 @@ function reducer (state, action) {
         }
       }
     }
+    case UPDATE_ERROR_MOVIES_SEARCH: {
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          movies: {
+            ...state.search.movies,
+            ...action.payload
+          }
+        }
+      }
+    }
     case ADD_MOVIES: {
       const { newMoviesData } = action.payload
       return {
@@ -182,6 +196,15 @@ function reducer (state, action) {
         genres: {
           ...state.genres,
           status: 'pending'
+        }
+      }
+    }
+    case UPDATE_ERROR_GENRES: {
+      return {
+        ...state,
+        genres: {
+          ...state.genres,
+          ...action.payload
         }
       }
     }

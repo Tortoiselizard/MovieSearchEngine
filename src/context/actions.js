@@ -2,6 +2,7 @@ export const UPDATE_MOVIES_HOME = 'UPDATE_MOVIES_HOME'
 export const UPDATE_ERROR_MOVIES_HOME = 'UPDATE_ERROR_MOVIES_HOME'
 
 export const UPDATE_MOVIES_SEARCH = 'UPDATE_MOVIES_SEARCH'
+export const UPDATE_ERROR_MOVIES_SEARCH = 'UPDATE_ERROR_MOVIES_SEARCH'
 
 export const ADD_MOVIES = 'UPDATE_MOVIES'
 export const RESET_MOVIES = 'UPDATE_MOVIES'
@@ -10,6 +11,7 @@ export const UPDATE_MODE = 'UPDATE_MODE'
 
 export const UPDATE_GENRES = 'UPDATE_GENRES'
 export const LOAD_GENRES = 'LOAD_GENRES'
+export const UPDATE_ERROR_GENRES = 'UPDATE_ERROR_GENRES'
 
 export const UPDATE_HISTORY = 'UPDATE_HISTORY'
 
@@ -61,6 +63,16 @@ export function updateMoviesSearch ({ newMoviesData }) {
         status: 'successful',
         error: null
       }
+    }
+  }
+}
+
+export function updateErrorMoviesSearch (text) {
+  return {
+    type: UPDATE_ERROR_MOVIES_SEARCH,
+    payload: {
+      status: 'fail',
+      error: text
     }
   }
 }
@@ -133,6 +145,16 @@ export function updateGenres (genres) {
 export function loadGenres () {
   return {
     type: LOAD_GENRES
+  }
+}
+
+export function updateErrorGenres (text) {
+  return {
+    type: UPDATE_ERROR_GENRES,
+    payload: {
+      status: 'fail',
+      error: text
+    }
   }
 }
 

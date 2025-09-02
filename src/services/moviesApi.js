@@ -29,7 +29,7 @@ export async function requestMoviesByTitle (queries) {
 
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message, errorData.code)
     }
     const data = await response.json()
     return data
@@ -50,7 +50,7 @@ export async function requestLeakedMovies (queries) {
     const response = await fetch(`/api/discover${queriesString}`)
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message)
     }
     const data = await response.json()
     return data
@@ -66,26 +66,16 @@ export async function requestLeakedMovies (queries) {
 }
 
 export async function requestMovies (queries) {
-  try {
-    let response
-    const nFilters = Object.keys(queries).length
-    if ('title' in queries) {
-      response = await requestMoviesByTitle(queries)
-    } else if (nFilters > 4) {
-      response = await requestLeakedMovies(queries)
-    } else {
-      response = await requestPopularMovies(queries)
-    }
-    return response
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw new Error(error.message)
-    }
-    if (error.message.includes('NetworkError')) {
-      throw new Error('A problem occurred while trying to connect to the server. Check your internet connection')
-    }
-    throw new Error('Something is wrong')
+  let response
+  const nFilters = Object.keys(queries).length
+  if ('title' in queries) {
+    response = await requestMoviesByTitle(queries)
+  } else if (nFilters > 4) {
+    response = await requestLeakedMovies(queries)
+  } else {
+    response = await requestPopularMovies(queries)
   }
+  return response
 }
 
 export async function requestMoviesById (id) {
@@ -134,7 +124,7 @@ export async function requestMovieGenre () {
     const response = await fetch('/api/genre')
     if (!response.ok) {
       const errorData = await response.json()
-      throw new Error(errorData.message)
+      throw new ApiError(errorData.message, errorData.code)
     }
     const data = await response.json()
     return data
