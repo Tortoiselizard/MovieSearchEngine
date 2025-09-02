@@ -1,5 +1,27 @@
 import { createContext, useContext, useReducer } from 'react'
-import { UPDATE_MOVIES_HOME, UPDATE_MOVIES_SEARCH, ADD_MOVIES, RESET_MOVIES, LOAD_MOVIES, UPDATE_MODE, LOAD_GENRES, UPDATE_GENRES, UPDATE_HISTORY, UPDATE_ACTOR_FILMS, UPDATE_CAST, LOAD_CAST, LOAD_ACTOR_FILMS, UPDATE_MOVIE_DETAILS, LOAD_MOVIE_DETAILS, UPDATE_ACTOR_DETAILS, LOAD_ACTOR_DETAILS, UPDATE_ALERT, CLOSE_ALERT } from './actions'
+import {
+  UPDATE_MOVIES_HOME,
+  UPDATE_MOVIES_SEARCH,
+  ADD_MOVIES,
+  RESET_MOVIES,
+  LOAD_MOVIES,
+  UPDATE_MODE,
+  LOAD_GENRES,
+  UPDATE_GENRES,
+  UPDATE_HISTORY,
+  UPDATE_ACTOR_FILMS,
+  UPDATE_CAST,
+  LOAD_CAST,
+  LOAD_ACTOR_FILMS,
+  UPDATE_MOVIE_DETAILS,
+  LOAD_MOVIE_DETAILS,
+  UPDATE_ACTOR_DETAILS,
+  LOAD_ACTOR_DETAILS,
+  UPDATE_ALERT,
+  CLOSE_ALERT,
+  UPDATE_ERROR_MOVIES_HOME,
+  UPDATE_ERROR_MOVIES_DETAILS
+} from './actions'
 
 // Make context
 const MyContext = createContext()
@@ -73,6 +95,18 @@ function reducer (state, action) {
         }
       }
     }
+    case UPDATE_ERROR_MOVIES_HOME: {
+      return {
+        ...state,
+        home: {
+          ...state.home,
+          movies: {
+            ...state.home.movies,
+            ...action.payload
+          }
+        }
+      }
+    }
     case UPDATE_MOVIES_SEARCH: {
       const { newMoviesData } = action.payload
       return {
@@ -81,13 +115,6 @@ function reducer (state, action) {
           ...state.search,
           movies: newMoviesData
         }
-      }
-    }
-    case UPDATE_ACTOR_FILMS: {
-      const { newActorFilms } = action.payload
-      return {
-        ...state,
-        actorFilms: newActorFilms
       }
     }
     case ADD_MOVIES: {
@@ -126,10 +153,21 @@ function reducer (state, action) {
         }
       }
     }
-    case UPDATE_MODE: {
+    case UPDATE_ACTOR_FILMS: {
+      const { newActorFilms } = action.payload
       return {
         ...state,
-        mode: action.payload
+        actorFilms: newActorFilms
+      }
+    }
+    case LOAD_ACTOR_FILMS: {
+      return {
+        ...state,
+        actorFilms: {
+          list: [],
+          status: 'pending',
+          error: null
+        }
       }
     }
     case UPDATE_GENRES: {
@@ -169,16 +207,6 @@ function reducer (state, action) {
         }
       }
     }
-    case LOAD_ACTOR_FILMS: {
-      return {
-        ...state,
-        actorFilms: {
-          list: [],
-          status: 'pending',
-          error: null
-        }
-      }
-    }
     case UPDATE_MOVIE_DETAILS: {
       return {
         ...state,
@@ -192,6 +220,15 @@ function reducer (state, action) {
           data: {},
           status: 'pending',
           error: null
+        }
+      }
+    }
+    case UPDATE_ERROR_MOVIES_DETAILS: {
+      return {
+        ...state,
+        movieDetails: {
+          ...state.movieDetails,
+          ...action.payload
         }
       }
     }

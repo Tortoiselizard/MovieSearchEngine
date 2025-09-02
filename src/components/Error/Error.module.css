@@ -1,21 +1,7 @@
-.container {
-  min-height: 100vh;
-}
-
-.container p {
-}
-
-.img {
-}
-
-.title {
-}
-
-.overview {
-}
-
 .containerError {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .errorTitle {

@@ -1,20 +1,31 @@
 export const UPDATE_MOVIES_HOME = 'UPDATE_MOVIES_HOME'
+export const UPDATE_ERROR_MOVIES_HOME = 'UPDATE_ERROR_MOVIES_HOME'
+
 export const UPDATE_MOVIES_SEARCH = 'UPDATE_MOVIES_SEARCH'
+
 export const ADD_MOVIES = 'UPDATE_MOVIES'
 export const RESET_MOVIES = 'UPDATE_MOVIES'
 export const LOAD_MOVIES = 'LOAD_MOVIES'
 export const UPDATE_MODE = 'UPDATE_MODE'
-export const LOAD_GENRES = 'LOAD_GENRES'
+
 export const UPDATE_GENRES = 'UPDATE_GENRES'
+export const LOAD_GENRES = 'LOAD_GENRES'
+
 export const UPDATE_HISTORY = 'UPDATE_HISTORY'
+
 export const UPDATE_ACTOR_FILMS = 'UPDATE_ACTOR_FILMS'
+export const LOAD_ACTOR_FILMS = 'LOAD_ACTOR_FILMS'
+
 export const UPDATE_CAST = 'UPDATE_CAST'
 export const LOAD_CAST = 'LOAD_CAST'
-export const LOAD_ACTOR_FILMS = 'LOAD_ACTOR_FILMS'
+
 export const UPDATE_MOVIE_DETAILS = 'UPDATE_MOVIE_DETAILS'
 export const LOAD_MOVIE_DETAILS = 'LOAD_MOVIE_DETAILS'
+export const UPDATE_ERROR_MOVIES_DETAILS = 'UPDATE_ERROR_MOVIES_DETAILS'
+
 export const UPDATE_ACTOR_DETAILS = 'UPDATE_ACTOR_DETAILS'
 export const LOAD_ACTOR_DETAILS = 'LOAD_ACTOR_DETAILS'
+
 export const UPDATE_ALERT = 'UPDATE_ALERT'
 export const CLOSE_ALERT = 'CLOSE_ALERT'
 
@@ -27,6 +38,16 @@ export function updateMoviesHome ({ newMoviesData }) {
         status: 'successful',
         error: null
       }
+    }
+  }
+}
+
+export function updateErrorMoviesHome (text) {
+  return {
+    type: UPDATE_ERROR_MOVIES_HOME,
+    payload: {
+      status: 'fail',
+      error: text
     }
   }
 }
@@ -167,6 +188,16 @@ export function updateMovieDetails (newMovieDetails) {
 export function loadMovieDetails () {
   return {
     type: LOAD_MOVIE_DETAILS
+  }
+}
+
+export function updateErrorMoviesDetails (text) {
+  return {
+    type: UPDATE_ERROR_MOVIES_DETAILS,
+    payload: {
+      status: 'fail',
+      error: text
+    }
   }
 }
 

@@ -1,13 +1,15 @@
 import HeroDetails from '../HeroDetails/HeroDetails'
 import ActorsContainer from '../ActorsContainer/ActorsContainer'
 import Spinner from '../Spinner/Spinner'
+import Error from '../Error/Error.jsx'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import toast from 'react-hot-toast'
 
 import { requestMoviesById } from '../../services/moviesApi'
 import { useMyContext } from '../../context/MyContext'
-import { updateMovieDetails, loadMovieDetails, updateAlert } from '../../context/actions'
+import { updateMovieDetails, loadMovieDetails, updateAlert, updateErrorMoviesDetails } from '../../context/actions'
 
 export default function MovieDetails () {
   const { id } = useParams()
@@ -31,11 +33,8 @@ export default function MovieDetails () {
         movieId: id
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorMoviesDetails(error.message))
+      toast.error('Error')
     }
   }
 
@@ -50,7 +49,7 @@ export default function MovieDetails () {
             )
           : movieDetails.status === 'fail'
             ? (
-              <p>Error: {movieDetails.error}</p>
+              <Error message={movieDetails.error} />
               )
             : movieDetails.status === 'successful'
               ? (

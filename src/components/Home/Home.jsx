@@ -1,10 +1,13 @@
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMoviesHome, loadMovies, updateAlert } from '../../context/actions.js'
+import toast from 'react-hot-toast'
+
+import { updateMoviesHome, loadMovies, updateErrorMoviesHome } from '../../context/actions.js'
 import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
@@ -35,11 +38,8 @@ export default function Home () {
         }
       }))
     } catch (error) {
-      dispatch(updateAlert({
-        open: true,
-        title: 'Error',
-        text: 'Something is wrong'
-      }))
+      dispatch(updateErrorMoviesHome(error.message))
+      toast.error('Error')
     }
   }
 
@@ -52,7 +52,7 @@ export default function Home () {
             )
           : movies.status === 'fail'
             ? (
-              <p>Error</p>
+              <Error message={movies.error} />
               )
             : movies.status === 'successful'
               ? (
@@ -64,7 +64,9 @@ export default function Home () {
                       </div>
                       )
                     : (
-                      <p>No Matches Found</p>
+                      <div>
+                        <p>No Matches Found</p>
+                      </div>
                       )
                 )
               : null

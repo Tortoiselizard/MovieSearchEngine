@@ -1,15 +1,12 @@
 import { Outlet, useLocation } from 'react-router'
 import Header from '../Header/Header'
-import Alert from '../Alert/Alert.jsx'
+import { Toaster } from 'react-hot-toast'
 
 import { useEffect } from 'react'
 import useHistory from '../../hooks/useHistory.js'
-import { useMyContext } from '../../context/MyContext.jsx'
 
 export default function Layout () {
   const { initialize, history, updateLastURL, addNewURL } = useHistory()
-  const { state: globalState } = useMyContext()
-  const { alert } = globalState
   const { list, index } = history
   const location = useLocation()
   const { pathname, search } = location
@@ -47,10 +44,16 @@ export default function Layout () {
     <>
       <Header />
       <Outlet />
-      {
-        alert.open && <Alert />
-      }
-
+      <Toaster
+        position='bottom-left'
+        toastOptions={{
+          style: {
+            background: 'rgba(0,0,0,0.75)',
+            border: '1px solid white',
+            color: 'white'
+          }
+        }}
+      />
     </>
   )
 }
