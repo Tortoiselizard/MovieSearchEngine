@@ -13,8 +13,8 @@
   margin-bottom: 68px;
   display: grid;
   grid-template-columns: repeat(5, auto);
+  align-content: start;
   gap: 32px;
-  flex-wrap: wrap;
 }
 
 .loadingZone {
