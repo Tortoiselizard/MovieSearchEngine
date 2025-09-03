@@ -40,9 +40,6 @@ export default function Header () {
         }
       </div>
       {
-        pathname !== '/' && <ComeBack />
-      }
-      {
         screen === 'smartphone'
           ? (
             <>
@@ -56,9 +53,13 @@ export default function Header () {
               <Drawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} />
             </>
             )
-          : (
-            <NavBar />
-            )
+          : null
+      }
+      {
+        pathname !== '/' && <ComeBack />
+      }
+      {
+        screen !== 'smartphone' && <NavBar />
       }
     </header>
   )
