@@ -10,6 +10,7 @@
   /* Estilos para pantallas de móviles */
 
   .actorsContainer {
+    height: fit-content;
     margin-top: 40px;
   }
 

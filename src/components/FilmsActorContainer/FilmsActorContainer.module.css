@@ -9,7 +9,8 @@
 @media screen and (max-width: 480px) {
   /* Estilos para pantallas de móviles */
 
-  .actorsContainer {
+  .moviesContainer {
+    height: fit-content;
     margin-top: 40px;
   }
 

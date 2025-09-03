@@ -189,11 +189,16 @@
 
   .heroContent {
     height: auto;
+    margin: 0;
     flex-direction: column-reverse;
     justify-content: flex-start;
     padding: 0 1rem;
     gap: 3rem;
     text-align: start;
+  }
+
+  .heroPosterContainer {
+    width: 100%;
   }
 
   .heroPoster {
@@ -212,6 +217,7 @@
   }
 
   .heroInfo {
+    max-width: none;
     position: relative;
     margin-top: -40px;
     z-index: 2;
