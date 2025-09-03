@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import HeartButton from '../HeartButton/HeartButton'
 
+import { ImageIcon } from 'lucide-react'
+
 import { useState } from 'react'
 
 import styles from './HeroDetails.module.css'
@@ -78,14 +80,35 @@ export default function HeroDetails ({ movie }) {
             </div>
           </div>
 
-          <div className={`${styles.heroPoster} ${loadingPoster ? '' : styles.spinnerOff}`}>
-            <img
-              src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`}
-              alt={'image: ' + movie.title}
-              className={styles.posterImage}
-              onLoad={() => { handleImageLoad('poster') }}
-              onError={() => { handleImageError('poster') }}
-            />
+          <div className={`${styles.heroPoster} ${movie.poster_path && loadingPoster ? '' : styles.spinnerOff}`}>
+            {
+              movie.poster_path
+                ? (
+                  <img
+                    src={`${VITE_API_IMAGE_URL}/w500/${movie.poster_path}`}
+                    alt={movie.title}
+                    className={styles.posterImage}
+                    onLoad={() => { handleImageLoad('poster') }}
+                    onError={() => { handleImageError('poster') }}
+                  />
+                  )
+                : (
+                  <div
+                    className={styles.posterImage}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '8px',
+                      backgroundColor: 'rgba(36,36,36,0.5)'
+                    }}
+                  >
+                    <ImageIcon />
+                    <p>Image not found</p>
+                  </div>
+                  )
+            }
             <div className={styles.heroGradientPoster} />
           </div>
         </div>

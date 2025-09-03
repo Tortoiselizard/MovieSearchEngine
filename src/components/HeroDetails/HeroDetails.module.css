@@ -56,7 +56,7 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 0 4rem;
   padding-top: 68px;
   gap: 3rem;
