@@ -7,11 +7,12 @@ import { useState, useEffect, useRef, cloneElement } from 'react'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 import styles from './Carousel.module.css'
 
-export default function Carousel ({ items, title, seeMore, id, children, imageSize }) {
+export default function Carousel ({ items, title, seeMore, id, children, imageSize, watchSeeMore }) {
   const [position, setPosition] = useState(0)
   const itemsContainer = useRef()
   const [scrollButtonRightVisibility, setScrollButtonRightVisibility] = useState(false)
   const [countCardVisibles, setCountCardVisibles] = useState(0)
+  const quantity = imageSize === '/w185' ? 18 : 20
 
   // Initialice horizontal scrollbar in 0
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
         <Link
           to={seeMore}
           className={styles.more}
-          style={items.length < 19 ? { display: 'none' } : {}}
+          style={watchSeeMore || items.length > quantity ? {} : { display: 'none' }}
         >See more
         </Link>
       </div>

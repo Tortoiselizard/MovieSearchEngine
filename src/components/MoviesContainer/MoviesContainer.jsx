@@ -24,6 +24,7 @@ export default function MoviesContainer () {
         seeMore='/search'
         id='popular'
         imageSize={imageSize}
+        watchSeeMore
       >
         <MovieCard mode='home' />
       </Carousel>
