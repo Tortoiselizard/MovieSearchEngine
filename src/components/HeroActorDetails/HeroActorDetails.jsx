@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import { ImageIcon } from 'lucide-react'
+
 import { useState } from 'react'
 
 import styles from './HeroActorDetails.module.css'
@@ -38,13 +40,23 @@ export default function HeroActorDetails ({ actor }) {
     <div className={styles.heroActorDetailsContainer}>
       <div className={styles.hero}>
         <div className={`${styles.heroBackground} ${loadingBackground ? '' : styles.spinnerOff}`}>
-          <img
-            src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
-            alt={actor.name}
-            className={styles.backgroundImage}
-            onLoad={() => { handleImageLoad('background') }}
-            onError={() => { handleImageError('background') }}
-          />
+          {
+            actor.profile_path
+              ? (
+                <img
+                  src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
+                  alt={actor.name}
+                  className={styles.backgroundImage}
+                  onLoad={() => { handleImageLoad('background') }}
+                  onError={() => { handleImageError('background') }}
+                />
+                )
+              : (
+                <div
+                  className={styles.posterImage}
+                />
+                )
+          }
           <div className={styles.heroGradient} />
         </div>
         <div className={styles.heroContent}>
@@ -52,7 +64,10 @@ export default function HeroActorDetails ({ actor }) {
             <h1 className={styles.name}>{actor.name}</h1>
 
             <div className={styles.metadata}>
-              <span className={styles.specialDate}>{actor.birthday}</span>
+              {
+                actor.birthday && <span className={styles.specialDate}>{actor.birthday}</span>
+              }
+
               {
                 actor.deathday && (
                   <>
@@ -61,7 +76,9 @@ export default function HeroActorDetails ({ actor }) {
                 )
               }
 
-              <span className={styles.placeBirth}>{actor.place_of_birth}</span>
+              {
+                actor.place_of_birth && <span className={styles.placeBirth}>{actor.place_of_birth}</span>
+              }
 
             </div>
 
@@ -71,14 +88,35 @@ export default function HeroActorDetails ({ actor }) {
           </div>
 
           <div className={`${styles.heroPosterContainer}`}>
-            <div className={`${styles.heroPoster} ${loadingPoster ? '' : styles.spinnerOff}`}>
-              <img
-                src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
-                alt={'image: ' + actor.name}
-                className={styles.posterImage}
-                onLoad={() => { handleImageLoad('poster') }}
-                onError={() => { handleImageError('poster') }}
-              />
+            <div className={`${styles.heroPoster} ${actor.profile_path && loadingPoster ? '' : styles.spinnerOff}`}>
+              {
+                actor.profile_path
+                  ? (
+                    <img
+                      src={`${VITE_API_IMAGE_URL}/h632/${actor.profile_path}`}
+                      alt={actor.name}
+                      className={styles.posterImage}
+                      onLoad={() => { handleImageLoad('poster') }}
+                      onError={() => { handleImageError('poster') }}
+                    />
+                    )
+                  : (
+                    <div
+                      className={styles.posterImage}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: 'rgba(36,36,36,0.5)'
+                      }}
+                    >
+                      <ImageIcon />
+                      <p>Image not found</p>
+                    </div>
+                    )
+              }
               <div className={styles.heroGradientPoster} />
             </div>
           </div>

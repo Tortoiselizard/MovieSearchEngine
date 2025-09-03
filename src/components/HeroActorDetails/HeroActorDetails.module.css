@@ -56,7 +56,7 @@
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0 4rem;
   margin-top: 68px;
   gap: 3rem;
