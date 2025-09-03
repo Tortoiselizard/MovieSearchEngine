@@ -39,7 +39,12 @@ export default function MovieCard ({ data, imageSize, mode }) {
               }}
             >
               <ImageIcon />
-              <p>Image not found</p>
+              <p
+                style={{
+                  fontSize: '0.8rem'
+                }}
+              >Image not found
+              </p>
             </div>
             )
           : (

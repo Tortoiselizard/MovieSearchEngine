@@ -26,7 +26,7 @@
 /* Estilos para pantallas de móviles */
 @media screen and (max-width: 480px) {
 
-  .gridtems {
+  .gridItems {
     grid-template-columns: repeat(3, auto);
     gap: 8px;
     box-sizing: border-box;
