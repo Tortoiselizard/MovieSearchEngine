@@ -19,46 +19,39 @@ export default function MovieCard ({ data, imageSize, mode }) {
     setLoading(false)
   }
 
-  if (!data.poster_path) {
-    return (
-      <div
-        className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${styles.spinnerOff}`}
-        style={{ cursor: 'not-allowed' }}
-      >
-        <div
-          className={styles.movieCardImage}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: 'rgba(0,0,0,0.5)'
-          }}
-        >
-          <ImageIcon />
-          <p>Image not found</p>
-        </div>
-        <div className={styles.movieInfo}>
-          <p className={styles.title}>{data.title}</p>
-          <p className={styles.release_date}>{data.release_date}</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <Link
-      className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${loading ? '' : styles.spinnerOff}`}
+      className={`${styles.movieCard} ${mode === 'home' ? styles.movieCardRow : styles.movieCardGrid} ${data.poster_path && loading ? '' : styles.spinnerOff}`}
       to={`/movies/${data.id}`}
     >
-      <LazyImage
-        className={styles.movieCardImage}
-        src={`${VITE_API_IMAGE_URL}${imageSize}${data.poster_path}`}
-        alt={data.title}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-      />
+      {
+        !data.poster_path
+          ? (
+            <div
+              className={styles.movieCardImage}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: 'rgba(0,0,0,0.5)'
+              }}
+            >
+              <ImageIcon />
+              <p>Image not found</p>
+            </div>
+            )
+          : (
+            <LazyImage
+              className={styles.movieCardImage}
+              src={`${VITE_API_IMAGE_URL}${imageSize}${data.poster_path}`}
+              alt={data.title}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+            )
+      }
       <div className={styles.movieInfo}>
         <p className={styles.title}>{data.title}</p>
         <p className={styles.release_date}>{data.release_date}</p>
