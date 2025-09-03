@@ -25,3 +25,16 @@
   align-items: center;
   gap: 32px;
 }
+
+.hamburger {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}

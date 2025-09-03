@@ -56,5 +56,9 @@
 
 @media screen and (max-width: 480px) {
   /* Estilos para pantallas de móviles */
-
+  .navBarContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
 }
