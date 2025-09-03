@@ -74,3 +74,12 @@
   background: rgba(255, 255, 255, 0.1);
   font-weight: 600;
 }
+
+/* Estilos para pantallas de móviles */
+@media screen and (max-width: 480px) {
+
+  .selectorButton {
+    min-width: 151px;
+  }
+
+}

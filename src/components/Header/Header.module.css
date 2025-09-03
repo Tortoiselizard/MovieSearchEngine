@@ -38,3 +38,11 @@
   align-items: center;
   transition: all 0.3s ease;
 }
+
+@media screen and (max-width: 480px) {
+
+  .filterContainer {
+    gap: 24px;
+  } 
+
+}
