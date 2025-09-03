@@ -19,45 +19,40 @@ export default function ActorCard ({ data, imageSize }) {
     setLoading(false)
   }
 
-  if (!data.profile_path) {
-    return (
-      <div
-        className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${styles.spinnerOff}`}
-        style={{ cursor: 'not-allowed' }}
-      >
-        <div
-          className={styles.actorCardImage}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: 'rgba(0,0,0,0.5)'
-          }}
-        >
-          <ImageIcon />
-          <p>Image not found</p>
-        </div>
-        <div className={styles.actorInfo}>
-          <p className={styles.name}>{data.name}</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <Link
-      className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${loading ? '' : styles.spinnerOff}`}
+      className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${data.poster_path && loading ? '' : styles.spinnerOff}`}
       to={`/actors/${data.id}`}
     >
-      <LazyImage
-        className={styles.actorCardImage}
-        src={`${VITE_API_IMAGE_URL}${imageSize}${data.profile_path}`}
-        alt={data.name}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-      />
+      {
+        !data.profile_path
+          ? (
+            <div
+              className={styles.actorCardImage}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: 'rgba(0,0,0,0.5)'
+              }}
+            >
+              <ImageIcon />
+              <p>Image not found</p>
+            </div>
+            )
+          : (
+            <LazyImage
+              className={styles.actorCardImage}
+              src={`${VITE_API_IMAGE_URL}${imageSize}${data.profile_path}`}
+              alt={data.name}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+            )
+
+      }
       <div className={styles.actorInfo}>
         <p className={styles.name}>{data.name}</p>
       </div>
