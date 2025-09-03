@@ -4,7 +4,7 @@ import { initializeHistory, addURLToHistory, updateLastURLToHistory } from '../c
 
 export default function useHistory () {
   const { state: globalState, dispatch } = useMyContext()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const { history } = globalState
   const { list, index } = history
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ export default function useHistory () {
   }
 
   function initialize () {
-    const newList = [{ url: pathname, scroll: 0 }]
+    const newList = [{ url: pathname + search, scroll: 0 }]
     const newHistory = {
       list: newList,
       index: 0
