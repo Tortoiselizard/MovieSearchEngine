@@ -27,7 +27,7 @@ export default function Carousel ({ items, title, seeMore, id, children, imageSi
     setCountCardVisibles(n)
 
     // Update scrollButtonRightVisibility when the list is very short
-    if (itemsContainer.current.childNodes.length < n) return
+    if (itemsContainer.current.childNodes.length <= n) return
     setScrollButtonRightVisibility(true)
   }, [itemsContainer.current])
 
