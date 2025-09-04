@@ -8,7 +8,7 @@ import ButtonFAB from '../ButtonFAB/ButtonFAB'
 import { Menu } from 'lucide-react'
 
 import { useLocation } from 'react-router'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 
 import styles from './Header.module.css'
 
@@ -18,7 +18,7 @@ export default function Header () {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const screen = useMemo(() => {
     const viewportWidth = window.innerWidth
-    if (viewportWidth < 480) return 'smartphone'
+    if (viewportWidth < 480) return 'mobile'
     if (viewportWidth < 900) return 'tablet'
     else return 'computer'
   }, [])
@@ -31,7 +31,7 @@ export default function Header () {
     <header className={styles.header}>
       <div className={styles.filterContainer}>
         {
-          pathname === '/' || pathname === '/search'
+          screen !== 'mobile' && (pathname === '/' || pathname === '/search')
             ? (
               <>
                 <GenreSelector />
@@ -42,7 +42,13 @@ export default function Header () {
         }
       </div>
       {
-        screen === 'smartphone'
+        pathname !== '/' && <ComeBack />
+      }
+      {
+        screen !== 'mobile' && <NavBar />
+      }
+      {
+        screen === 'mobile'
           ? (
             <>
               <button
@@ -56,12 +62,6 @@ export default function Header () {
             </>
             )
           : null
-      }
-      {
-        pathname !== '/' && <ComeBack />
-      }
-      {
-        screen !== 'smartphone' && <NavBar />
       }
       <ButtonFAB />
     </header>

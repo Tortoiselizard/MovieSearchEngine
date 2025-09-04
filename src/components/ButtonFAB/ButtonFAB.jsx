@@ -3,7 +3,7 @@ import GenreSelector from '../GenreSelector/GenreSelector'
 
 import { Search, X, Film } from 'lucide-react'
 
-import { useEffect, useRef, useState, cloneElement } from 'react'
+import { useRef, useState, cloneElement } from 'react'
 
 import styles from './ButtonFAB.module.css'
 

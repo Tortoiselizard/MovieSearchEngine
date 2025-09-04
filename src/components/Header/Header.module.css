@@ -29,6 +29,10 @@
 .hamburger {
   width: 24px;
   height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
