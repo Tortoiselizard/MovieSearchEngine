@@ -3,6 +3,8 @@ import ComeBack from '../ComeBack/ComeBack'
 import NavBar from '../NavBar/NavBar'
 import GenreSelector from '../GenreSelector/GenreSelector'
 import Drawer from '../Drawer/Drawer'
+import ButtonFAB from '../ButtonFAB/ButtonFAB'
+
 import { Menu } from 'lucide-react'
 
 import { useLocation } from 'react-router'
@@ -61,6 +63,7 @@ export default function Header () {
       {
         screen !== 'smartphone' && <NavBar />
       }
+      <ButtonFAB />
     </header>
   )
 }

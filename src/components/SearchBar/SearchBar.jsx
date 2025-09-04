@@ -1,16 +1,18 @@
+import PropTypes from 'prop-types'
+
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 
 import styles from './SearchBar.module.css'
 
-export default function SearchBar () {
+export default function SearchBar ({ expand, mode }) {
   const [query, setQuery] = useState('')
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const inputNode = useRef()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(expand || false)
   const searchRef = useRef(null)
 
   // Update initial query
@@ -88,26 +90,25 @@ export default function SearchBar () {
   }
 
   return (
-    <div className={styles.searchContainer} ref={searchRef}>
-      <div className={`${styles.searchBox} ${isExpanded ? styles.expanded : ''}`}>
-        <button
-          onClick={() => { handleClick() }}
-          className={styles.searchButton}
-          aria-label='Search'
-        >
-          <Search className={styles.searchIcon} />
-        </button>
-        <input
-          id='search-input'
-          type='text'
-          value={query}
-          onChange={handleChange}
-          placeholder='Titles'
-          className={`${styles.searchInput} ${isExpanded ? styles.visible : ''}`}
-          ref={inputNode}
-        />
+    <div className={`${styles.searchBox} ${mode === 'button' ? styles.modeButton : styles.modeGeneral} ${isExpanded ? styles.expanded : ''}`} ref={searchRef}>
+      <button
+        onClick={() => { handleClick() }}
+        className={styles.searchButton}
+        aria-label='Search'
+      >
+        <Search className={styles.searchIcon} />
+      </button>
+      <input
+        id='search-input'
+        type='text'
+        value={query}
+        onChange={handleChange}
+        placeholder='Titles'
+        className={`${styles.searchInput} ${isExpanded ? styles.visible : ''}`}
+        ref={inputNode}
+      />
 
-        {
+      {
           query && isExpanded && (
             <button
               className={styles.clearButton}
@@ -118,7 +119,11 @@ export default function SearchBar () {
             </button>
           )
         }
-      </div>
     </div>
   )
+}
+
+SearchBar.propTypes = {
+  expand: PropTypes.bool.isRequired,
+  mode: PropTypes.string.isRequired
 }

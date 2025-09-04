@@ -1,4 +1,6 @@
-import { ChevronDown } from 'lucide-react'
+import PropTypes from 'prop-types'
+
+import { ChevronDown, Film } from 'lucide-react'
 
 import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
@@ -10,7 +12,7 @@ import { requestMovieGenre } from '../../services/moviesApi'
 
 import { loadGenres, updateAlert, updateGenres, updateErrorGenres } from '../../context/actions'
 
-export default function GenreSelector () {
+export default function GenreSelector ({ mode }) {
   const { state: globalState, dispatch } = useMyContext()
   const { genres } = globalState
   const { pathname } = useLocation()
@@ -18,6 +20,7 @@ export default function GenreSelector () {
   const navigate = useNavigate()
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(mode !== 'button')
   const [selectedGenre, setSelectedGenre] = useState(() => {
     if (genres.status === 'successful' && genres.list.length) return genres.list[0]
     return null
@@ -98,6 +101,11 @@ export default function GenreSelector () {
     setSearchParams(searchParams)
   }
 
+  function handleExpanded () {
+    if (mode !== 'button') return
+    setIsExpanded(true)
+  }
+
   return (
     <>
       {
@@ -107,9 +115,13 @@ export default function GenreSelector () {
             ? (
                 genres.list.length
                   ? (
-                    <div className={styles.genreSelector} ref={genreSelectorRef}>
+                    <div
+                      className={`${styles.genreSelector} ${mode === 'button' ? styles.modeButton : styles.modeGeneral} ${isExpanded ? styles.expanded : ''}`} ref={genreSelectorRef}
+                      onClick={handleExpanded}
+                    >
+                      {!isExpanded && <Film />}
                       <button
-                        className={styles.selectorButton}
+                        className={`${styles.selectorButton} ${isExpanded ? styles.expanded : ''}`}
                         onClick={() => setIsOpen(!isOpen)}
                         aria-expanded={isOpen}
                         aria-haspopup='listbox'
@@ -153,4 +165,8 @@ export default function GenreSelector () {
       }
     </>
   )
+}
+
+GenreSelector.propTypes = {
+  mode: PropTypes.string.isRequired
 }

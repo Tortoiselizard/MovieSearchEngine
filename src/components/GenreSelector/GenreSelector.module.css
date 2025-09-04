@@ -1,14 +1,62 @@
 .genreSelector {
   position: relative;
   z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+}
+
+.modeGeneral {
+
+}
+
+.modeButton {
+  height: 34px;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  animation: fadeInScale 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+.genreSelector.modeButton svg {
+  color: black;
+}
+
+.genreSelector.modeButton.expanded {
+  height: auto;
+  width: auto;
+  min-width: 34px;
+  background-color: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+}
+
+.genreSelector.modeButton.expanded svg {
+  color: white;
 }
 
 .selectorButton {
-  min-width: 200px;
-  padding: 12px 20px;
-  background: rgba(42, 42, 42, 0.6);;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  width: 0px;
+  min-width: 0px;
+  padding: 0px;
+  border: none;
+  /*background: rgba(42, 42, 42, 0.6);*/
+  background-color: rgba(0,0,0,0.3);
   font-size: 1rem;
   font-weight: 500;
   display: flex;
@@ -16,21 +64,31 @@
   justify-content: space-between;
   gap: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.selectorButton.expanded {
+  height: 48px;
+  min-width: 160px;
+  padding: 12px 20px;
+  /*border-radius: 4px;*/
 }
 
 .selectorButton:hover {
-  background: rgba(42, 42, 42, 0.8);
-  border-color: rgba(255, 255, 255, 0.25);
+  /*background: rgba(42, 42, 42, 0.8);*/
+  /*background-color: rgba(0,0,0,0.3);*/
+  /*border-color: rgba(255, 255, 255, 0.25);*/
 }
 
 .selectedGenre {
   flex: 1;
   text-align: left;
+  text-wrap: nowrap;
 }
 
 .chevron {
-
+  color: white;
 }
 
 .dropDown {
@@ -39,7 +97,7 @@
   left: 0;
   right: 0;
   background: rgba(42, 42, 42, 0.95);;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 4px;
   margin-top: 4px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
@@ -79,7 +137,13 @@
 @media screen and (max-width: 480px) {
 
   .selectorButton {
-    min-width: 151px;
+    /*min-width: 151px;*/
+  }
+
+  .selectorButton.expanded {
+    height: 34px;
+    min-width: 160px;
+    padding: 12px 20px;
   }
 
 }
