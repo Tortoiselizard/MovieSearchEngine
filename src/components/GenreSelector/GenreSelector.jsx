@@ -1,16 +1,19 @@
 import PropTypes from 'prop-types'
 
+import Spinner from '../Spinner/Spinner'
+import Error from '../Error/Error'
+
 import { ChevronDown, Film } from 'lucide-react'
 
-import styles from './GenreSelector.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { useMyContext } from '../../context/MyContext'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import toast from 'react-hot-toast'
 
 import { requestMovieGenre } from '../../services/moviesApi'
-
 import { loadGenres, updateAlert, updateGenres, updateErrorGenres } from '../../context/actions'
+
+import styles from './GenreSelector.module.css'
 
 export default function GenreSelector ({ mode }) {
   const { state: globalState, dispatch } = useMyContext()
@@ -21,10 +24,11 @@ export default function GenreSelector ({ mode }) {
   const genreSelectorRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [isExpanded, setIsExpanded] = useState(mode !== 'button')
-  const [selectedGenre, setSelectedGenre] = useState(() => {
-    if (genres.status === 'successful' && genres.list.length) return genres.list[0]
-    return null
-  })
+  // const [selectedGenre, setSelectedGenre] = useState(() => {
+  // if (genres.status === 'successful' && genres.list.length) return genres.list[0]
+  // return null
+  // })
+  const [selectedGenre, setSelectedGenre] = useState({ id: 0, name: 'All genres' })
 
   // Update selectedGenre with URL
   useEffect(() => {
@@ -41,9 +45,9 @@ export default function GenreSelector ({ mode }) {
 
   // Initialice genres
   useEffect(() => {
-    if (genres.status !== 'idle') return
+    if (!isOpen || genres.status !== 'idle') return
     getGenreMovies()
-  }, [])
+  }, [isOpen])
 
   // handle clicks outside the component
   useEffect(() => {
@@ -107,63 +111,53 @@ export default function GenreSelector ({ mode }) {
   }
 
   return (
-    <>
-      {
-        genres.status === 'pending' || genres.status === 'fail'
-          ? null
-          : genres.status === 'successful' && selectedGenre
-            ? (
-                genres.list.length
+    <div
+      className={`${styles.genreSelector} ${mode === 'button' ? styles.modeButton : styles.modeGeneral} ${isExpanded ? styles.expanded : ''}`} ref={genreSelectorRef}
+      onClick={handleExpanded}
+    >
+      {!isExpanded && <Film />}
+      <button
+        className={`${styles.selectorButton} ${isExpanded ? styles.expanded : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-haspopup='listbox'
+      >
+        <span className={styles.selectedGenre}>{selectedGenre.name}</span>
+        <ChevronDown className={`${styles.chevron} ${isOpen ? styles.open : ''}`} />
+      </button>
+
+      <div className={`${styles.dropDown} ${isOpen ? styles.open : ''}`}>
+        <ul className={`${styles.genreList} ${isOpen ? styles.open : ''}`} role='listbox'>
+          {
+                genres.status === 'pending'
                   ? (
-                    <div
-                      className={`${styles.genreSelector} ${mode === 'button' ? styles.modeButton : styles.modeGeneral} ${isExpanded ? styles.expanded : ''}`} ref={genreSelectorRef}
-                      onClick={handleExpanded}
-                    >
-                      {!isExpanded && <Film />}
-                      <button
-                        className={`${styles.selectorButton} ${isExpanded ? styles.expanded : ''}`}
-                        onClick={() => setIsOpen(!isOpen)}
-                        aria-expanded={isOpen}
-                        aria-haspopup='listbox'
-                      >
-                        <span className={styles.selectedGenre}>{selectedGenre.name}</span>
-                        <ChevronDown className={styles.chevron} />
-                      </button>
-
-                      {
-                        isOpen && (
-                          <div className={styles.dropDown}>
-                            <ul className={styles.genreList} role='listbox'>
-                              {
-                                genres.list.map(genre => (
-                                  <li key={genre.id}>
-                                    <button
-                                      className={`${styles.genreOption} ${selectedGenre.id === genre.id ? styles.selected : ''}`}
-                                      onClick={() => { handleGenreSelected(genre) }}
-                                      role='option'
-                                      aria-selected={selectedGenre.id === genre.id}
-                                      disabled={selectedGenre.id === genre.id}
-                                    >
-                                      {genre.name}
-                                    </button>
-                                  </li>
-
-                                ))
-
-                              }
-                            </ul>
-                          </div>
+                    <Spinner />
+                    )
+                  : genres.status === 'fail'
+                    ? (
+                      <Error message={movies.error} />
+                      )
+                    : genres.status === 'successful'
+                      ? (
+                          genres.list.map(genre => (
+                            <li key={genre.id}>
+                              <button
+                                className={`${styles.genreOption} ${selectedGenre.id === genre.id ? styles.selected : ''}`}
+                                onClick={() => { handleGenreSelected(genre) }}
+                                role='option'
+                                aria-selected={selectedGenre.id === genre.id}
+                                disabled={selectedGenre.id === genre.id}
+                              >
+                                {genre.name}
+                              </button>
+                            </li>
+                          ))
                         )
-                      }
-                    </div>
-                    )
-                  : (
-                    <p>No Genres found</p>
-                    )
-              )
-            : null
-      }
-    </>
+                      : null
+              }
+        </ul>
+      </div>
+    </div>
   )
 }
 
