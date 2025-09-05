@@ -3,7 +3,12 @@ export function getQueriesString (queries) {
   if (!queries) return queriesString
   const queriesStringArray = []
   for (const query in queries) {
-    const newQuery = `${query}=${queries[query]}`
+    let newQuery
+    if (Array.isArray(queries[query])) {
+      newQuery = `${query}=${JSON.stringify(queries[query])}`
+    } else {
+      newQuery = `${query}=${queries[query]}`
+    }
     queriesStringArray.push(newQuery)
   }
 
@@ -12,4 +17,18 @@ export function getQueriesString (queries) {
   }
 
   return queriesString
+}
+
+export function summaryMovieData ({
+  poster_path,
+  id,
+  release_date,
+  title
+}) {
+  return {
+    poster_path,
+    id,
+    release_date,
+    title
+  }
 }

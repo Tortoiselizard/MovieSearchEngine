@@ -1,35 +1,35 @@
-import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMovies, loadMovies } from '../../context/actions.js'
-import { useMatch } from 'react-router'
-
-import { requestPopularMovies } from '../../services/moviesApi'
+import { Link, useLocation } from 'react-router'
 
 import styles from './NavBar.module.css'
+import { useEffect, useState } from 'react'
 
 export default function NavBar () {
-  const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
-  const isHome = useMatch('/')
-  if (!isHome) return
+  const { pathname } = useLocation()
+  const [optionActive, setOptionActive] = useState('popular')
+  const replace = pathname === '/notFound'
 
-  async function getMovies (category) {
-    if (movies.category === category) return
-    switch (category) {
-      case 'popular': {
-        dispatch(loadMovies())
-        try {
-          const { page, results, total_pages, total_results } = await requestPopularMovies()
-          dispatch(updateMovies({ list: results, category: 'popular' }))
-        } catch (error) {
-          alert(error.message)
-        }
-        break
-      }
-    }
-  }
+  useEffect(() => {
+    if (optionActive === pathname) return
+    const newOptionActive = pathname
+    setOptionActive(newOptionActive)
+  }, [pathname])
+
   return (
-    <nav className={styles.container}>
-      <button className={styles.navLink} onClick={() => { getMovies('popular') }}>Popular</button>
+    <nav className={styles.navBarContainer}>
+      <Link
+        to='/'
+        className={`${styles.navLink} ${optionActive === '/' ? styles.active : ''}`}
+        replace={replace}
+      >
+        Popular
+      </Link>
+      <Link
+        to='/favorites'
+        className={`${styles.navLink} ${optionActive === '/favorites' ? styles.active : ''}`}
+        replace={replace}
+      >
+        Favorites
+      </Link>
     </nav>
   )
 }

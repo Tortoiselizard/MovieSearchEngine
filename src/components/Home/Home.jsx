@@ -1,30 +1,45 @@
 import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
+import Spinner from '../Spinner/Spinner.jsx'
+import Error from '../Error/Error.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
-import { updateMovies, loadMovies } from '../../context/actions.js'
+import toast from 'react-hot-toast'
+
+import { updateMoviesHome, loadMovies, updateErrorMoviesHome } from '../../context/actions.js'
 import { requestPopularMovies } from '../../services/moviesApi'
 
 import styles from './Home.module.css'
 
 export default function Home () {
   const { state: globalState, dispatch } = useMyContext()
-  const { movies } = globalState
+  const { movies } = globalState.home
 
   // Get popular movies
   useEffect(() => {
-    if (movies && movies.status === 'successful' && movies.list.length) return
+    if (movies.status !== 'idle') return
     getPopularMovies()
   }, [])
 
   async function getPopularMovies () {
-    dispatch(loadMovies())
+    const widthViewport = window.innerWidth
+    const quantity = widthViewport < 480 ? 18 : 20
+    const { page: currentPage } = movies
+    dispatch(loadMovies({ mode: 'home' }))
     try {
-      const { page, results, total_pages, total_results } = await requestPopularMovies()
-      dispatch(updateMovies({ list: results, category: 'popular' }))
+      const { page, lastMovie, results } = await requestPopularMovies({ page: currentPage, quantity })
+      dispatch(updateMoviesHome({
+        newMoviesData: {
+          list: results,
+          page,
+          lastMovie,
+          moviesPerPage: quantity
+        }
+      }))
     } catch (error) {
-      alert(error.message)
+      dispatch(updateErrorMoviesHome(error.message))
+      toast.error('Error getting popular movies')
     }
   }
 
@@ -33,11 +48,11 @@ export default function Home () {
       {
         movies.status === 'pending'
           ? (
-            <p>Cargando...</p>
+            <Spinner />
             )
           : movies.status === 'fail'
             ? (
-              <p>Error</p>
+              <Error message={movies.error} />
               )
             : movies.status === 'successful'
               ? (
@@ -49,7 +64,9 @@ export default function Home () {
                       </div>
                       )
                     : (
-                      <p>No se han encontrado coincidencias</p>
+                      <div>
+                        <p>No Matches Found</p>
+                      </div>
                       )
                 )
               : null

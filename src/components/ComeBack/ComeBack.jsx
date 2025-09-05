@@ -1,14 +1,26 @@
-import { Link, useMatch } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
+
+import { useLocation } from 'react-router'
+import useHistory from '../../hooks/useHistory'
 
 import styles from './ComeBack.module.css'
 
 export default function ComeBack () {
-  const isHome = useMatch('/')
-  if (isHome) return null
+  const { pathname } = useLocation()
+  const { goToPrevious, replaceLast, history } = useHistory()
+  const { list } = history
+
+  function goComeBack () {
+    if (pathname === '/notFound' || list.length < 2) {
+      replaceLast('/')
+      return
+    }
+    goToPrevious()
+  }
+
   return (
-    <Link className={styles.container} to='/'>
+    <button className={styles.comeBackContainer} onClick={goComeBack}>
       <ArrowLeft />
-    </Link>
+    </button>
   )
 }

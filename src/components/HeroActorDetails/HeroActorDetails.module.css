@@ -1,0 +1,238 @@
+.heroActorDetailsContainer {
+  position: relative;
+  min-height: 100vh;
+}
+
+/*Hero Section*/
+.hero {
+  position: relative;
+  height: auto;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.heroBackground::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease;
+}
+
+.heroBackground.spinnerOff::after {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(20, 20, 20, 0.8) 0%, rgba(20, 20, 20, 0.4) 50%, transparent 100%), linear-gradient(to top, rgba(20, 20, 20, 0.8) 0%, transparent 60%);
+}
+
+.heroContent {
+  position: relative; 
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin: 0 4rem;
+  margin-top: 68px;
+  gap: 3rem;
+  text-align: start;
+}
+
+.heroInfo {
+  max-width: calc(100% / 2);
+  max-height: 590px;
+  position: relative;
+  overflow: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.name {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.1;
+}
+
+.metadata {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+} 
+
+.specialDate {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.placeBirth {
+  color: #b3b3b3;
+}
+
+.biography {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: #e5e5e5;
+}
+
+.genres {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.popularity {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.heroPosterContainer {
+  position: relative;
+  height: auto;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.heroPoster {
+  width: 400px;
+  aspect-ratio: 3/4;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.heroPoster::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.heroPoster.spinnerOff::after {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.posterImage {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.heroGradientPoster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7) 0%, transparent 20%, transparent 80%, #242424 100%);
+  display: none;
+}
+
+.fadeBottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(transparent, #242424);
+  z-index: 1;
+}
+
+@media screen and (max-width: 970px) {
+  /* Estilos para pantallas de móviles */
+
+  .heroBackground {
+    display: none;
+  }
+
+  .heroContent {
+    height: auto;
+    margin: 0;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    padding: 0 1rem;
+    gap: 3rem;
+    text-align: start;
+  }
+
+  .heroPosterContainer {
+    width: 100%;
+  }
+
+  .heroPoster {
+    width: 100vw;
+    min-width: 320px;
+    margin-right: 0px;
+  }
+
+  .posterImage {
+    object-position: center center;
+    box-shadow: none;
+  }
+
+  .heroGradientPoster {
+    display: block;
+  }
+
+  .heroInfo {
+    max-width: none;
+    max-height: none;
+    position: relative;
+    margin-top: -40px;
+    z-index: 2;
+  }
+
+  .name {
+    font-size: 2.1rem;
+  }
+}
+
+/* Estilos para dispositivos que SI soportan hover */
+@media (hover: hover) and (pointer: fine) {
+}
+
+/* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
+@media (hover: none) or (pointer: coarse) {
+}

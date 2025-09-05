@@ -1,0 +1,171 @@
+import { useMyContext } from '../../context/MyContext'
+import { useEffect, useState } from 'react'
+
+import { updateMoviesSearch, loadMovies, updateAlert } from '../../context/actions.js'
+import { requestMovies } from '../../services/moviesApi'
+
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
+
+import styles from './Pager.module.css'
+
+export default function Pager () {
+  const { state: globalState, dispatch } = useMyContext()
+  const { search, mode } = globalState
+  const { movies } = search
+  const [nPages, setNPages] = useState(null)
+  const [pages, setPages] = useState(null)
+
+  // Adjust nPages to screen width
+  useEffect(() => {
+    const totalWidth = window.innerWidth
+    let newNPages
+
+    // smarthphone
+    if (totalWidth <= 768) newNPages = 4
+    else if (totalWidth > 768 && totalWidth <= 992) newNPages = 6
+    // coputers
+    else if (totalWidth > 992) newNPages = 10
+
+    const wholePart = Math.trunc(movies.page / newNPages)
+    const rest = movies.page % newNPages
+    const firstPage = rest === 0 ? wholePart * newNPages - newNPages : wholePart * newNPages
+    const lastPage = firstPage + newNPages
+
+    setNPages(newNPages)
+    setPages({
+      firstPage,
+      lastPage
+    })
+  }, [window.innerWidth])
+
+  function goToPrevious () {
+    getMovies({ category: movies.category, operation: '-' })
+  }
+
+  function goToNext () {
+    getMovies({ category: movies.category, operation: '+' })
+  }
+
+  function gotToPage (page) {
+    getMovies({ pag: page })
+  }
+
+  async function getMovies ({ operation, pag }) {
+    const category = movies.category
+    const quantity = movies.moviesPerPage
+    let newPage
+    if (operation) {
+      newPage = operation === '+' ? movies.page + 1 : movies.page - 1
+    } else if (pag) {
+      newPage = pag
+    }
+    if (!(newPage >= 1)) return
+    if (newPage === movies.page) return
+    dispatch(loadMovies({ mode }))
+    try {
+      const { page, results, total_pages, total_results } = await requestMovies({
+        page: newPage,
+        quantity,
+        ...movies.filters
+      })
+      const newMoviesData = {
+        list: results,
+        category,
+        page,
+        totalPages: total_pages,
+        total_results,
+        moviesPerPage: quantity,
+        filters: { ...movies.filters }
+      }
+      dispatch(updateMoviesSearch({ newMoviesData }))
+    } catch (error) {
+      dispatch(updateAlert({
+        open: true,
+        title: 'Error',
+        text: 'Something is wrong'
+      }))
+    }
+  }
+
+  function scroll (direction) {
+    let newPages
+    switch (direction) {
+      case '-': {
+        newPages = {
+          firstPage: pages.firstPage - nPages,
+          lastPage: pages.lastPage - nPages
+        }
+        if (newPages.firstPage < 0) return
+        break
+      }
+      case '+': {
+        newPages = {
+          firstPage: pages.firstPage + nPages,
+          lastPage: pages.lastPage + nPages
+        }
+        if (newPages.firstPage > movies.totalPages - 1) return
+        break
+      }
+    }
+
+    setPages(newPages)
+  }
+
+  if (!pages) return null
+
+  return (
+    <>
+      <div className={styles.pagerContainer}>
+        <div className={`${styles.buttonsContainer} ${styles.buttonsContainerLeft}`}>
+          <button
+            className={`${styles.buttonPager} ${styles.prevNext}`}
+            disabled={movies.page <= 1}
+            onClick={goToPrevious}
+          >
+            <ChevronLeft />
+            {nPages !== 4 ? 'Previous' : ''}
+          </button>
+          <button
+            className={`${styles.ellipse}`}
+            onClick={() => { scroll('-') }}
+            disabled={pages.firstPage <= 0}
+          >
+            <Ellipsis />
+          </button>
+        </div>
+        <div className={styles.pagesContainer}>
+          {
+            Array.from({ length: movies.totalPages }, (_, i) => i + 1).slice(pages.firstPage, pages.lastPage).map((page) => (
+              <button
+                key={page}
+                className={`${styles.buttonPager} ${page === movies.page ? styles.active : ''}`}
+                onClick={() => { gotToPage(page) }}
+              >{page}
+              </button>
+            ))
+          }
+        </div>
+        <div className={`${styles.buttonsContainer} ${styles.buttonsContainerRight}`}>
+          <button
+            className={`${styles.ellipse}`}
+            onClick={() => { scroll('+') }}
+            disabled={pages.lastPage >= movies.totalPages - 1}
+          >
+            <Ellipsis />
+          </button>
+          <button
+            className={`${styles.buttonPager} ${styles.prevNext}`}
+            disabled={movies.page >= movies.totalPages}
+            onClick={goToNext}
+          >
+            {nPages !== 4 ? 'Next' : ''}
+            <ChevronRight />
+          </button>
+        </div>
+      </div>
+      <p className={styles.pageInfo}>
+        Showing {`${(movies.page - 1) * movies.moviesPerPage + 1}-${(movies.page - 1) * movies.moviesPerPage + movies.list.length}`} of {movies.total_results} movies
+      </p>
+    </>
+  )
+}

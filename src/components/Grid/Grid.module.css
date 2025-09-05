@@ -1,0 +1,46 @@
+.gridContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gridItems {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100vh - 68px);
+  margin-bottom: 68px;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  align-content: start;
+  gap: 32px;
+}
+
+.loadingZone {
+  position: relative;
+  height: 0px;
+  width: 100%;
+}
+
+/* Estilos para pantallas de móviles */
+@media screen and (max-width: 970px) {
+
+  .gridItems {
+    grid-template-columns: repeat(4, auto);
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+}
+
+/* Estilos para pantallas de móviles */
+@media screen and (max-width: 480px) {
+
+  .gridItems {
+    grid-template-columns: repeat(3, auto);
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+}

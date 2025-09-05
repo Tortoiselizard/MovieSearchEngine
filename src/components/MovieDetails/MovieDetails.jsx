@@ -1,60 +1,61 @@
-import Header from '../Header/Header'
 import HeroDetails from '../HeroDetails/HeroDetails'
+import ActorsContainer from '../ActorsContainer/ActorsContainer'
+import Spinner from '../Spinner/Spinner'
+import Error from '../Error/Error.jsx'
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import toast from 'react-hot-toast'
+
 import { requestMoviesById } from '../../services/moviesApi'
+import { useMyContext } from '../../context/MyContext'
+import { updateMovieDetails, loadMovieDetails, updateAlert, updateErrorMoviesDetails } from '../../context/actions'
 
 export default function MovieDetails () {
   const { id } = useParams()
-  const [movie, setMovie] = useState({
-    status: 'idlen',
-    data: {},
-    error: null
-  })
+  const { state: globalState, dispatch } = useMyContext()
+  const { movieDetails } = globalState
+  const [firstLoad, setFirstLoad] = useState(true)
 
   useEffect(() => {
-    if (movie.status !== 'idlen') return
-    getMovieById()
+    if (movieDetails.movieId !== id) {
+      getMovieById()
+    }
+    setFirstLoad(false)
   }, [])
 
   async function getMovieById () {
-    setMovie(prevState => ({
-      ...prevState,
-      status: 'pending'
-    }))
+    dispatch(loadMovieDetails())
     try {
       const newMovie = await requestMoviesById(id)
-      setMovie({
+      dispatch(updateMovieDetails({
         data: newMovie,
-        status: 'successful',
-        error: null
-      })
+        movieId: id
+      }))
     } catch (error) {
-      setMovie({
-        data: {},
-        status: 'fail',
-        error: error.message
-      })
+      dispatch(updateErrorMoviesDetails(error.message))
+      toast.error('Error getting movie detail')
     }
   }
+
+  if (firstLoad) return null
 
   return (
     <>
       {
-        movie.status === 'pending'
+        movieDetails.status === 'pending'
           ? (
-            <p>Cargando...</p>
+            <Spinner />
             )
-          : movie.status === 'fail'
+          : movieDetails.status === 'fail'
             ? (
-              <p>Error: {movie.error}</p>
+              <Error message={movieDetails.error} />
               )
-            : movie.status === 'successful'
+            : movieDetails.status === 'successful'
               ? (
                 <>
-                  <Header />
-                  <HeroDetails movie={movie.data} />
+                  <HeroDetails movie={movieDetails.data} />
+                  <ActorsContainer />
                 </>
 
                 )

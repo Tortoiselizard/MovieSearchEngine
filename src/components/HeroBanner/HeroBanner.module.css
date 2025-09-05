@@ -28,6 +28,10 @@
   margin-bottom: 2rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   text-align: start;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .buttons {
@@ -35,7 +39,7 @@
   gap: 1rem
 }
 
-.heroImage {
+.heroImageContainer {
   position: absolute;
   top: 0;
   left: 0;
@@ -44,7 +48,22 @@
   z-index: 1;
 }
 
-.heroImage img {
+.heroImageContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  transition: background-color 0.3s ease;
+}
+
+.heroImageContainer.spinnerOff::after {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.heroImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -53,7 +72,7 @@
 
 .infoBtn {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid white;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;

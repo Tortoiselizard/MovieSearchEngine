@@ -1,0 +1,39 @@
+.heartButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  outline: none;
+  padding: 0.5rem;
+}
+
+.heartButton:hover {
+  color: white;
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.heartButton:focus-visible {
+  outline: 2px solid rgba(9, 66, 128, 0.1);
+  outline-offset: 2px;
+}
+
+.heartButton:active {
+  transform: scale(0.95);
+}
+
+.heartButton.active {
+  color: #ffffff;
+  background: #059669;
+}
+
+.heartButton.active:hover {
+  background: #10b981;
+  transform: scale(1.1);
+}

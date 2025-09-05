@@ -1,0 +1,27 @@
+.actorsContainer {
+  height: 375.6px;
+  margin: 0 4%;
+  margin-top: -100px;
+  position: relative;
+  z-index: 2;
+}
+
+@media screen and (max-width: 970px) {
+  /* Estilos para pantallas de móviles */
+
+  .actorsContainer {
+    height: fit-content;
+    margin-top: 40px;
+  }
+
+}
+
+/* Estilos para dispositivos que SI soportan hover */
+@media (hover:hover) and (pointer:fine) {
+
+}
+
+/* Para móviles y dispositivos táctiles (sin hover o con "pointer: coarse") */
+@media (hover:none) and (pointer:coarse) {
+
+}
