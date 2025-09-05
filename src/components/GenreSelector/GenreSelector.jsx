@@ -141,7 +141,6 @@ export default function GenreSelector ({ mode }) {
         left: '0',
         marginBottom: '4px'
       }
-      console.log('no tengo espacio')
     }
     setStylesDropDown(newStylesDropDown)
   }
