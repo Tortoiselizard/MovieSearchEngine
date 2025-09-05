@@ -59,11 +59,11 @@ export default function Header () {
                 <Menu />
               </button>
               <Drawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} />
+              <ButtonFAB />
             </>
             )
           : null
       }
-      <ButtonFAB />
     </header>
   )
 }
