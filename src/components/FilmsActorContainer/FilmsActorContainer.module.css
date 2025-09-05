@@ -6,7 +6,7 @@
   z-index: 2;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 970px) {
   /* Estilos para pantallas de móviles */
 
   .moviesContainer {
