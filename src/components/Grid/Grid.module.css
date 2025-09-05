@@ -24,6 +24,17 @@
 }
 
 /* Estilos para pantallas de móviles */
+@media screen and (max-width: 970px) {
+
+  .gridItems {
+    grid-template-columns: repeat(4, auto);
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+}
+
+/* Estilos para pantallas de móviles */
 @media screen and (max-width: 480px) {
 
   .gridItems {

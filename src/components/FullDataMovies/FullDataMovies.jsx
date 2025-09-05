@@ -50,7 +50,26 @@ export default function FullDataMovies () {
 
   async function getMovies () {
     const widthViewport = window.innerWidth
-    const quantity = widthViewport < 480 ? 18 : 20
+    let screen, quantity
+    if (widthViewport > 970) { screen = 'computer' } else if (widthViewport < 970 && widthViewport > 480) { screen = 'tablet' } else { screen = 'movile' }
+    switch (screen) {
+      case 'movile': {
+        quantity = 18
+        break
+      }
+      case 'tablet': {
+        quantity = 20
+        break
+      }
+      case 'computer': {
+        quantity = 20
+        break
+      }
+      default: {
+        quantity = 20
+        break
+      }
+    }
     dispatch(loadMovies({ mode: 'search' }))
     try {
       const { page, lastMovie, results } = await requestMovies({
