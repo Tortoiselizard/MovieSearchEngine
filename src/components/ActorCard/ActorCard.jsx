@@ -21,7 +21,7 @@ export default function ActorCard ({ data, imageSize }) {
 
   return (
     <Link
-      className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${data.poster_path && loading ? '' : styles.spinnerOff}`}
+      className={`${styles.actorCardContainer} ${true ? styles.actorCardRow : styles.actorCardGrid} ${data.profile_path && loading ? '' : styles.spinnerOff}`}
       to={`/actors/${data.id}`}
     >
       {
