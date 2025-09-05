@@ -26,10 +26,16 @@ export default function ButtonFAB () {
   const [isExpaded, setIsExpanded] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const fabRef = useRef()
+  const [stylesOptionsContainer, setStylesOptionsContainer] = useState({
+    bottom: '70px',
+    right: '0',
+    alignItems: 'flex-end'
+  })
 
   function handleTouchEnd () {
     if (isDragging) {
       setIsDragging(false)
+      realignOptionsContainer()
     } else {
       setIsExpanded(!isExpaded)
     }
@@ -54,6 +60,41 @@ export default function ButtonFAB () {
     })
   }
 
+  function realignOptionsContainer () {
+    const { y, x } = fabRef.current.getBoundingClientRect()
+    const coordinateY = y - (14 + 82)
+    const coordinateX = x + 56 - 162
+    const enoughYSpace = coordinateY > 0
+    const enoughXSpace = coordinateX > 0
+    let newStylesOptionsContainer
+    if (enoughYSpace && enoughXSpace) {
+      newStylesOptionsContainer = {
+        bottom: '70px',
+        right: '0',
+        alignItems: 'flex-end'
+      }
+    } else if (!enoughYSpace && enoughXSpace) {
+      newStylesOptionsContainer = {
+        top: '70px',
+        right: '0',
+        alignItems: 'flex-end'
+      }
+    } else if (enoughYSpace && !enoughXSpace) {
+      newStylesOptionsContainer = {
+        bottom: '70px',
+        left: '0',
+        alignItems: 'flex-start'
+      }
+    } else if (!enoughYSpace && !enoughXSpace) {
+      newStylesOptionsContainer = {
+        top: '70px',
+        left: '0',
+        alignItems: 'flex-start'
+      }
+    }
+    setStylesOptionsContainer(newStylesOptionsContainer)
+  }
+
   return (
     <>
       {isExpaded && (
@@ -69,7 +110,10 @@ export default function ButtonFAB () {
       >
         {
           isExpaded && (
-            <div className={styles.optionsContainer}>
+            <div
+              className={styles.optionsContainer}
+              style={stylesOptionsContainer}
+            >
               {
                  fabOptions.map((option, index) => (
                    cloneElement(option.component, {

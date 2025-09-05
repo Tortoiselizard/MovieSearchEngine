@@ -19,11 +19,8 @@
 
 .optionsContainer {
   position: absolute;
-  bottom: 70px;
-  right: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 12px;
   animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
