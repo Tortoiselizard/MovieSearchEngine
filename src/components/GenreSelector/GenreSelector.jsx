@@ -22,13 +22,11 @@ export default function GenreSelector ({ mode }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const genreSelectorRef = useRef()
+  const dropDownRef = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [isExpanded, setIsExpanded] = useState(mode !== 'button')
-  // const [selectedGenre, setSelectedGenre] = useState(() => {
-  // if (genres.status === 'successful' && genres.list.length) return genres.list[0]
-  // return null
-  // })
   const [selectedGenre, setSelectedGenre] = useState({ id: 0, name: 'All genres' })
+  const [stylesDropDown, setStylesDropDown] = useState({})
 
   // Update selectedGenre with URL
   useEffect(() => {
@@ -110,6 +108,44 @@ export default function GenreSelector ({ mode }) {
     setIsExpanded(true)
   }
 
+  function handleOpen () {
+    const newIsOpen = !isOpen
+    setIsOpen(newIsOpen)
+    if (!newIsOpen) return
+    const { y, x } = dropDownRef.current.getBoundingClientRect()
+    const heightViewport = window.innerHeight
+    const enoughYSpace = y + 300 < heightViewport
+    const enoughXSpace = x > 0
+    let newStylesDropDown
+    if (enoughYSpace && enoughXSpace) {
+      newStylesDropDown = {
+        top: '100%',
+        right: '0',
+        marginTop: '4px'
+      }
+    } else if (!enoughYSpace && enoughXSpace) {
+      newStylesDropDown = {
+        bottom: '100%',
+        right: '0',
+        marginBottom: '4px'
+      }
+    } else if (enoughYSpace && !enoughXSpace) {
+      newStylesDropDown = {
+        top: '100%',
+        left: '0',
+        marginTop: '4px'
+      }
+    } else if (!enoughYSpace && !enoughXSpace) {
+      newStylesDropDown = {
+        bottom: '100%',
+        left: '0',
+        marginBottom: '4px'
+      }
+      console.log('no tengo espacio')
+    }
+    setStylesDropDown(newStylesDropDown)
+  }
+
   return (
     <div
       className={`${styles.genreSelector} ${mode === 'button' ? styles.modeButton : styles.modeGeneral} ${isExpanded ? styles.expanded : ''}`} ref={genreSelectorRef}
@@ -118,7 +154,7 @@ export default function GenreSelector ({ mode }) {
       {!isExpanded && <Film />}
       <button
         className={`${styles.selectorButton} ${isExpanded ? styles.expanded : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleOpen}
         aria-expanded={isOpen}
         aria-haspopup='listbox'
       >
@@ -126,7 +162,11 @@ export default function GenreSelector ({ mode }) {
         <ChevronDown className={`${styles.chevron} ${isOpen ? styles.open : ''}`} />
       </button>
 
-      <div className={`${styles.dropDown} ${isOpen ? styles.open : ''}`}>
+      <div
+        className={`${styles.dropDown} ${isOpen ? styles.open : ''}`}
+        ref={dropDownRef}
+        style={stylesDropDown}
+      >
         <ul className={`${styles.genreList} ${isOpen ? styles.open : ''}`} role='listbox'>
           {
                 genres.status === 'pending'

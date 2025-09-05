@@ -8,8 +8,8 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import toast from 'react-hot-toast'
 
-import { addMovies, updateMoviesSearch, loadMovies, updateAlert, updateErrorMoviesSearch } from '../../context/actions.js'
-import { requestMovies } from '../../services/moviesApi'
+import { addMovies, updateMoviesSearch, loadMovies, updateAlert, updateErrorMoviesSearch, loadGenres, updateGenres, updateErrorGenres } from '../../context/actions.js'
+import { requestMovies, requestMovieGenre } from '../../services/moviesApi'
 import { deepEqual } from '../../libs/validations.js'
 
 import styles from './FullDataMovies.module.css'
@@ -29,6 +29,13 @@ export default function FullDataMovies () {
     }
     return filters
   }, [searchParams, genres])
+
+  // Get genres
+  useEffect(() => {
+    if (genres.status === 'successful') return
+    dispatch(loadMovies({ mode: 'search' }))
+    getGenreMovies()
+  }, [])
 
   // Get movies
   useEffect(() => {
@@ -94,6 +101,29 @@ export default function FullDataMovies () {
     } catch (error) {
       dispatch(updateErrorMoviesSearch(error.message))
       toast.error('Error searching for more movies')
+    }
+  }
+
+  async function getGenreMovies () {
+    dispatch(loadGenres())
+    try {
+      const { genres } = await requestMovieGenre()
+      const list = [{ id: 0, name: 'All genres' }, ...genres]
+      dispatch(updateGenres({
+        list,
+        status: 'successful',
+        error: null
+      }))
+      let newSelectedGenre
+      if (searchParams.has('genre')) {
+        const genreName = searchParams.get('genre')
+        newSelectedGenre = list.find(genre => genre.name === genreName)
+      } else {
+        newSelectedGenre = list[0]
+      }
+    } catch (error) {
+      dispatch(updateErrorGenres(error.message))
+      toast.error('Error getting movie genres')
     }
   }
 
