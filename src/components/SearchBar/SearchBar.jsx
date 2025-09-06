@@ -3,10 +3,15 @@ import PropTypes from 'prop-types'
 import { Search, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
+import { useMyContext } from '../../context/MyContext'
+
+import { updateFAB } from '../../context/actions'
 
 import styles from './SearchBar.module.css'
 
 export default function SearchBar ({ expand, mode }) {
+  const { state: globalState, dispatch } = useMyContext()
+  const { fab } = globalState
   const [query, setQuery] = useState('')
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -76,6 +81,7 @@ export default function SearchBar ({ expand, mode }) {
 
   async function getMoviesByTitle (text) {
     searchParams.set('text', text)
+    dispatch(updateFAB(false))
     if (pathname !== '/search') {
       navigate(`/search?${searchParams.toString()}`)
       return

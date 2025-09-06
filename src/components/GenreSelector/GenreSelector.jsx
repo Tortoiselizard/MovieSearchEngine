@@ -11,13 +11,13 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import toast from 'react-hot-toast'
 
 import { requestMovieGenre } from '../../services/moviesApi'
-import { loadGenres, updateAlert, updateGenres, updateErrorGenres } from '../../context/actions'
+import { loadGenres, updateAlert, updateGenres, updateErrorGenres, updateFAB } from '../../context/actions'
 
 import styles from './GenreSelector.module.css'
 
 export default function GenreSelector ({ mode }) {
   const { state: globalState, dispatch } = useMyContext()
-  const { genres } = globalState
+  const { genres, fab } = globalState
   const { pathname } = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
@@ -87,6 +87,7 @@ export default function GenreSelector ({ mode }) {
     setSelectedGenre(genre)
     upteGenreFilter(genre)
     setIsOpen(false)
+    dispatch(updateFAB(false))
   }
 
   async function upteGenreFilter ({ name }) {
