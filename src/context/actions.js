@@ -34,6 +34,8 @@ export const UPDATE_ERROR_ACTOR_DETAILS = 'UPDATE_ERROR_ACTOR_DETAILS'
 export const UPDATE_ALERT = 'UPDATE_ALERT'
 export const CLOSE_ALERT = 'CLOSE_ALERT'
 
+export const UPDATE_FAB = 'UPDATE_FAB'
+
 export function updateMoviesHome ({ newMoviesData }) {
   return {
     type: UPDATE_MOVIES_HOME,
@@ -283,5 +285,12 @@ export function updateAlert (alert) {
 export function closeAlert () {
   return {
     type: CLOSE_ALERT
+  }
+}
+
+export function updateFAB (open) {
+  return {
+    type: UPDATE_FAB,
+    payload: open
   }
 }

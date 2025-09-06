@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 
+import Rating from '../Rating/Rating'
+
 import { ImageIcon } from 'lucide-react'
 
 import { useState } from 'react'
@@ -61,8 +63,10 @@ export default function HeroActorDetails ({ actor }) {
         </div>
         <div className={styles.heroContent}>
           <div className={styles.heroInfo}>
-            <h1 className={styles.name}>{actor.name}</h1>
-
+            <div className={styles.headHeroInfo}>
+              <h1 className={styles.name}>{actor.name}</h1>
+              <Rating rating={actor.popularity} />
+            </div>
             <div className={styles.metadata}>
               {
                 actor.birthday && <span className={styles.specialDate}>{actor.birthday}</span>
@@ -83,8 +87,6 @@ export default function HeroActorDetails ({ actor }) {
             </div>
 
             <p className={styles.biography}>{actor.biography}</p>
-
-            <span className={styles.popularity}>{actor.popularity}</span>
           </div>
 
           <div className={`${styles.heroPosterContainer}`}>

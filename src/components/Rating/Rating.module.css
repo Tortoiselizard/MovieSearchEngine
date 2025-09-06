@@ -1,0 +1,48 @@
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.starsContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.starWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke-width: 1.5;
+}
+
+.star.filled {
+  color: #fbbf24;
+  filter: drop-shadow(0 1px 2px rgba(251, 191, 36, 0.3));
+}
+
+.star.empty {
+  color: #d1d5db;
+}
+
+.partialOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.partialOverlay .star {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

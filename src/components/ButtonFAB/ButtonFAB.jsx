@@ -3,7 +3,10 @@ import GenreSelector from '../GenreSelector/GenreSelector'
 
 import { Search, X, Film } from 'lucide-react'
 
-import { useRef, useState, cloneElement } from 'react'
+import { useRef, useState, cloneElement, useEffect } from 'react'
+import { useMyContext } from '../../context/MyContext'
+
+import { updateFAB } from '../../context/actions'
 
 import styles from './ButtonFAB.module.css'
 
@@ -23,7 +26,8 @@ const fabOptions = [
 ]
 
 export default function ButtonFAB () {
-  const [isExpaded, setIsExpanded] = useState(false)
+  const { state: globalState, dispatch } = useMyContext()
+  const { fab } = globalState
   const [isDragging, setIsDragging] = useState(false)
   const fabRef = useRef()
   const [stylesOptionsContainer, setStylesOptionsContainer] = useState({
@@ -32,17 +36,21 @@ export default function ButtonFAB () {
     alignItems: 'flex-end'
   })
 
+  useEffect(() => {
+    console.log('fab:', fab)
+  }, [globalState.fab])
+
   function handleTouchEnd () {
     if (isDragging) {
       setIsDragging(false)
       realignOptionsContainer()
     } else {
-      setIsExpanded(!isExpaded)
+      dispatch(updateFAB(!fab.open))
     }
   }
 
   function handleMovement (e) {
-    if (isExpaded) return
+    if (fab.open) return
     setIsDragging(true)
     const touch = e.touches[0]
     const x = touch.clientX
@@ -97,10 +105,10 @@ export default function ButtonFAB () {
 
   return (
     <>
-      {isExpaded && (
+      {fab.open && (
         <div
           className={styles.overlayButtonFAB}
-          onClick={() => { setIsExpanded(false) }}
+          onClick={() => { dispatch(updateFAB(false)) }}
         />
       )}
 
@@ -109,7 +117,7 @@ export default function ButtonFAB () {
         ref={fabRef}
       >
         {
-          isExpaded && (
+          fab.open && (
             <div
               className={styles.optionsContainer}
               style={stylesOptionsContainer}
@@ -127,13 +135,13 @@ export default function ButtonFAB () {
         }
 
         <button
-          className={`${styles.fabButton} ${isExpaded ? styles.active : ''}`}
+          className={`${styles.fabButton} ${fab.open ? styles.active : ''}`}
           onTouchEnd={handleTouchEnd}
           onTouchMove={handleMovement}
           aria-label='Floating Action Button'
         >
           {
-            isExpaded
+            fab.open
               ? (
                 <X />
                 )

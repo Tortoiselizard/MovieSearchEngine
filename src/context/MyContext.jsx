@@ -25,7 +25,8 @@ import {
   UPDATE_ALERT,
   CLOSE_ALERT,
   UPDATE_ERROR_MOVIES_HOME,
-  UPDATE_ERROR_MOVIES_DETAILS
+  UPDATE_ERROR_MOVIES_DETAILS,
+  UPDATE_FAB
 } from './actions'
 
 // Make context
@@ -84,6 +85,9 @@ const initialState = {
     open: false,
     title: '',
     text: ''
+  },
+  fab: {
+    open: false
   }
 }
 
@@ -315,6 +319,12 @@ function reducer (state, action) {
           title: '',
           text: ''
         }
+      }
+    }
+    case UPDATE_FAB: {
+      return {
+        ...state,
+        fab: { open: action.payload }
       }
     }
     default: {
