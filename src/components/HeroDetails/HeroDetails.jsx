@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 
 import HeartButton from '../HeartButton/HeartButton'
+import Rating from '../Rating/Rating'
 
 import { ImageIcon } from 'lucide-react'
 
@@ -64,7 +65,7 @@ export default function HeroDetails ({ movie }) {
             <h1 className={styles.title}>{movie.title}</h1>
 
             <div className={styles.metadata}>
-              <span className={styles.rating}>{movie.vote_average}</span>
+              <Rating rating={movie.vote_average} />
               <span className={styles.year}>{movie.release_date.split('-')[0]}</span>
             </div>
 

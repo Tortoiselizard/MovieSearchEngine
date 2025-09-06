@@ -3,14 +3,9 @@ import PropTypes from 'prop-types'
 import { Star } from 'lucide-react'
 
 import styles from './Rating.module.css'
-import { useEffect } from 'react'
 
 export default function Rating ({ rating }) {
   const roundedRating = Math.round(rating * 10) / 20
-
-  useEffect(() => {
-    console.log('roundedRating:', roundedRating)
-  }, [])
 
   return (
     <div className={styles.rating}>
