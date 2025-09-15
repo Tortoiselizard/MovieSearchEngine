@@ -112,7 +112,7 @@
 
   .buttons {
     position: relative;
-    top: 24px
+    bottom: 8px;
   }
 
   .infoBtn {

@@ -9,8 +9,6 @@ import styles from './HeroBanner.module.css'
 
 export default function HeroBanner ({ movie }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
-  // const { state: globalState } = useMyContext()
-  // const movie = globalState.home.movies.list[0]
   const [windowWidth, setWindowWith] = useState(window.innerWidth)
   const [loadingBackground, setLoadingBackground] = useState(true)
 
@@ -46,20 +44,7 @@ export default function HeroBanner ({ movie }) {
         <h1 className={styles.title}>{movie.title}</h1>
         <p className={styles.description}>{movie.overview}</p>
         <div className={styles.buttons}>
-          {
-            movie.backdrop_path
-              ? (
-                <Link className={styles.infoBtn} to={`/movies/${movie.id}`} role='button'>Details</Link>
-                )
-              : (
-                <button
-                  className={styles.infoBtn}
-                  style={{ cursor: 'not-allowed' }}
-                >
-                  Details
-                </button>
-                )
-          }
+          <Link className={styles.infoBtn} to={`/movies/${movie.id}`} role='button'>Details</Link>
         </div>
       </div>
       <div className={`${styles.heroImageContainer} ${loadingBackground ? '' : styles.spinnerOff}`}>
