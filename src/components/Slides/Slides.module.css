@@ -15,7 +15,7 @@
   display: flex;
   width: 500%; /* 5 slides × 100% */
   height: 100%;
-  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 1s ease-in-out;
 }
 
 .slide {
@@ -29,7 +29,7 @@
 
 .dotsContainer {
   position: absolute;
-  bottom: 2rem;
+  bottom: 25%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -44,10 +44,23 @@
 .dot {
   width: 16px;
   height: 16px;
+  padding: 0;
   border-radius: 50%;
   border: 2px solid rgba(255, 255, 255, 0.8); /* Borde más visible */
   background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 1);
+  transform: scale(1.2);
+}
+
+.activeDot {
+  background: white;
+  border-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Sombra más fuerte */
 }

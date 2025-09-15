@@ -42,7 +42,7 @@ export default function Slides ({ items, children }) {
           {items.map((_, index) => (
             <button
               key={index}
-              className={styles.dot}
+              className={`${styles.dot} ${index === currentSlide ? styles.activeDot : ''}`}
               onClick={() => { goToSlide(index) }}
               aria-label={`Move to movie ${index + 1}`}
             />
