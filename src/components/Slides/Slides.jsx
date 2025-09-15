@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { cloneElement, useState } from 'react'
+import { cloneElement, useEffect, useState } from 'react'
 
 import styles from './Slides.module.css'
 
@@ -8,9 +8,20 @@ export default function Slides ({ items, children }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoplaying] = useState(true)
 
+  useEffect(() => {
+    if (!isAutoPlaying) return
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % items.length)
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [isAutoPlaying])
+
   function goToSlide (index) {
     setCurrentSlide(index)
     setIsAutoplaying(false)
+    setTimeout(() => setIsAutoplaying(true), 8000)
   }
 
   return (
