@@ -7,10 +7,10 @@ import { ImageIcon } from 'lucide-react'
 
 import styles from './HeroBanner.module.css'
 
-export default function HeroBanner () {
+export default function HeroBanner ({ movie }) {
   const { VITE_API_IMAGE_URL } = import.meta.env
-  const { state: globalState } = useMyContext()
-  const movie = globalState.home.movies.list[0]
+  // const { state: globalState } = useMyContext()
+  // const movie = globalState.home.movies.list[0]
   const [windowWidth, setWindowWith] = useState(window.innerWidth)
   const [loadingBackground, setLoadingBackground] = useState(true)
 

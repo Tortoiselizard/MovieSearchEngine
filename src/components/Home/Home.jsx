@@ -2,6 +2,7 @@ import MoviesContainer from '../MoviesContainer/MoviesContainer'
 import HeroBanner from '../HeroBanner/HeroBanner.jsx'
 import Spinner from '../Spinner/Spinner.jsx'
 import Error from '../Error/Error.jsx'
+import Slides from '../Slides/Slides.jsx'
 
 import { useEffect } from 'react'
 import { useMyContext } from '../../context/MyContext.jsx'
@@ -59,7 +60,10 @@ export default function Home () {
                   movies.list.length
                     ? (
                       <div className={styles.container}>
-                        <HeroBanner />
+
+                        <Slides items={movies.list.slice(0, 5)}>
+                          <HeroBanner />
+                        </Slides>
                         <MoviesContainer />
                       </div>
                       )

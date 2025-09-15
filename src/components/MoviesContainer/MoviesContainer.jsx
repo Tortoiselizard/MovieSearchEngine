@@ -19,7 +19,7 @@ export default function MoviesContainer () {
   return (
     <div className={styles.content}>
       <Carousel
-        items={movies.list.slice(1)}
+        items={movies.list.slice(5)}
         title='Trending Now'
         seeMore='/search'
         id='popular'
