@@ -46,6 +46,7 @@
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
   z-index: 1;
 }
 
@@ -105,6 +106,10 @@
     display: none;
   }
 
+  .heroImage {
+    opacity: 1;
+  }
+
   .heroImage img {
     opacity: 1;
     object-position: center center;
@@ -112,7 +117,7 @@
 
   .buttons {
     position: relative;
-    bottom: 8px;
+    /*bottom: 8px;*/
   }
 
   .infoBtn {
