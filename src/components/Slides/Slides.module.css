@@ -17,7 +17,7 @@
   height: fit-content;
   display: flex;
   transition: transform 0.8s ease-in-out;
-  touch-action: none;
+  /*touch-action: none;*/
 }
 
 .slide {
