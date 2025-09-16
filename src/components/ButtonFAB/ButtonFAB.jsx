@@ -36,10 +36,6 @@ export default function ButtonFAB () {
     alignItems: 'flex-end'
   })
 
-  useEffect(() => {
-    console.log('fab:', fab)
-  }, [globalState.fab])
-
   function handleTouchEnd () {
     if (isDragging) {
       setIsDragging(false)
