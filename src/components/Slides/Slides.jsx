@@ -13,7 +13,6 @@ export default function Slides ({ items, children }) {
   const slider = useRef()
 
   useEffect(() => {
-    return
     if (!isAutoPlaying) return
 
     const interval = setInterval(() => {
@@ -30,6 +29,7 @@ export default function Slides ({ items, children }) {
   }
 
   function handleTouchMove (event) {
+    return
     if (!initialPosition.current) {
       setIsDragging(true)
       const firstTouch = event.touches[0]
@@ -43,6 +43,7 @@ export default function Slides ({ items, children }) {
   }
 
   function handleTouchEnd () {
+    return
     setIsDragging(false)
     initialPosition.current = null
     let newCurrentSlide = currentSlide
