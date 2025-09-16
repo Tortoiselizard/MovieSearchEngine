@@ -13,6 +13,7 @@ export default function Slides ({ items, children }) {
   const slider = useRef()
 
   useEffect(() => {
+    return
     if (!isAutoPlaying) return
 
     const interval = setInterval(() => {

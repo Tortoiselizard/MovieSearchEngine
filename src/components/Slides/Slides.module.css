@@ -1,20 +1,20 @@
 .sliderContainer {
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: fit-content;
+  overflow-x: hidden;
 }
 
 .slider {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: fit-content;
 }
 
 .slidesWrapper {
   position: relative;
   width: 500%; /* 5 slides × 100% */
-  height: 100%;
+  height: fit-content;
   display: flex;
   transition: transform 0.8s ease-in-out;
   touch-action: none;
@@ -22,7 +22,7 @@
 
 .slide {
   width: 20%; /* 100% / 5 slides */
-  height: 100%;
+  height: fit-content;
   position: relative;
   display: flex;
   align-items: center;
@@ -68,7 +68,6 @@
 @media screen and (max-width: 480px) {
   /* Estilos para pantallas de móviles */
   .sliderContainer {
-    height: 75vh;
     align-items: flex-end;
     justify-content: center;
   }
