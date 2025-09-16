@@ -12,10 +12,12 @@
 }
 
 .slidesWrapper {
-  display: flex;
+  position: relative;
   width: 500%; /* 5 slides × 100% */
   height: 100%;
-  transition: transform 1s ease-in-out;
+  display: flex;
+  transition: transform 0.8s ease-in-out;
+  touch-action: none;
 }
 
 .slide {

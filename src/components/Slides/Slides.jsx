@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types'
 
-import { cloneElement, useEffect, useState } from 'react'
+import { cloneElement, useEffect, useRef, useState } from 'react'
 
 import styles from './Slides.module.css'
 
 export default function Slides ({ items, children }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoplaying] = useState(true)
+  const [isDragging, setIsDragging] = useState(false)
+  const initialPosition = useRef(null)
+  const displacement = useRef(null)
+  const slider = useRef()
 
   useEffect(() => {
     if (!isAutoPlaying) return
@@ -24,14 +28,50 @@ export default function Slides ({ items, children }) {
     setTimeout(() => setIsAutoplaying(true), 8000)
   }
 
+  function handleTouchMove (event) {
+    if (!initialPosition.current) {
+      setIsDragging(true)
+      const firstTouch = event.touches[0]
+      initialPosition.current = firstTouch.clientX
+    }
+    const touch = event.touches[0]
+    const x = touch.clientX
+    displacement.current = x - initialPosition.current
+    slider.current.style.transition = 'transform 0s ease-in-out'
+    slider.current.style.transform = `translateX(calc(-${currentSlide * 20}% + ${displacement.current}px))`
+  }
+
+  function handleTouchEnd () {
+    setIsDragging(false)
+    initialPosition.current = null
+    let newCurrentSlide = currentSlide
+    if (displacement.current < -50 && currentSlide < items.length - 1) {
+      newCurrentSlide = currentSlide + 1
+      setCurrentSlide(newCurrentSlide)
+    } else if (displacement.current > 50 && currentSlide > 0) {
+      newCurrentSlide = currentSlide - 1
+      setCurrentSlide(newCurrentSlide)
+    }
+    displacement.current = null
+    slider.current.style.transition = ''
+    slider.current.style.transform = `translateX(-${newCurrentSlide * 20}%)`
+    setIsAutoplaying(false)
+    setTimeout(() => setIsAutoplaying(true), 8000)
+  }
+
   return (
     <div className={styles.sliderContainer}>
-      <div className={styles.slider}>
+      <div
+        className={styles.slider}
+      >
         <div
+          ref={slider}
           className={styles.slidesWrapper}
           style={{
             transform: `translateX(-${currentSlide * 20}%)`
           }}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           {
             items.map(item =>
