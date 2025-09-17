@@ -82,7 +82,7 @@ export default function Slides ({ items, children }) {
           ref={slider}
           className={styles.slidesWrapper}
           style={{
-            // transform: `translateX(-${currentSlide * 20}%)`
+            transform: `translateX(-${currentSlide * 20}%)`
           }}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
