@@ -51,6 +51,8 @@ export default function Slides ({ items, children }) {
     document.body.style.overflow = 'hidden'
     slider.current.style.transition = 'transform 0s ease-in-out'
     slider.current.style.transform = `translateX(calc(-${currentSlide * 20}% + ${displacement.current.x}px))`
+    setIsAutoplaying(false)
+    setTimeout(() => setIsAutoplaying(true), 8000)
   }
 
   function handleTouchEnd () {
@@ -68,8 +70,6 @@ export default function Slides ({ items, children }) {
     slider.current.style.transition = ''
     slider.current.style.transform = `translateX(-${newCurrentSlide * 20}%)`
     document.body.style.overflow = ''
-    setIsAutoplaying(false)
-    setTimeout(() => setIsAutoplaying(true), 8000)
   }
 
   return (
