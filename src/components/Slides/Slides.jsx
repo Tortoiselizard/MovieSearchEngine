@@ -7,7 +7,7 @@ import styles from './Slides.module.css'
 export default function Slides ({ items, children }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoplaying] = useState(true)
-  const [isDragging, setIsDragging] = useState(false)
+  const [isDragging, setIsDragging] = useState(null)
   const initialPosition = useRef(null)
   const displacement = useRef(null)
   const slider = useRef()
@@ -29,36 +29,48 @@ export default function Slides ({ items, children }) {
   }
 
   function handleTouchMove (event) {
-    return
     if (!initialPosition.current) {
-      setIsDragging(true)
+      setIsAutoplaying(false)
       const firstTouch = event.touches[0]
-      initialPosition.current = firstTouch.clientX
+      const { clientX, clientY } = firstTouch
+      initialPosition.current = { x: clientX, y: clientY }
     }
+    if (isDragging !== null && !isDragging) return
     const touch = event.touches[0]
     const x = touch.clientX
-    displacement.current = x - initialPosition.current
+    const y = touch.clientY
+    displacement.current = {
+      x: x - initialPosition.current.x,
+      y: y - initialPosition.current.y
+    }
+    if (displacement.current.y === 0 && displacement.current.x === 0) return
+    if (Math.abs(displacement.current.y) > Math.abs(displacement.current.x)) {
+      setIsDragging(false)
+      return
+    }
+    document.body.style.overflow = 'hidden'
     slider.current.style.transition = 'transform 0s ease-in-out'
-    slider.current.style.transform = `translateX(calc(-${currentSlide * 20}% + ${displacement.current}px))`
+    slider.current.style.transform = `translateX(calc(-${currentSlide * 20}% + ${displacement.current.x}px))`
+    setIsAutoplaying(false)
+    setTimeout(() => setIsAutoplaying(true), 8000)
   }
 
   function handleTouchEnd () {
-    return
-    setIsDragging(false)
+    setIsDragging(null)
     initialPosition.current = null
     let newCurrentSlide = currentSlide
-    if (displacement.current < -50 && currentSlide < items.length - 1) {
+    if (!displacement.current) return
+    if (displacement.current.x < -50 && currentSlide < items.length - 1) {
       newCurrentSlide = currentSlide + 1
       setCurrentSlide(newCurrentSlide)
-    } else if (displacement.current > 50 && currentSlide > 0) {
+    } else if (displacement.current.x > 50 && currentSlide > 0) {
       newCurrentSlide = currentSlide - 1
       setCurrentSlide(newCurrentSlide)
     }
     displacement.current = null
     slider.current.style.transition = ''
     slider.current.style.transform = `translateX(-${newCurrentSlide * 20}%)`
-    setIsAutoplaying(false)
-    setTimeout(() => setIsAutoplaying(true), 8000)
+    document.body.style.overflow = ''
   }
 
   return (
@@ -70,7 +82,7 @@ export default function Slides ({ items, children }) {
           ref={slider}
           className={styles.slidesWrapper}
           style={{
-            transform: `translateX(-${currentSlide * 20}%)`
+            // transform: `translateX(-${currentSlide * 20}%)`
           }}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
