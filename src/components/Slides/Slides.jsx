@@ -48,7 +48,7 @@ export default function Slides ({ items, children }) {
       setIsDragging(false)
       return
     }
-    slider.current.style.touchAction = 'none'
+    document.body.style.overflow = 'hidden'
     slider.current.style.transition = 'transform 0s ease-in-out'
     slider.current.style.transform = `translateX(calc(-${currentSlide * 20}% + ${displacement.current.x}px))`
   }
@@ -67,7 +67,7 @@ export default function Slides ({ items, children }) {
     displacement.current = null
     slider.current.style.transition = ''
     slider.current.style.transform = `translateX(-${newCurrentSlide * 20}%)`
-    slider.current.style.touchAction = ''
+    document.body.style.overflow = ''
     setIsAutoplaying(false)
     setTimeout(() => setIsAutoplaying(true), 8000)
   }
