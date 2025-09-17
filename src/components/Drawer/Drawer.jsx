@@ -10,7 +10,7 @@ export default function Drawer ({ open, onClose }) {
         onClick={onClose}
       />
       <div className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}>
-        <NavBar />
+        <NavBar onClose={onClose} />
       </div>
     </>
   )
