@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router'
 import styles from './NavBar.module.css'
 import { useEffect, useState } from 'react'
 
-export default function NavBar () {
+export default function NavBar ({ onClose }) {
   const { pathname } = useLocation()
   const [optionActive, setOptionActive] = useState('popular')
   const replace = pathname === '/notFound'
@@ -20,6 +20,7 @@ export default function NavBar () {
         to='/'
         className={`${styles.navLink} ${optionActive === '/' ? styles.active : ''}`}
         replace={replace}
+        onClick={onClose}
       >
         Popular
       </Link>
@@ -27,6 +28,7 @@ export default function NavBar () {
         to='/favorites'
         className={`${styles.navLink} ${optionActive === '/favorites' ? styles.active : ''}`}
         replace={replace}
+        onClick={onClose}
       >
         Favorites
       </Link>
