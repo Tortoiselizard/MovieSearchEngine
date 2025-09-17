@@ -59,6 +59,7 @@ export default function Slides ({ items, children }) {
     setIsDragging(null)
     initialPosition.current = null
     let newCurrentSlide = currentSlide
+    if (!displacement.current) return
     if (displacement.current.x < -50 && currentSlide < items.length - 1) {
       newCurrentSlide = currentSlide + 1
       setCurrentSlide(newCurrentSlide)
